@@ -1,0 +1,112 @@
+---
+import Ring from "./Ring.astro";
+
+const navItems = [
+  { label: "Strona główna", href: "/" },
+  { label: "Programy", href: "/programy" },
+  { label: "Zabiegi", href: "/zabiegi" },
+  { label: "Diagnoza skóry", href: "/diagnoza-skory" },
+  { label: "Efekty", href: "/efekty" },
+  { label: "O mnie", href: "/o-mnie" },
+  { label: "Kontakt", href: "/kontakt" },
+];
+
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => (href === "/" ? currentPath === "/" : currentPath.startsWith(href));
+---
+
+<header class="sticky top-0 z-40">
+  <div class="bg-pine text-porcelain text-sm">
+    <div class="container-page flex items-center justify-between gap-4 py-2">
+      <p class="hidden sm:block">Wt–Pt 10:00–19:00 · Sob 9:00–14:00</p>
+      <div class="flex items-center gap-4 mx-auto sm:mx-0">
+        <a href="tel:+48512340220" class="underline decoration-sage/60 underline-offset-4 hover:decoration-porcelain transition-colors">
+          512 340 220
+        </a>
+        <a
+          href="/kontakt"
+          class="hidden sm:inline-flex items-center rounded-full border border-porcelain/40 px-4 py-1.5 font-heading text-xs font-semibold tracking-wide hover:bg-porcelain hover:text-pine transition-colors"
+        >
+          Umów diagnozę
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-porcelain/95 backdrop-blur border-b border-sage/40">
+    <div class="container-page flex items-center justify-between py-3">
+      <a href="/" class="flex items-center gap-3 font-heading font-semibold text-lg text-pine">
+        <Ring size={34} ticks={12} />
+        HALICKA
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-7 font-heading text-sm">
+        {navItems.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              "transition-colors hover:text-pine",
+              isActive(item.href) ? "text-pine font-semibold" : "text-ink-soft",
+            ]}
+            aria-current={isActive(item.href) ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
+
+      <a
+        href="/kontakt"
+        class="hidden lg:inline-flex items-center rounded-full bg-pine text-porcelain px-5 py-2.5 font-heading text-sm font-semibold hover:bg-ink transition-colors"
+      >
+        Umów diagnozę
+      </a>
+
+      <button
+        id="menu-toggle"
+        type="button"
+        class="lg:hidden inline-flex flex-col items-center justify-center gap-1.5 w-10 h-10"
+        aria-label="Otwórz menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="block h-0.5 w-6 bg-pine transition-transform"></span>
+        <span class="block h-0.5 w-6 bg-pine transition-opacity"></span>
+        <span class="block h-0.5 w-6 bg-pine transition-transform"></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden lg:hidden bg-porcelain border-b border-sage/40">
+    <nav class="container-page flex flex-col py-4 font-heading text-base">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            "py-3 border-b border-mist last:border-none",
+            isActive(item.href) ? "text-pine font-semibold" : "text-ink-soft",
+          ]}
+          aria-current={isActive(item.href) ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+      <a
+        href="/kontakt"
+        class="mt-4 inline-flex items-center justify-center rounded-full bg-pine text-porcelain px-5 py-3 font-heading text-sm font-semibold"
+      >
+        Umów diagnozę
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+
+  toggle?.addEventListener("click", () => {
+    const isOpen = menu?.classList.toggle("hidden") === false;
+    toggle.setAttribute("aria-expanded", String(isOpen));
+  });
+</script>

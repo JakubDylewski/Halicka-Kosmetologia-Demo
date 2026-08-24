@@ -1,0 +1,63 @@
+---
+import Ring from "./Ring.astro";
+
+const columns = [
+  {
+    heading: "Nawigacja",
+    links: [
+      { label: "Programy", href: "/programy" },
+      { label: "Zabiegi", href: "/zabiegi" },
+      { label: "Diagnoza skóry", href: "/diagnoza-skory" },
+      { label: "Efekty", href: "/efekty" },
+      { label: "O mnie", href: "/o-mnie" },
+    ],
+  },
+  {
+    heading: "Kontakt",
+    links: [
+      { label: "512 340 220", href: "tel:+48512340220" },
+      { label: "gabinet@halicka-kosmetologia.pl", href: "mailto:gabinet@halicka-kosmetologia.pl" },
+      { label: "al. Grunwaldzka 141/5, Gdańsk-Wrzeszcz", href: "/kontakt" },
+    ],
+  },
+];
+---
+
+<footer class="bg-pine text-porcelain">
+  <div class="container-page py-14 grid gap-10 md:grid-cols-[1.3fr_1fr_1fr]">
+    <div>
+      <a href="/" class="flex items-center gap-3 font-heading font-semibold text-xl">
+        <Ring size={38} ticks={12} />
+        HALICKA
+      </a>
+      <p class="mt-4 max-w-xs text-sm text-porcelain/75 leading-relaxed">
+        Kosmetologia estetyczna · Gdańsk-Wrzeszcz. Twoja skóra ma plan.
+      </p>
+      <p class="mt-6 text-xs uppercase tracking-wider text-porcelain/60">
+        Wt–Pt 10:00–19:00 · Sob 9:00–14:00
+      </p>
+    </div>
+
+    {columns.map((col) => (
+      <div>
+        <p class="font-heading text-sm font-semibold text-sage mb-4">{col.heading}</p>
+        <ul class="space-y-2.5 text-sm text-porcelain/85">
+          {col.links.map((link) => (
+            <li>
+              <a href={link.href} class="hover:text-porcelain transition-colors">{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+
+  <div class="border-t border-porcelain/15">
+    <div class="container-page py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-porcelain/60">
+      <p>© 2026 HALICKA · Strona demonstracyjna Connectiva</p>
+      <a href="/jak-pozyskujemy-klientki" class="hover:text-porcelain transition-colors">
+        Jak pozyskujemy klientki?
+      </a>
+    </div>
+  </div>
+</footer>

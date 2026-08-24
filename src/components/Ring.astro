@@ -1,0 +1,88 @@
+---
+// Sygnatura graficzna HALICKI: pierścień z podziałką (cykl skóry).
+// Cienki okrąg z tikami, kolor pine, jeden akcent sage.
+// Gotowy pod animację rysowania (stroke-dashoffset) w etapie 8.
+
+interface Props {
+  /** Rozmiar w px (kwadrat). */
+  size?: number;
+  /** Liczba/tekst w środku pierścienia, np. numer sekcji "01". */
+  label?: string;
+  /** Wypełnienie 0–100 (np. aktywny krok osi czasu). Bez podania: sam pierścień z podziałką. */
+  progress?: number;
+  /** Liczba znaczników podziałki. */
+  ticks?: number;
+  class?: string;
+};
+
+const { size = 56, label, progress, ticks = 12, class: className } = Astro.props;
+
+const cx = 50;
+const cy = 50;
+const rOuter = 42;
+const tickInner = 42;
+const tickOuter = 47;
+const rProgress = 36;
+const circumference = 2 * Math.PI * rProgress;
+const dashOffset =
+  progress !== undefined ? circumference - (Math.min(Math.max(progress, 0), 100) / 100) * circumference : undefined;
+
+const tickPoints = Array.from({ length: ticks }, (_, i) => {
+  const angle = (i / ticks) * 2 * Math.PI - Math.PI / 2;
+  const x1 = cx + tickInner * Math.cos(angle);
+  const y1 = cy + tickInner * Math.sin(angle);
+  const x2 = cx + tickOuter * Math.cos(angle);
+  const y2 = cy + tickOuter * Math.sin(angle);
+  return { x1, y1, x2, y2, accent: i === 0 };
+});
+---
+
+<span class:list={["ring-signature inline-block shrink-0", className]} style={{ width: `${size}px`, height: `${size}px` }}>
+  <svg viewBox="0 0 100 100" width={size} height={size} aria-hidden="true" focusable="false">
+    <circle cx={cx} cy={cy} r={rOuter} fill="none" stroke="var(--color-pine)" stroke-width="1.25" opacity="0.85" />
+
+    {tickPoints.map((t) => (
+      <line
+        x1={t.x1}
+        y1={t.y1}
+        x2={t.x2}
+        y2={t.y2}
+        stroke={t.accent ? "var(--color-sage)" : "var(--color-pine)"}
+        stroke-width={t.accent ? 2.5 : 1.25}
+        stroke-linecap="round"
+        opacity={t.accent ? 1 : 0.6}
+      />
+    ))}
+
+    {progress !== undefined && (
+      <circle
+        class="ring-progress"
+        cx={cx}
+        cy={cy}
+        r={rProgress}
+        fill="none"
+        stroke="var(--color-pine)"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-dasharray={circumference}
+        stroke-dashoffset={dashOffset}
+        transform={`rotate(-90 ${cx} ${cy})`}
+      />
+    )}
+
+    {label && (
+      <text
+        x={cx}
+        y={cy}
+        text-anchor="middle"
+        dominant-baseline="central"
+        fill="var(--color-pine)"
+        font-family="Sora, sans-serif"
+        font-weight="600"
+        font-size="22"
+      >
+        {label}
+      </text>
+    )}
+  </svg>
+</span>

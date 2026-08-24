@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Ring from "../components/Ring.astro";
+---
+
+<Layout title="Strona główna">
+  <section class="container-page py-24 md:py-32">
+    <p class="overline mb-4">Etap 1 · Fundament</p>
+    <h1 class="font-heading text-4xl md:text-6xl font-semibold text-ink max-w-3xl">
+      Twoja skóra ma plan.
+    </h1>
+    <p class="mt-6 max-w-xl text-ink-soft leading-relaxed">
+      Header, stopka, przyciski pływające i sygnatura graficzna są gotowe. Sekcje 01–06 strony głównej
+      powstaną w Etapie 2.
+    </p>
+
+    <div class="mt-16 flex flex-wrap items-center gap-8">
+      <Ring size={72} label="01" />
+      <Ring size={72} progress={65} />
+      <Ring size={72} />
+    </div>
+  </section>
+</Layout>
