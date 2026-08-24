@@ -1,0 +1,79 @@
+---
+// Boczna nawigacja punktowa (desktop) dla numerowanych sekcji strony głównej.
+// Aktywna kropka wypełnia się przy przewijaniu (IntersectionObserver).
+// Pełne rysowanie/animacja pierścienia — Etap 8.
+
+const items = [
+  { id: "hero", num: "01", label: "Hero" },
+  { id: "zaufanie", num: "02", label: "Zaufanie" },
+  { id: "programy", num: "03", label: "Programy" },
+  { id: "diagnoza", num: "04", label: "Diagnoza" },
+  { id: "efekty", num: "05", label: "Efekty" },
+  { id: "o-mnie", num: "06", label: "O mnie" },
+];
+---
+
+<nav
+  id="side-nav"
+  aria-label="Nawigacja sekcji strony głównej"
+  class="hidden lg:flex fixed right-6 top-1/2 -translate-y-1/2 z-30 flex-col gap-3 transition-opacity duration-300"
+>
+  {items.map((item) => (
+    <a
+      href={`#${item.id}`}
+      data-section-link={item.id}
+      class="side-dot flex items-center justify-center w-8 h-8 rounded-full border border-pine/25 font-heading text-[11px] font-semibold text-ink-soft transition-colors duration-200 hover:border-pine hover:text-pine"
+      aria-label={`Przejdź do sekcji: ${item.label}`}
+    >
+      {item.num}
+    </a>
+  ))}
+</nav>
+
+<style>
+  .side-dot.is-active {
+    background-color: var(--color-pine);
+    border-color: var(--color-pine);
+    color: var(--color-porcelain);
+  }
+</style>
+
+<script>
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-section-link]"));
+  const sections = links
+    .map((link) => document.getElementById(link.dataset.sectionLink ?? ""))
+    .filter((el): el is HTMLElement => el !== null);
+
+  if (sections.length && "IntersectionObserver" in window) {
+    const setActive = (id: string) => {
+      links.forEach((link) => link.classList.toggle("is-active", link.dataset.sectionLink === id));
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+  }
+
+  // Nawigacja żyje tylko wśród sekcji 01–06 (tło porcelain) — chowa się
+  // na ciemnym pasie CTA/stopki, gdzie jej obrys/tekst byłby nieczytelny.
+  const nav = document.getElementById("side-nav");
+  const lastSection = sections[sections.length - 1];
+
+  if (nav && lastSection) {
+    const toggleVisibility = () => {
+      const pastContent = lastSection.getBoundingClientRect().bottom < 0;
+      nav.classList.toggle("opacity-0", pastContent);
+      nav.classList.toggle("pointer-events-none", pastContent);
+    };
+
+    toggleVisibility();
+    window.addEventListener("scroll", toggleVisibility, { passive: true });
+  }
+</script>

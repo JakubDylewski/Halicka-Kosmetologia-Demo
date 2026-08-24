@@ -1,47 +1,255 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import SectionShell from "../components/SectionShell.astro";
+import SideNav from "../components/SideNav.astro";
 import Ring from "../components/Ring.astro";
+import ProgramCard from "../components/ProgramCard.astro";
+import { programs } from "../data/programs";
+
+const trustItems = [
+  "11 lat praktyki",
+  "mgr kosmetologii + 23 certyfikaty",
+  "4,9/5 — 214 opinii",
+  "zabiegi wyłącznie osobiście",
+];
+
+const diagnosisSteps = [
+  { num: "1", text: "Rozmowa i analiza skóry (40 min)" },
+  { num: "2", text: "Plan: program albo pojedyncze zabiegi" },
+  { num: "3", text: "200 zł odliczane w całości od programu" },
+];
+
+const effectPairs = [
+  {
+    problem: "Niedoskonałości i przebarwienia potrądzikowe",
+    program: "Skóra pod kontrolą",
+    visits: "po 6 wizytach",
+  },
+  {
+    problem: "Poszarzenie i nierówny koloryt",
+    program: "Równy koloryt",
+    visits: "po 5 wizytach",
+  },
+  {
+    problem: "Utrata jędrności i owalu twarzy",
+    program: "Napięcie i kontur",
+    visits: "po 6 wizytach",
+  },
+];
+
+const reviews = [
+  {
+    name: "Anna K.",
+    text: "Przyszłam z przebarwieniami po ciąży, które nie chciały zejść. Program Równy koloryt zmienił moją skórę kompleksowo — różnicę widać było już po trzeciej wizycie.",
+  },
+  {
+    name: "Magdalena W.",
+    text: "Pani Nina od razu powiedziała, że z moją skórą naczyniową najpierw powinnam iść do dermatologa. Nikt wcześniej nie był tak szczery. Po konsultacji wróciłam na program Odbudowa.",
+  },
+  {
+    name: "Katarzyna S.",
+    text: "Program Skóra pod kontrolą to najlepsza decyzja pielęgnacyjna ostatnich lat. Zaskórniki i niedoskonałości, z którymi walczyłam latami, w końcu ustąpiły.",
+  },
+  {
+    name: "Ewa T.",
+    text: "Napięcie i kontur po czterdziestce robi ogromną różnicę. Owal twarzy wrócił do formy sprzed lat, bez żadnych inwazyjnych zabiegów.",
+  },
+];
 ---
 
 <Layout title="Strona główna">
-  <SectionShell
-    number="01"
-    title="Fundament gotowy"
-    lead="Nagłówek jednorzędowy, pasek diagnozy i siatka redakcyjna są gotowe."
-    first
-  >
-    <h1 class="font-heading text-4xl md:text-6xl font-semibold text-ink max-w-3xl">
-      Twoja skóra ma plan.
-    </h1>
-    <p class="mt-6 max-w-xl text-ink-soft leading-relaxed">
-      Sekcje 01–06 strony głównej, w tym wzorcu redakcyjnym, powstaną w Etapie 2.
-    </p>
+  <SideNav />
 
-    <div class="mt-16 flex flex-wrap items-center gap-8">
-      <Ring size={72} label="01" />
-      <Ring size={72} progress={65} />
-      <Ring size={72} />
+  <section id="hero" class="lg:flex lg:min-h-[80vh] lg:items-center pt-10 pb-16 md:pt-14 md:pb-20">
+    <div class="container-page w-full">
+      <div class="mb-8 flex items-center gap-3 md:mb-12">
+        <Ring size={34} label="01" />
+        <p class="eyebrow">Kosmetologia estetyczna · Gdańsk Wrzeszcz</p>
+      </div>
+
+      <div class="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-16">
+        <div class="relative shrink-0 lg:w-[42%]">
+          <div class="absolute -bottom-8 -right-8 -z-10 md:-bottom-12 md:-right-12" aria-hidden="true">
+            <Ring size={220} ticks={16} class="md:hidden" />
+            <Ring size={300} ticks={16} class="hidden md:block" />
+          </div>
+          <div class="relative mx-auto aspect-[3/4] max-h-[36vh] w-auto overflow-hidden rounded-sm border border-pine/10 bg-linear-to-br from-sage/25 via-mist to-porcelain lg:mx-0 lg:max-h-none lg:w-full">
+            <svg
+              class="absolute inset-0 m-auto h-16 w-16 text-pine/20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 3.5-6 8-6s8 2 8 6" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="lg:flex-1">
+          <h1 class="font-heading text-4xl font-semibold leading-[1.05] text-ink sm:text-5xl lg:text-6xl">
+            Twoja skóra ma plan.
+          </h1>
+          <p class="mt-6 max-w-lg leading-relaxed text-ink-soft">
+            Nazywam się Nina Halicka. Od 11 lat prowadzę skórę moich klientek — nie od zabiegu do
+            zabiegu, ale według planu, który układamy razem na diagnozie.
+          </p>
+
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <a
+              href="/kontakt"
+              class="inline-flex items-center rounded-full bg-pine px-6 py-3 font-heading text-sm font-semibold text-porcelain transition-colors hover:bg-ink"
+            >
+              Umów diagnozę skóry
+            </a>
+            <p class="text-xs text-ink-soft">200 zł · w całości odliczane od programu</p>
+          </div>
+
+          <p class="mt-10 inline-block border-t border-pine/12 pt-4 font-heading text-lg italic text-pine">
+            mgr Nina Halicka
+          </p>
+        </div>
+      </div>
     </div>
-  </SectionShell>
+  </section>
 
-  <SectionShell
-    number="02"
-    title="Wzorzec sekcji"
-    lead="Lewa kolumna zostaje przyklejona do góry, gdy treść po prawej się przewija."
-  >
-    <p class="text-ink-soft leading-relaxed max-w-2xl">
-      To jest podgląd wzorca `SectionShell` — siatka 12 kolumn (3 lewa / 9 prawa) na desktopie,
-      hairline zamiast naprzemiennych pasów tła. Przewiń, żeby zobaczyć numer i tytuł sekcji
-      przyklejone po lewej oraz pasek diagnozy wysuwający się z dołu.
-    </p>
-    <div class="mt-8 grid gap-4 sm:grid-cols-2">
-      {Array.from({ length: 4 }).map((_, i) => (
-        <div class="rounded-2xl bg-mist p-6">
-          <p class="font-heading font-semibold text-ink">Placeholder {i + 1}</p>
-          <p class="mt-2 text-sm text-ink-soft">Blok treści w kolorze mist — użyty punktowo, nie jako pas tła.</p>
+  <SectionShell id="zaufanie" number="02" title="Zaufanie" lead="Bez liczników i fajerwerków — fakty, które mówią same za siebie.">
+    <div class="flex flex-wrap items-center gap-x-10 gap-y-5 border-y border-pine/12 py-6">
+      {trustItems.map((item) => (
+        <div class="flex items-center gap-3">
+          <span class="block h-2 w-2 shrink-0 rounded-full border border-pine" aria-hidden="true"></span>
+          <p class="font-heading text-sm font-medium text-ink">{item}</p>
         </div>
       ))}
     </div>
   </SectionShell>
+
+  <SectionShell
+    id="programy"
+    number="03"
+    title="Nie sprzedaję zabiegów. Prowadzę skórę."
+    lead="Pojedynczy zabieg daje efekt na tydzień. Program — na lata. Każdy zaczyna się diagnozą i ma jasny plan wizyt."
+  >
+    <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+      {programs.map((program) => (
+        <ProgramCard program={program} />
+      ))}
+    </div>
+
+    <p class="mt-8 text-sm text-ink-soft">
+      Nie wiesz, który program? <a href="/diagnoza-skory" class="font-semibold text-pine hover:underline">Od tego jest diagnoza →</a>
+    </p>
+  </SectionShell>
+
+  <SectionShell
+    id="diagnoza"
+    number="04"
+    title="Najpierw diagnoza. Zawsze."
+    lead="Każda współpraca zaczyna się rozmową i analizą skóry — nie od razu od zabiegu."
+  >
+    <div class="grid gap-8 sm:grid-cols-3">
+      {diagnosisSteps.map((step) => (
+        <div class="flex items-start gap-4 sm:flex-col sm:items-start sm:gap-4">
+          <Ring size={44} label={step.num} />
+          <p class="pt-1 text-sm font-medium leading-relaxed text-ink sm:pt-0">{step.text}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-10 rounded-2xl border border-sage/60 p-6 md:p-7">
+      <p class="italic leading-relaxed text-ink">
+        „Jeśli Twoja skóra potrzebuje dermatologa, nie kosmetologa — powiem to wprost i wskażę, do kogo iść.”
+      </p>
+    </div>
+
+    <a
+      href="/kontakt"
+      class="mt-8 inline-flex items-center rounded-full bg-pine px-6 py-3 font-heading text-sm font-semibold text-porcelain transition-colors hover:bg-ink"
+    >
+      Umów diagnozę
+    </a>
+  </SectionShell>
+
+  <SectionShell
+    id="efekty"
+    number="05"
+    title="Efekty, nie obietnice."
+    lead="Trzy pary przed/po — bez retuszu, w tym samym świetle i kadrze."
+  >
+    <div class="grid gap-8 md:grid-cols-3">
+      {effectPairs.map((pair) => (
+        <div>
+          <div class="grid grid-cols-2 gap-0.5 overflow-hidden rounded-sm">
+            <div class="relative aspect-[3/4] bg-mist">
+              <span class="absolute bottom-2 left-2 font-heading text-[10px] font-semibold uppercase tracking-wider text-ink-soft">
+                Przed
+              </span>
+            </div>
+            <div class="relative aspect-[3/4] bg-sage/30">
+              <span class="absolute bottom-2 left-2 font-heading text-[10px] font-semibold uppercase tracking-wider text-pine">
+                Po
+              </span>
+            </div>
+          </div>
+          <p class="mt-3 text-sm font-medium text-ink">{pair.problem}</p>
+          <p class="mt-1 text-xs text-ink-soft">Program {pair.program} · {pair.visits}</p>
+        </div>
+      ))}
+    </div>
+
+    <p class="mt-8 max-w-2xl text-xs leading-relaxed text-ink-soft">
+      Efekty indywidualne. Zdjęcia publikujemy wyłącznie za pisemną zgodą klientek.
+    </p>
+
+    <a href="/efekty" class="mt-4 inline-block text-sm font-semibold text-pine hover:underline">
+      Zobacz więcej efektów →
+    </a>
+  </SectionShell>
+
+  <SectionShell id="o-mnie" number="06" title="O mnie" lead="Krótko o drodze zawodowej — więcej na osobnej stronie.">
+    <div class="flex flex-col gap-10 md:flex-row md:items-start">
+      <div class="aspect-[4/5] w-full shrink-0 overflow-hidden rounded-sm border border-pine/10 bg-linear-to-br from-mist via-porcelain to-sage/20 md:w-56">
+      </div>
+
+      <div>
+        <p class="max-w-xl leading-relaxed text-ink-soft">
+          Kosmetologię wybrałam, bo chciałam pracować z ludźmi na długo, nie od zabiegu do zabiegu.
+          Przez 11 lat praktyki zebrałam 23 certyfikaty i zbudowałam własne protokoły łączone. Dziś
+          każdą klientkę prowadzę osobiście, od pierwszej diagnozy po ostatnią wizytę programu.
+        </p>
+        <a href="/o-mnie" class="mt-4 inline-block text-sm font-semibold text-pine hover:underline">
+          Poznaj moją historię →
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-12 grid gap-6 sm:grid-cols-2">
+      {reviews.map((review) => (
+        <div class="rounded-2xl bg-mist p-6">
+          <p class="text-sm tracking-wide text-pine" aria-label="Ocena: 5 na 5">★★★★★</p>
+          <p class="mt-3 text-sm leading-relaxed text-ink">{review.text}</p>
+          <p class="mt-4 font-heading text-sm font-semibold text-ink">{review.name}</p>
+        </div>
+      ))}
+    </div>
+  </SectionShell>
+
+  <section class="bg-pine text-porcelain">
+    <div class="container-page py-20 text-center md:py-28">
+      <h2 class="font-heading text-3xl font-semibold md:text-5xl">Zacznijmy od diagnozy.</h2>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          href="/kontakt"
+          class="inline-flex items-center rounded-full bg-porcelain px-6 py-3 font-heading text-sm font-semibold text-pine transition-colors hover:bg-mist"
+        >
+          Umów diagnozę
+        </a>
+        <a href="tel:+48512340220" class="text-sm text-porcelain/85 underline underline-offset-4 hover:text-porcelain">
+          512 340 220
+        </a>
+      </div>
+    </div>
+  </section>
 </Layout>
