@@ -236,3 +236,60 @@ Formularz z kontekstem (parametry `program`, `zabieg`; **domyślne zaznaczenie: 
 ---
 
 *Specyfikacja HALICKA v1 — Grupa 2, marka osobista. Trzecie demo domyka portfolio: trzy grupy, trzy różne systemy, trzy różne języki wizualne. Metodyka wspólna, tożsamość osobna.*
+
+
+
+
+
+
+
+
+
+# ETAP 1B — ODRÓŻNIENIE SZKIELETU (przebudowa ramy przed Etapem 2)
+
+> **Powód:** trzy elementy ramy powtarzają się we wszystkich demach agencji (ciemny górny pasek, pływające pigułki w rogach, naprzemienne pełnoszerokie pasy tła) i tworzą wrażenie jednego szablonu mimo innych kolorów. HALICKA dostaje własną ramę. Ta sekcja ZASTĘPUJE odpowiednie fragmenty sekcji 3 specyfikacji (górny pasek, pływające przyciski, rytm teł).
+
+---
+
+## 1B.1 NAGŁÓWEK JEDNORZĘDOWY (bez ciemnego górnego paska)
+
+- **Usuń ciemny górny pasek całkowicie.** Żadnego osobnego pasa z godzinami.
+- Jeden rząd, tło `--porcelain`, dolna krawędź: linia 1px `--pine` z przezroczystością ~12% (hairline).
+- Układ desktop: **logo (lewa)** · **menu (środek/prawa)**: `Strona główna | Programy | Zabiegi | Diagnoza skóry | Efekty | O mnie | Kontakt` · **telefon jako tekstowy link** `512 340 220` (Inter, --ink, bez tła) · **przycisk `Umów diagnozę`** (pine, jasny tekst).
+- Wysokość ~72px. Sticky u góry, przy przewinięciu delikatny cień zamiast zmiany koloru.
+- Mobile: logo · ikona telefonu (klikalna) · hamburger. Menu mobilne pełnoekranowe na porcelain, pozycje dużą Sorą, na dole telefon + przycisk.
+- **Godziny otwarcia:** wyłącznie stopka i /kontakt. (Nie giną — przestają wisieć nad każdą stroną.)
+
+## 1B.2 DOLNY PASEK DIAGNOZY (zastępuje OBA pływające przyciski)
+
+- **Usuń pływającą pigułkę „Umów diagnozę" i pływający przycisk „Strona główna".** („Strona główna" zostaje jako pierwsza pozycja menu — potrzeba nawigacyjna jest pokryta.)
+- Zamiast nich: **przyklejony dolny pasek** (`position: fixed; bottom: 0`), pojawiający się po przewinięciu za hero (~80vh), wysuwany z dołu (transform, 300ms).
+- Wygląd: cienka listwa — 56px desktop / 60px mobile — tło `--pine`, tekst jasny.
+- Treść desktop: `Diagnoza skóry · 40 min · 200 zł — w całości odliczane` + przycisk `Umów` (jasny, pine tekst). Mobile: `Diagnoza skóry · 200 zł` + przycisk `Umów` (krócej, jedna linia).
+- Klik → `/kontakt` (formularz i tak domyślnie zaznacza diagnozę).
+- Ukryty na `/kontakt`. `padding-bottom` body powiększony o wysokość paska, żeby nie zasłaniał stopki ani treści. `prefers-reduced-motion`: pojawia się bez animacji.
+- To jest stały nośnik produktu wejściowego — konkret z ceną zamiast ogólnego „umów wizytę".
+
+## 1B.3 REDAKCYJNY RYTM SEKCJI (zamiast naprzemiennych pasów tła)
+
+- **Usuń wzorzec naprzemiennych pełnoszerokich pasów** (porcelain/mist na zmianę). Całość strony na jednym tle `--porcelain`.
+- Sekcje oddzielone **cienką poziomą linią** (1px, pine ~12%) na szerokość kontenera + oddechem 96–128px.
+- **Desktop (≥1024px) — siatka redakcyjna:** kontener 12 kolumn. Każda numerowana sekcja:
+  - **Lewa kolumna (3 kol., `position: sticky; top: ~96px`):** numer sekcji w pierścieniu (Ring, duży) + tytuł sekcji (Sora) + 1 zdanie opisu (`--ink-soft`). Zostaje na ekranie, gdy treść obok się przewija.
+  - **Prawa kolumna (9 kol.):** właściwa treść sekcji (karty, siatki, oś czasu).
+- **Mobile:** lewa kolumna składa się nad treść (numer+tytuł jako nagłówek bloku), bez sticky.
+- Kolory `--mist` i `--pine` używane **wyłącznie w blokach**: karty programów (mist), blok szczerości (obrys sage), CTA końcowe (jedyny pełnoszeroki pas pine na stronie — celowy mocny finał).
+- Boczna nawigacja punktowa (prawa krawędź, desktop) zostaje — współgra z tym układem.
+- Pas zaufania (sekcja 02): nie pas tła, lecz **jedna linia danych** rozciągnięta na szerokość treści, pozycje oddzielone pierścieniami-kropkami, nad i pod hairline. Dyskretnie, jak stopka raportu.
+
+## 1B.4 CO SIĘ NIE ZMIENIA
+
+Paleta, typografia (Sora/Inter), Ring, treści, ścieżka diagnoza→program, struktura stron, popup demo, wymogi wydajności i kontrastów. Zmienia się wyłącznie RAMA: nagłówek, dolny pasek, rytm sekcji.
+
+## 1B.5 ETAP
+
+**ETAP 1B:** przebuduj Header.astro wg 1B.1 (jednorzędowy, bez górnego paska), zastąp FloatingButtons.astro dolnym paskiem diagnozy wg 1B.2 (usuń oba pływające przyciski), przygotuj w global.css/Base wzorzec siatki redakcyjnej i hairline'ów wg 1B.3 (komponent `SectionShell.astro`: sticky numer+tytuł po lewej, treść po prawej, wariant mobilny) — Etap 2 zbuduje stronę główną już w tym wzorcu. Sprawdź kontrasty jasnego tekstu na pine w pasku. Build, podsumuj, STOP.
+
+---
+
+*Etap 1B — własna rama HALICKIEJ. Trzy dema, trzy ramy: Aurelia (klasyczna z górnym paskiem), ELARA (ruchoma z nicią), HALICKA (redakcyjna z dolnym paskiem diagnozy).*

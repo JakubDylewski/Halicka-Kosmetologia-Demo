@@ -1,0 +1,52 @@
+---
+const currentPath = Astro.url.pathname;
+const isContact = currentPath === "/kontakt";
+---
+
+{!isContact && (
+  <a
+    href="/kontakt"
+    id="diagnosis-bar"
+    class="diagnosis-bar fixed bottom-0 inset-x-0 z-50 h-[60px] md:h-[56px] bg-pine text-porcelain translate-y-full"
+  >
+    <div class="container-page h-full flex items-center justify-between gap-4">
+      <p class="font-sans text-sm">
+        <span class="md:hidden">Diagnoza skóry · 200 zł</span>
+        <span class="hidden md:inline">Diagnoza skóry · 40 min · 200 zł — w całości odliczane</span>
+      </p>
+      <span class="shrink-0 inline-flex items-center rounded-full bg-porcelain text-pine px-4 py-2 md:px-5 md:py-2.5 font-heading text-xs md:text-sm font-semibold">
+        Umów
+      </span>
+    </div>
+  </a>
+)}
+
+<style>
+  .diagnosis-bar {
+    transition: transform 300ms ease;
+  }
+</style>
+
+<script>
+  const bar = document.getElementById("diagnosis-bar");
+
+  if (bar) {
+    const isDesktop = () => window.matchMedia("(min-width: 768px)").matches;
+
+    const reveal = () => {
+      bar.classList.toggle("translate-y-full", window.scrollY < window.innerHeight * 0.8);
+    };
+
+    const applyBodySpace = () => {
+      document.body.style.paddingBottom = isDesktop() ? "56px" : "60px";
+    };
+
+    reveal();
+    applyBodySpace();
+    window.addEventListener("scroll", reveal, { passive: true });
+    window.addEventListener("resize", () => {
+      reveal();
+      applyBodySpace();
+    });
+  }
+</script>

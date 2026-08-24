@@ -15,75 +15,19 @@ const currentPath = Astro.url.pathname;
 const isActive = (href: string) => (href === "/" ? currentPath === "/" : currentPath.startsWith(href));
 ---
 
-<header class="sticky top-0 z-40">
-  <div class="bg-pine text-porcelain text-sm">
-    <div class="container-page flex items-center justify-between gap-4 py-2">
-      <p class="hidden sm:block">Wt–Pt 10:00–19:00 · Sob 9:00–14:00</p>
-      <div class="flex items-center gap-4 mx-auto sm:mx-0">
-        <a href="tel:+48512340220" class="underline decoration-sage/60 underline-offset-4 hover:decoration-porcelain transition-colors">
-          512 340 220
-        </a>
-        <a
-          href="/kontakt"
-          class="hidden sm:inline-flex items-center rounded-full border border-porcelain/40 px-4 py-1.5 font-heading text-xs font-semibold tracking-wide hover:bg-porcelain hover:text-pine transition-colors"
-        >
-          Umów diagnozę
-        </a>
-      </div>
-    </div>
-  </div>
+<header id="site-header" class="sticky top-0 z-40 bg-porcelain border-b border-pine/12 transition-shadow duration-200">
+  <div class="container-page flex items-center justify-between h-[72px]">
+    <a href="/" class="flex items-center gap-3 font-heading font-semibold text-lg text-pine shrink-0">
+      <Ring size={32} ticks={12} />
+      HALICKA
+    </a>
 
-  <div class="bg-porcelain/95 backdrop-blur border-b border-sage/40">
-    <div class="container-page flex items-center justify-between py-3">
-      <a href="/" class="flex items-center gap-3 font-heading font-semibold text-lg text-pine">
-        <Ring size={34} ticks={12} />
-        HALICKA
-      </a>
-
-      <nav class="hidden lg:flex items-center gap-7 font-heading text-sm">
-        {navItems.map((item) => (
-          <a
-            href={item.href}
-            class:list={[
-              "transition-colors hover:text-pine",
-              isActive(item.href) ? "text-pine font-semibold" : "text-ink-soft",
-            ]}
-            aria-current={isActive(item.href) ? "page" : undefined}
-          >
-            {item.label}
-          </a>
-        ))}
-      </nav>
-
-      <a
-        href="/kontakt"
-        class="hidden lg:inline-flex items-center rounded-full bg-pine text-porcelain px-5 py-2.5 font-heading text-sm font-semibold hover:bg-ink transition-colors"
-      >
-        Umów diagnozę
-      </a>
-
-      <button
-        id="menu-toggle"
-        type="button"
-        class="lg:hidden inline-flex flex-col items-center justify-center gap-1.5 w-10 h-10"
-        aria-label="Otwórz menu"
-        aria-expanded="false"
-        aria-controls="mobile-menu"
-      >
-        <span class="block h-0.5 w-6 bg-pine transition-transform"></span>
-        <span class="block h-0.5 w-6 bg-pine transition-opacity"></span>
-        <span class="block h-0.5 w-6 bg-pine transition-transform"></span>
-      </button>
-    </div>
-  </div>
-
-  <div id="mobile-menu" class="hidden lg:hidden bg-porcelain border-b border-sage/40">
-    <nav class="container-page flex flex-col py-4 font-heading text-base">
+    <nav class="hidden lg:flex items-center gap-7 font-heading text-sm">
       {navItems.map((item) => (
         <a
           href={item.href}
           class:list={[
-            "py-3 border-b border-mist last:border-none",
+            "transition-colors hover:text-pine",
             isActive(item.href) ? "text-pine font-semibold" : "text-ink-soft",
           ]}
           aria-current={isActive(item.href) ? "page" : undefined}
@@ -91,22 +35,118 @@ const isActive = (href: string) => (href === "/" ? currentPath === "/" : current
           {item.label}
         </a>
       ))}
+    </nav>
+
+    <div class="hidden lg:flex items-center gap-6 shrink-0">
+      <a href="tel:+48512340220" class="font-sans text-sm text-ink hover:text-pine transition-colors">
+        512 340 220
+      </a>
       <a
         href="/kontakt"
-        class="mt-4 inline-flex items-center justify-center rounded-full bg-pine text-porcelain px-5 py-3 font-heading text-sm font-semibold"
+        class="inline-flex items-center rounded-full bg-pine text-porcelain px-5 py-2.5 font-heading text-sm font-semibold hover:bg-ink transition-colors"
       >
         Umów diagnozę
       </a>
-    </nav>
+    </div>
+
+    <div class="flex items-center gap-2 lg:hidden">
+      <a
+        href="tel:+48512340220"
+        aria-label="Zadzwoń: 512 340 220"
+        class="inline-flex items-center justify-center w-10 h-10 text-pine"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 5c0-1.1.9-2 2-2h2.28a1 1 0 0 1 .97.76l1.1 4.36a1 1 0 0 1-.5 1.13l-2 1.15a12.5 12.5 0 0 0 6.75 6.75l1.15-2a1 1 0 0 1 1.13-.5l4.36 1.1a1 1 0 0 1 .76.97V19c0 1.1-.9 2-2 2h-1C9.6 21 3 14.4 3 6V5Z" />
+        </svg>
+      </a>
+      <button
+        id="menu-toggle"
+        type="button"
+        class="inline-flex flex-col items-center justify-center gap-1.5 w-10 h-10"
+        aria-label="Otwórz menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="menu-bar block h-0.5 w-6 bg-pine transition-transform"></span>
+        <span class="menu-bar block h-0.5 w-6 bg-pine transition-opacity"></span>
+        <span class="menu-bar block h-0.5 w-6 bg-pine transition-transform"></span>
+      </button>
+    </div>
   </div>
 </header>
 
+<div id="mobile-menu" class="hidden lg:hidden fixed inset-0 z-50 bg-porcelain flex flex-col">
+  <div class="container-page flex items-center justify-between h-[72px] shrink-0">
+    <a href="/" class="flex items-center gap-3 font-heading font-semibold text-lg text-pine">
+      <Ring size={32} ticks={12} />
+      HALICKA
+    </a>
+    <button
+      id="menu-close"
+      type="button"
+      aria-label="Zamknij menu"
+      class="inline-flex items-center justify-center w-10 h-10 text-pine"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+        <path d="M6 6l12 12M18 6 6 18" />
+      </svg>
+    </button>
+  </div>
+
+  <nav class="container-page flex-1 flex flex-col justify-center gap-1 font-heading">
+    {navItems.map((item) => (
+      <a
+        href={item.href}
+        class:list={[
+          "py-3 text-3xl border-b border-mist last:border-none",
+          isActive(item.href) ? "text-pine font-semibold" : "text-ink",
+        ]}
+        aria-current={isActive(item.href) ? "page" : undefined}
+      >
+        {item.label}
+      </a>
+    ))}
+  </nav>
+
+  <div class="container-page pb-10 pt-4 flex flex-col gap-4 shrink-0">
+    <a href="tel:+48512340220" class="font-sans text-base text-ink-soft">
+      512 340 220
+    </a>
+    <a
+      href="/kontakt"
+      class="inline-flex items-center justify-center rounded-full bg-pine text-porcelain px-5 py-3 font-heading text-sm font-semibold"
+    >
+      Umów diagnozę
+    </a>
+  </div>
+</div>
+
 <script>
+  const header = document.getElementById("site-header");
   const toggle = document.getElementById("menu-toggle");
+  const closeBtn = document.getElementById("menu-close");
   const menu = document.getElementById("mobile-menu");
 
-  toggle?.addEventListener("click", () => {
-    const isOpen = menu?.classList.toggle("hidden") === false;
-    toggle.setAttribute("aria-expanded", String(isOpen));
-  });
+  const openMenu = () => {
+    menu?.classList.remove("hidden");
+    toggle?.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeMenu = () => {
+    menu?.classList.add("hidden");
+    toggle?.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  };
+
+  toggle?.addEventListener("click", openMenu);
+  closeBtn?.addEventListener("click", closeMenu);
+
+  if (header) {
+    const onScroll = () => {
+      header.classList.toggle("shadow-[0_1px_16px_rgba(33,38,35,0.08)]", window.scrollY > 4);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
 </script>

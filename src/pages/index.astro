@@ -1,17 +1,21 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import SectionShell from "../components/SectionShell.astro";
 import Ring from "../components/Ring.astro";
 ---
 
 <Layout title="Strona główna">
-  <section class="container-page py-24 md:py-32">
-    <p class="overline mb-4">Etap 1 · Fundament</p>
+  <SectionShell
+    number="01"
+    title="Fundament gotowy"
+    lead="Nagłówek jednorzędowy, pasek diagnozy i siatka redakcyjna są gotowe."
+    first
+  >
     <h1 class="font-heading text-4xl md:text-6xl font-semibold text-ink max-w-3xl">
       Twoja skóra ma plan.
     </h1>
     <p class="mt-6 max-w-xl text-ink-soft leading-relaxed">
-      Header, stopka, przyciski pływające i sygnatura graficzna są gotowe. Sekcje 01–06 strony głównej
-      powstaną w Etapie 2.
+      Sekcje 01–06 strony głównej, w tym wzorcu redakcyjnym, powstaną w Etapie 2.
     </p>
 
     <div class="mt-16 flex flex-wrap items-center gap-8">
@@ -19,5 +23,25 @@ import Ring from "../components/Ring.astro";
       <Ring size={72} progress={65} />
       <Ring size={72} />
     </div>
-  </section>
+  </SectionShell>
+
+  <SectionShell
+    number="02"
+    title="Wzorzec sekcji"
+    lead="Lewa kolumna zostaje przyklejona do góry, gdy treść po prawej się przewija."
+  >
+    <p class="text-ink-soft leading-relaxed max-w-2xl">
+      To jest podgląd wzorca `SectionShell` — siatka 12 kolumn (3 lewa / 9 prawa) na desktopie,
+      hairline zamiast naprzemiennych pasów tła. Przewiń, żeby zobaczyć numer i tytuł sekcji
+      przyklejone po lewej oraz pasek diagnozy wysuwający się z dołu.
+    </p>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div class="rounded-2xl bg-mist p-6">
+          <p class="font-heading font-semibold text-ink">Placeholder {i + 1}</p>
+          <p class="mt-2 text-sm text-ink-soft">Blok treści w kolorze mist — użyty punktowo, nie jako pas tła.</p>
+        </div>
+      ))}
+    </div>
+  </SectionShell>
 </Layout>
