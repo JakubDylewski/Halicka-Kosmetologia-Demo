@@ -1,0 +1,185 @@
+---
+// Karta Twojej Skóry (sekcja 15 specyfikacji, Etap 11) dojdzie tu jako
+// dodatkowa warstwa DZIAŁA po zbudowaniu /karta-skory — pominięta teraz
+// celowo, żeby nie zostawiać niedokończonego "coming soon".
+
+import Layout from "../layouts/Layout.astro";
+import Ring from "../components/Ring.astro";
+
+const layers = [
+  {
+    num: "01",
+    title: "Diagnoza jako brama",
+    text: "Każda ścieżka na stronie — hero, programy, zabiegi, CTA końcowe — prowadzi do jednego, policzalnego punktu: umówienia diagnozy. Nie ma dziesięciu równoległych celów, jest jeden lejek.",
+    href: "/diagnoza-skory",
+    linkLabel: "Zobacz stronę diagnozy",
+  },
+  {
+    num: "02",
+    title: "Programy pakietowe",
+    text: "Klientka nie kupuje pojedynczego zabiegu za kilkaset złotych — wchodzi w program wart średnio kilka tysięcy. Wyższa wartość klientki od pierwszej wizyty, bez dodatkowej pracy sprzedażowej.",
+    href: "/programy",
+    linkLabel: "Zobacz programy",
+  },
+  {
+    num: "03",
+    title: "Oś czasu programu",
+    text: "Zamiast ogólnego opisu, klientka widzi wizytę po wizycie — co się wydarzy, ile to kosztuje, czego się spodziewać. To buduje zaufanie i redukuje pytania przed zakupem.",
+    href: "/programy/skora-pod-kontrola",
+    linkLabel: "Zobacz przykładową oś czasu",
+  },
+  {
+    num: "04",
+    title: "Rezerwacja z kontekstem",
+    text: "Klientka klikająca „Umów” przy konkretnym programie trafia na formularz, który już wie, o co pyta. Gabinet dostaje zgłoszenie z kontekstem, nie gołe imię i telefon.",
+    href: "/kontakt?program=skora-pod-kontrola",
+    linkLabel: "Zobacz formularz z kontekstem",
+  },
+  {
+    num: "05",
+    title: "Lądowiska SEO",
+    text: "Osobne strony pod frazy lokalne (Gdańsk-Wrzeszcz, Oliwa, Sopot, Gdynia...) — drzwi, nie dom. Każda prowadzi z powrotem na stronę główną, budując ruch bez rozmywania oferty.",
+    href: "/kosmetologia-gdansk-wrzeszcz",
+    linkLabel: "Zobacz przykładowe lądowisko",
+  },
+];
+---
+
+<Layout
+  title="Jak pozyskujemy klientki"
+  description="System, na którym stoi strona HALICKA: diagnoza jako brama, programy pakietowe, oś czasu, rezerwacja z kontekstem i lądowiska SEO."
+>
+  <section class="pt-14 pb-16 md:pt-20 md:pb-20">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Jak pozyskujemy klientki</p>
+      <h1 class="max-w-2xl font-heading text-4xl font-semibold text-ink md:text-5xl">
+        Strona, która zamienia wizyty w programy.
+      </h1>
+      <p class="mt-6 max-w-xl leading-relaxed text-ink-soft">
+        To nie jest wizytówka. To system złożony z pięciu warstw, które razem prowadzą klientkę od
+        pierwszego kliknięcia do wielowizytowego programu. Każdą możesz zobaczyć na żywo poniżej.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Warstwy, które działają</p>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Pięć warstw systemu</h2>
+
+      <div class="mt-10 divide-y divide-mist border-y border-pine/12">
+        {layers.map((layer) => (
+          <a href={layer.href} class="group flex flex-col gap-4 py-7 sm:flex-row sm:items-start sm:gap-8">
+            <Ring size={48} label={layer.num} class="shrink-0" />
+            <div class="flex-1">
+              <p class="font-heading text-lg font-semibold text-ink">{layer.title}</p>
+              <p class="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft">{layer.text}</p>
+              <span class="mt-3 inline-flex items-center gap-1.5 font-heading text-sm font-semibold text-pine">
+                {layer.linkLabel}
+                <span class="transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Warstwy przykładowe</p>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">
+        Dowody, które budują zaufanie
+      </h2>
+      <p class="mt-4 max-w-xl leading-relaxed text-ink-soft">
+        Poniżej makiety poglądowe — własna stylizacja HALICKI, nie zrzuty z prawdziwych narzędzi.
+      </p>
+
+      <div class="mt-10 grid gap-8 lg:grid-cols-2">
+        <div class="relative rounded-2xl border border-pine/15 bg-porcelain p-6 md:p-7">
+          <span class="absolute -top-3 left-6 rounded-full bg-ink px-3 py-1 font-heading text-[10px] font-semibold uppercase tracking-wider text-porcelain">
+            Przykład
+          </span>
+          <p class="font-heading text-lg font-semibold text-ink">HALICKA — Kosmetologia Estetyczna</p>
+          <p class="mt-1 text-sm text-ink-soft">Gabinet kosmetologii · Gdańsk-Wrzeszcz</p>
+          <div class="mt-4 flex items-center gap-2">
+            <span class="font-heading text-lg font-semibold text-ink">4,9</span>
+            <span class="text-pine" aria-hidden="true">★★★★★</span>
+            <span class="text-sm text-ink-soft">(214 opinii)</span>
+          </div>
+          <div class="mt-5 space-y-1.5 border-t border-mist pt-5 text-sm text-ink-soft">
+            <p>Otwarte · zamyka 19:00</p>
+            <p>al. Grunwaldzka 141/5, Gdańsk</p>
+            <p>512 340 220</p>
+          </div>
+        </div>
+
+        <div class="relative rounded-2xl border border-pine/15 bg-porcelain p-6 md:p-7">
+          <span class="absolute -top-3 left-6 rounded-full bg-ink px-3 py-1 font-heading text-[10px] font-semibold uppercase tracking-wider text-porcelain">
+            Przykład
+          </span>
+          <p class="font-heading text-lg font-semibold text-ink">Raport — sierpień 2026</p>
+          <div class="mt-5 grid grid-cols-2 gap-5">
+            <div>
+              <p class="font-heading text-2xl font-semibold text-ink">34</p>
+              <p class="mt-1 text-xs text-ink-soft">zapytania z formularza</p>
+            </div>
+            <div>
+              <p class="font-heading text-2xl font-semibold text-ink">21</p>
+              <p class="mt-1 text-xs text-ink-soft">umówione diagnozy</p>
+            </div>
+            <div>
+              <p class="font-heading text-2xl font-semibold text-pine">9</p>
+              <p class="mt-1 text-xs text-ink-soft">sprzedane programy</p>
+            </div>
+            <div>
+              <p class="font-heading text-2xl font-semibold text-pine">18 400 zł</p>
+              <p class="mt-1 text-xs text-ink-soft">wartość miesiąca</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Dlaczego programy, nie zabiegi</p>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Prosta matematyka</h2>
+
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 max-w-2xl">
+        <div class="rounded-2xl bg-mist p-6 md:p-7">
+          <p class="font-heading text-sm font-semibold uppercase tracking-wider text-ink-soft">Klientka jednorazowa</p>
+          <p class="mt-3 text-sm text-ink-soft">1 zabieg × ~300 zł</p>
+          <p class="mt-1 font-heading text-3xl font-semibold text-ink">300 zł</p>
+        </div>
+        <div class="rounded-2xl bg-mist p-6 md:p-7">
+          <p class="font-heading text-sm font-semibold uppercase tracking-wider text-pine">Klientka programowa</p>
+          <p class="mt-3 text-sm text-ink-soft">1 program (śr. 5 wizyt) × ~360 zł</p>
+          <p class="mt-1 font-heading text-3xl font-semibold text-pine">~1 800 zł</p>
+        </div>
+      </div>
+
+      <p class="mt-8 max-w-xl leading-relaxed text-ink-soft">
+        <span class="font-heading font-semibold text-ink">6× wyższa wartość klientki</span> — bez
+        pozyskiwania nowego ruchu. Sama zmiana ścieżki sprzedaży ze „zabieg" na „program". Liczby
+        przykładowe, oparte na realnych cenach z tego demo.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-pine text-porcelain">
+    <div class="container-page py-16 text-center md:py-20">
+      <h2 class="font-heading text-2xl font-semibold md:text-4xl">Prowadzisz gabinet kosmetologii?</h2>
+      <p class="mt-4 text-porcelain/85">Taką stronę zbudujemy dla Ciebie.</p>
+      <a
+        href="https://connectiva-website.pages.dev"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-8 inline-flex items-center rounded-full bg-porcelain px-6 py-3 font-heading text-sm font-semibold text-pine transition-colors hover:bg-mist"
+      >
+        Chcę taki system
+      </a>
+    </div>
+  </section>
+</Layout>
