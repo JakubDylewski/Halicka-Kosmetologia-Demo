@@ -1,0 +1,88 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { treatmentCategories, formatTreatmentPrice } from "../data/treatments";
+---
+
+<Layout
+  title="Zabiegi"
+  description="Katalog zabiegów kosmetologii estetycznej HALICKA — każdy dostępny też pojedynczo, ale najlepsze efekty daje program."
+>
+  <section class="pt-14 pb-10 md:pt-20 md:pb-14">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Zabiegi</p>
+      <h1 class="max-w-2xl font-heading text-4xl font-semibold text-ink md:text-5xl">Zabiegi</h1>
+      <p class="mt-6 max-w-xl leading-relaxed text-ink-soft">
+        Każdy z tych zabiegów wykonuję też pojedynczo — ale najlepsze efekty daje seria. Jeśli nie
+        wiesz, od czego zacząć, <a href="/diagnoza-skory" class="font-semibold text-pine hover:underline">zacznij od diagnozy</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-10 md:py-14">
+    <div class="container-page">
+      <div class="divide-y divide-pine/12 border-y border-pine/12">
+        {treatmentCategories.map((category) => (
+          <details class="group py-2">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4">
+              <span class="font-heading text-lg font-semibold text-ink md:text-xl">{category.name}</span>
+              <span class="flex items-center gap-3 shrink-0">
+                <span class="text-xs text-ink-soft">{category.treatments.length} zabiegów</span>
+                <svg
+                  class="h-4 w-4 text-pine transition-transform duration-200 group-open:rotate-180"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </span>
+            </summary>
+
+            <div class="pb-6">
+              <ul class="divide-y divide-mist">
+                {category.treatments.map((treatment) => (
+                  <li class="flex flex-col gap-3 py-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                    <div class="sm:max-w-lg">
+                      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <p class="font-heading font-semibold text-ink">{treatment.name}</p>
+                        <p class="text-xs uppercase tracking-wide text-ink-soft">{treatment.duration}</p>
+                      </div>
+                      <p class="mt-1.5 text-sm leading-relaxed text-ink-soft">{treatment.description}</p>
+                    </div>
+
+                    <div class="flex shrink-0 items-center gap-5">
+                      <p class="font-heading text-lg font-semibold text-ink">{formatTreatmentPrice(treatment)}</p>
+                      <a
+                        href={`/kontakt?zabieg=${encodeURIComponent(treatment.name)}`}
+                        class="inline-flex items-center rounded-full border border-pine px-4 py-2 font-heading text-xs font-semibold text-pine transition-colors hover:bg-pine hover:text-porcelain"
+                      >
+                        Umów
+                      </a>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-pine text-porcelain">
+    <div class="container-page py-16 text-center md:py-20">
+      <h2 class="font-heading text-2xl font-semibold md:text-4xl">Nie wiesz, który zabieg wybrać?</h2>
+      <p class="mt-4 text-porcelain/85">Od tego jest diagnoza — dobierzemy plan dla Twojej skóry razem.</p>
+      <a
+        href="/diagnoza-skory"
+        class="mt-8 inline-flex items-center rounded-full bg-porcelain px-6 py-3 font-heading text-sm font-semibold text-pine transition-colors hover:bg-mist"
+      >
+        Umów diagnozę
+      </a>
+    </div>
+  </section>
+</Layout>
