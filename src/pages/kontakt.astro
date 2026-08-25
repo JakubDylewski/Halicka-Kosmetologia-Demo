@@ -1,0 +1,161 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { programs } from "../data/programs";
+import { treatmentCategories } from "../data/treatments";
+
+const inputClass =
+  "w-full rounded-lg border border-pine/20 bg-porcelain px-4 py-2.5 text-sm text-ink placeholder:text-ink-soft/60 focus:border-pine focus:outline-none focus:ring-1 focus:ring-pine";
+const labelClass = "mb-2 block font-heading text-sm font-semibold text-ink";
+---
+
+<Layout
+  title="Kontakt"
+  description="Umów diagnozę skóry lub zapytaj o program w gabinecie HALICKA — Gdańsk-Wrzeszcz. Odpowiadam osobiście, zwykle tego samego dnia."
+>
+  <section class="pt-14 pb-20 md:pt-20 md:pb-28">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Kontakt</p>
+      <h1 class="max-w-2xl font-heading text-4xl font-semibold text-ink md:text-5xl">Umów wizytę</h1>
+      <p class="mt-6 max-w-xl leading-relaxed text-ink-soft">
+        Wszystko zaczyna się od diagnozy. Jeśli nie wiesz, czego dotyczy Twoje zgłoszenie, zostaw
+        domyślny wybór — sama zaproponuję dalszy krok.
+      </p>
+
+      <div class="mt-12 grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
+        <form
+          action="https://api.web3forms.com/submit"
+          method="POST"
+          id="kontakt-form"
+          class="space-y-6"
+        >
+          <input type="hidden" name="access_key" value="TODO_WEB3FORMS_KEY" />
+          <input type="hidden" name="from_name" value="Formularz kontaktowy HALICKA" />
+          <input type="hidden" name="subject" id="form-subject" value="Zapytanie ze strony: Diagnoza skóry" />
+          <input type="hidden" name="context" id="form-context" value="diagnoza" />
+
+          <div>
+            <label for="imie" class={labelClass}>Imię*</label>
+            <input type="text" name="imie" id="imie" required class={inputClass} autocomplete="given-name" />
+          </div>
+
+          <div>
+            <label for="telefon" class={labelClass}>Telefon*</label>
+            <input type="tel" name="telefon" id="telefon" required class={inputClass} autocomplete="tel" />
+          </div>
+
+          <div>
+            <label for="temat" class={labelClass}>Czego dotyczy</label>
+            <select name="temat" id="temat" class={inputClass}>
+              <option value="diagnoza" selected>Diagnoza skóry</option>
+              <optgroup label="Programy">
+                {programs.map((program) => (
+                  <option value={`program:${program.slug}`}>{program.name}</option>
+                ))}
+              </optgroup>
+              {treatmentCategories.map((category) => (
+                <optgroup label={category.name}>
+                  {category.treatments.map((treatment) => (
+                    <option value={`zabieg:${treatment.name}`}>{treatment.name}</option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <p class={labelClass}>Preferowany kontakt</p>
+            <div class="flex gap-6">
+              <label class="flex items-center gap-2 text-sm text-ink">
+                <input type="radio" name="kontakt_preferowany" value="telefon" checked class="accent-pine" />
+                Telefon
+              </label>
+              <label class="flex items-center gap-2 text-sm text-ink">
+                <input type="radio" name="kontakt_preferowany" value="sms" class="accent-pine" />
+                SMS
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label for="uwagi" class={labelClass}>Uwagi</label>
+            <textarea name="uwagi" id="uwagi" rows="4" class={inputClass}></textarea>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <input type="checkbox" name="rodo" id="rodo" required class="mt-1 accent-pine" />
+            <label for="rodo" class="text-xs leading-relaxed text-ink-soft">
+              Wyrażam zgodę na przetwarzanie moich danych osobowych przez HALICKA Kosmetologia
+              Estetyczna w celu kontaktu i umówienia wizyty.*
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            class="inline-flex items-center rounded-full bg-pine px-6 py-3 font-heading text-sm font-semibold text-porcelain transition-colors hover:bg-ink"
+          >
+            Wyślij zgłoszenie
+          </button>
+        </form>
+
+        <aside>
+          <div class="rounded-2xl bg-mist p-6 md:p-7">
+            <p class="font-heading text-xs font-semibold uppercase tracking-wider text-ink-soft">Telefon</p>
+            <a href="tel:+48512340220" class="mt-1 block font-heading text-lg font-semibold text-ink hover:text-pine">
+              512 340 220
+            </a>
+
+            <p class="mt-6 font-heading text-xs font-semibold uppercase tracking-wider text-ink-soft">Godziny</p>
+            <p class="mt-1 text-sm leading-relaxed text-ink">Wt–Pt 10:00–19:00<br />Sob 9:00–14:00</p>
+
+            <p class="mt-6 font-heading text-xs font-semibold uppercase tracking-wider text-ink-soft">Adres</p>
+            <p class="mt-1 text-sm leading-relaxed text-ink">al. Grunwaldzka 141/5<br />Gdańsk-Wrzeszcz</p>
+
+            <p class="mt-6 text-sm italic leading-relaxed text-ink-soft">
+              Odpowiadam osobiście, zwykle tego samego dnia.
+            </p>
+          </div>
+
+          <div class="relative mt-6 aspect-[4/3] w-full overflow-hidden rounded-2xl border border-pine/10 bg-mist">
+            <svg class="absolute inset-0 h-full w-full text-pine/15" viewBox="0 0 200 150" preserveAspectRatio="none" aria-hidden="true">
+              <line x1="0" y1="35" x2="200" y2="30" stroke="currentColor" stroke-width="1.5" />
+              <line x1="0" y1="95" x2="200" y2="105" stroke="currentColor" stroke-width="1.5" />
+              <line x1="45" y1="0" x2="55" y2="150" stroke="currentColor" stroke-width="1.5" />
+              <line x1="140" y1="0" x2="130" y2="150" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+            <p class="absolute bottom-3 left-3 font-heading text-xs font-semibold uppercase tracking-wider text-ink-soft">
+              Gdańsk-Wrzeszcz
+            </p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const select = document.getElementById("temat") as HTMLSelectElement | null;
+  const subjectField = document.getElementById("form-subject") as HTMLInputElement | null;
+  const contextField = document.getElementById("form-context") as HTMLInputElement | null;
+  if (!select || !subjectField || !contextField) throw new Error("Kontakt form: missing element");
+
+  const params = new URLSearchParams(window.location.search);
+  const programSlug = params.get("program");
+  const zabiegName = params.get("zabieg");
+
+  if (programSlug) {
+    const option = select.querySelector<HTMLOptionElement>(`option[value="program:${programSlug}"]`);
+    if (option) option.selected = true;
+  } else if (zabiegName) {
+    const option = Array.from(select.options).find((o) => o.textContent?.trim() === zabiegName);
+    if (option) option.selected = true;
+  }
+
+  const updateContext = () => {
+    const selected = select.options[select.selectedIndex];
+    subjectField.value = `Zapytanie ze strony: ${selected.textContent?.trim()}`;
+    contextField.value = selected.value;
+  };
+
+  updateContext();
+  select.addEventListener("change", updateContext);
+</script>
