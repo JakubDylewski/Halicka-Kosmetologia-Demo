@@ -1,0 +1,134 @@
+---
+// Lądowisko SEO — wzorzec "drzwi, nie dom" (sekcja 8 specyfikacji).
+// Ukryte w głównej nawigacji (brak w Header/Footer), obecne w sitemapie
+// (integracja @astrojs/sitemap generuje go automatycznie z tych stron),
+// indexable (robots: index, follow — domyślne w Layout).
+// Adres gabinetu ZAWSZE Gdańsk-Wrzeszcz — te strony nie sugerują oddziału
+// w innym mieście, tylko opisują dojazd klientek stamtąd.
+
+import Layout from "../layouts/Layout.astro";
+import MapPlaceholder from "../components/MapPlaceholder.astro";
+import { cities, type City } from "../data/cities";
+import { programs } from "../data/programs";
+
+export async function getStaticPaths() {
+  return cities.map((city) => ({
+    params: { slug: city.slug },
+    props: { city },
+  }));
+}
+
+interface Props {
+  city: City;
+}
+
+const { city } = Astro.props;
+const otherCities = cities.filter((c) => c.slug !== city.slug);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "HALICKA — Kosmetologia Estetyczna",
+  telephone: "+48512340220",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "al. Grunwaldzka 141/5",
+    addressLocality: "Gdańsk",
+    addressRegion: "pomorskie",
+    postalCode: "80-266",
+    addressCountry: "PL",
+  },
+  areaServed: {
+    "@type": "Place",
+    name: city.name,
+  },
+  url: `https://halicka-kosmetologia-demo.pages.dev/kosmetologia-${city.slug}`,
+};
+---
+
+<Layout
+  title={`Kosmetologia estetyczna ${city.name}`}
+  description={city.intro}
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <section class="pt-8 pb-12 md:pt-10 md:pb-16">
+    <div class="container-page" data-reveal>
+      <nav aria-label="Okruszki" class="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
+        <a href="/" class="hover:text-pine">Strona główna</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-ink">Kosmetologia estetyczna {city.name}</span>
+      </nav>
+
+      <h1 class="mt-6 max-w-2xl font-heading text-4xl font-semibold text-ink md:text-5xl">
+        Kosmetologia estetyczna {city.name}
+      </h1>
+
+      <p class="mt-6 max-w-xl leading-relaxed text-ink-soft">{city.intro}</p>
+
+      <p class="mt-4 max-w-xl leading-relaxed text-ink-soft">
+        Gabinet mieści się w Gdańsku-Wrzeszczu przy al. Grunwaldzkiej — klientki z {city.genitive} dojeżdżają do mnie w ok. {city.minutes} minut.
+      </p>
+
+      <p class="mt-6 max-w-xl leading-relaxed text-ink-soft">
+        HALICKA to gabinet kosmetologii estetycznej, który prowadzę osobiście — każda klientka,
+        niezależnie z której części Trójmiasta przyjeżdża, zaczyna od diagnozy skóry i pracuje
+        według indywidualnego planu, a nie pojedynczych zabiegów bez kontynuacji.
+      </p>
+
+      <a
+        href="/"
+        class="mt-8 inline-flex items-center rounded-full bg-pine px-6 py-3 font-heading text-sm font-semibold text-porcelain transition-colors hover:bg-ink"
+      >
+        Zobacz pełną ofertę →
+      </a>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page" data-reveal>
+      <p class="eyebrow mb-4">Programy</p>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Programy pielęgnacyjne</h2>
+
+      <ul class="mt-8 max-w-2xl divide-y divide-mist">
+        {programs.map((program) => (
+          <li class="py-4">
+            <a href={`/programy/${program.slug}`} class="font-heading font-semibold text-ink hover:text-pine">
+              {program.name} →
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page" data-reveal>
+      <p class="eyebrow mb-4">Adres</p>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Gabinet w Gdańsku-Wrzeszczu</h2>
+      <p class="mt-4 max-w-xl text-sm leading-relaxed text-ink-soft">al. Grunwaldzka 141/5, Gdańsk-Wrzeszcz</p>
+
+      <MapPlaceholder class="mt-8 max-w-xl" />
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page" data-reveal>
+      <p class="eyebrow mb-4">Inne lokalizacje</p>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Dojazd z innych dzielnic i miast</h2>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        {otherCities.map((c) => (
+          <a
+            href={`/kosmetologia-${c.slug}`}
+            class="rounded-full border border-pine/20 px-4 py-2 text-sm text-ink transition-colors hover:border-pine hover:text-pine"
+          >
+            {c.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
