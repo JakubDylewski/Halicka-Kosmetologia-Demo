@@ -293,3 +293,136 @@ Paleta, typografia (Sora/Inter), Ring, treści, ścieżka diagnoza→program, st
 ---
 
 *Etap 1B — własna rama HALICKIEJ. Trzy dema, trzy ramy: Aurelia (klasyczna z górnym paskiem), ELARA (ruchoma z nicią), HALICKA (redakcyjna z dolnym paskiem diagnozy).*
+
+
+
+
+
+
+# 15. KARTA TWOJEJ SKÓRY — system pozyskiwania klientek HALICKIEJ
+
+> **Czym jest:** bezpłatna analiza wstępna zakończona **raportem** (nie wynikiem quizu). Odpowiednik „Dobierz zabieg" z Aurelii i cennika-filtra z ELARY — ale zbudowany pod filozofię HALICKIEJ: od stanu skóry → do programu → do diagnozy.
+>
+> **Co robi biznesowo (trzy rzeczy naraz):** (1) przyciąga — daje realną wartość za darmo, (2) kwalifikuje — kto przeszedł analizę, ten jest zainteresowany, (3) zbiera lead z pełnym kontekstem — gabinet dzwoni wiedząc, jaką skórę ma klientka i jaki program jej pasuje.
+>
+> **Ścieżka:** `/karta-skory` → 7 pytań wizualnych → Karta na ekranie → „Wyślij mi na maila" (lead) + „Umów diagnozę" (konwersja).
+
+---
+
+## 15.1 ZASADY PROJEKTOWE
+
+- **Wizualnie, nie tekstowo.** Klientka klika w obrazki i suwaki, nie czyta ścian tekstu. Cała analiza ≤ 90 sekund.
+- **Jeden ekran = jedno pytanie.** Pasek postępu (pierścienie 1–7, sygnatura marki). Możliwość cofnięcia.
+- **Nic nie jest zablokowane za mailem.** Karta wyświetla się w całości od razu. Mail jest opcją („wyślij mi to"), nie bramką. To buduje zaufanie i pasuje do premium.
+- **Uczciwość jako pozycjonowanie.** Karta wprost mówi, że to analiza wstępna, nie diagnoza. To wzmacnia, a nie osłabia — bo pokazuje, że prawdziwa wartość jest w gabinecie.
+- **Zero medycznych obietnic.** Język kosmetologiczny: „kondycja skóry", „nawodnienie", „bariera hydrolipidowa" — nigdy „leczenie", „choroba", „wyleczy".
+- Wejścia: menu główne (pozycja `Karta skóry`), sekcja na stronie głównej, CTA na stronach programów („nie wiesz, który program? zacznij od Karty"), dolny pasek diagnozy jako alternatywa.
+
+---
+
+## 15.2 SIEDEM PYTAŃ (dane w `src/data/skinQuiz.ts`)
+
+Każde pytanie: nagłówek, ewentualny podtytuł, opcje wizualne (kafelki ze zdjęciem/ikoną + krótki podpis). Odpowiedzi zapisywane w stanie, obliczenia lokalnie w JS (bez wysyłki danych).
+
+**P1 — Która skóra jest najbliższa Twojej?** *(kafelki ze zdjęciami makro skóry — placeholdery do czasu Higgsfield)*
+Opcje: `Świeci się na czole i nosie, policzki normalne` · `Świeci się na całej twarzy` · `Ściąga, bywa szorstka` · `Reaguje zaczerwienieniem na wszystko` · `Trudno powiedzieć`
+
+**P2 — Co niepokoi Cię najbardziej?** *(wybór do 2 — klik w obszary na uproszczonej sylwetce twarzy + lista)*
+Opcje: `Niedoskonałości i zaskórniki` · `Przebarwienia, nierówny koloryt` · `Utrata jędrności, owal` · `Zmarszczki` · `Szara, zmęczona cera` · `Rozszerzone pory` · `Zaczerwienienia, naczynka` · `Odwodnienie, ściąganie`
+
+**P3 — Jak Twoja skóra zachowuje się 2 godziny po umyciu?** *(suwak, 5 pozycji)*
+Od `Bardzo ściąga` przez `W porządku` do `Wyraźnie się świeci`
+
+**P4 — Ile masz lat?** *(kafelki)* `do 25` · `26–35` · `36–45` · `46–55` · `56+`
+*(uzasadnienie w interfejsie: „wiek zmienia priorytety pielęgnacji — nie oceniamy, dobieramy")*
+
+**P5 — Jak dbasz o skórę dzisiaj?** *(kafelki)*
+`Woda i krem, bez systemu` · `Mam kosmetyki, ale bez planu` · `Mam ustaloną pielęgnację` · `Byłam już na zabiegach w gabinecie`
+
+**P6 — Czy używasz filtra SPF na co dzień?** *(kafelki)*
+`Codziennie, cały rok` · `Tylko latem` · `Rzadko lub wcale`
+*(to pytanie ma największą wagę w rekomendacji dot. przebarwień i kwasów — uzasadnić w Karcie)*
+
+**P7 — Ile czasu realnie możesz poświęcić?** *(kafelki)*
+`Chcę systematycznie, mogę co 2–3 tygodnie` · `Raz w miesiącu` · `Rzadziej, ale chcę efekt` · `Nie wiem, potrzebuję rady`
+
+---
+
+## 15.3 LOGIKA DOPASOWANIA (prosta, przejrzysta, w `skinQuiz.ts`)
+
+**Krok 1 — typ skóry** z P1 + P3: `mieszana` / `tłusta` / `sucha` / `wrażliwa` / `normalna`
+**Krok 2 — stan dodatkowy** z P2 + P3 + P6: `odwodniona` (dominujące) / `z tendencją do przebarwień` / `z osłabioną barierą` / `dojrzała`
+**Krok 3 — profil** = złożenie: np. `skóra mieszana, odwodniona, z tendencją do przebarwień`
+
+**Krok 4 — dopasowanie programu** (punktacja, wygrywa najwyższy wynik):
+- P2 zawiera `Niedoskonałości` / `Rozszerzone pory` → **Skóra pod kontrolą**
+- P2 zawiera `Odwodnienie` / `Szara cera` lub P3 skrajnie „ściąga" → **Odbudowa**
+- P2 zawiera `Przebarwienia` (waga ×2 jeśli P6 = rzadko/wcale) → **Równy koloryt**
+- P2 zawiera `Utrata jędrności` / `Zmarszczki`, lub P4 ≥ 46 → **Napięcie i kontur**
+- Konflikt (2 różne priorytety o zbliżonej punktacji) lub P7 = `Nie wiem` → **Protokół Halicka** (indywidualny) z wyjaśnieniem: „Twoje potrzeby idą w dwóch kierunkach naraz — tu trzeba ułożyć plan indywidualnie."
+
+**Krok 5 — trzy priorytety w kolejności** (co pierwsze, co drugie, czego jeszcze nie ruszać). Reguła stała i uczciwa: nawodnienie i bariera ZAWSZE przed kwasami i przebarwieniami; przy P6 = rzadko/wcale — SPF jest priorytetem nr 1 i warunkiem sensu dalszych zabiegów.
+
+---
+
+## 15.4 KARTA — układ raportu (to jest produkt)
+
+Wygląda jak dokument gabinetu, nie jak wynik quizu. Tło porcelain, ramka hairline, nagłówek z pierścieniem, typografia Sora/Inter, u dołu podpis `mgr Nina Halicka`.
+
+1. **Nagłówek:** `Karta Twojej Skóry` + data + (jeśli podane) imię
+2. **PROFIL SKÓRY** — duża nazwa profilu (Sora), pod spodem 2 zdania wyjaśnienia w ludzkim języku
+3. **TRZY PRIORYTETY** — ponumerowane w pierścieniach: `01 Nawodnienie i odbudowa bariery` · `02 Wyrównanie kolorytu` · `03 Praca nad jędrnością — dopiero po 01 i 02`. Każdy z jednym zdaniem uzasadnienia.
+4. **CZEGO JESZCZE NIE ROBIĆ** — 1–2 punkty (np. „nie zaczynaj od mocnych kwasów przy osłabionej barierze — pogorszysz stan"). To buduje autorytet mocniej niż lista zaleceń.
+5. **REKOMENDOWANY PROGRAM** — nazwa, dla kogo, liczba wizyt, czas trwania, orientacyjna cena pakietu, link do strony programu
+6. **CO MOŻESZ ZROBIĆ OD JUTRA (bez wydawania złotówki)** — 3 konkretne rzeczy dopasowane do profilu (np. „myj twarz letnią, nie gorącą wodą", „nakładaj krem na wilgotną skórę", „SPF 30+ codziennie, także zimą"). **Bez polecania produktów i marek** — to ma być czysta wartość, nie sprzedaż.
+7. **WŁAŚCIWY MOMENT** — jedno zdanie o sezonowości dobrane do rekomendacji (np. przy kwasach/laserach: „jesień i zima to najlepszy okres — mniej słońca, mniejsze ryzyko przebarwień")
+8. **ZAMKNIĘCIE UCZCIWOŚCIOWE** (wyróżnione, obrys sage): `To analiza wstępna na podstawie Twoich odpowiedzi. Prawdziwą diagnozę wykonuję osobiście, w gabinecie, z analizą aparatem — dopiero wtedy układamy plan. Jeśli okaże się, że Twoja skóra potrzebuje dermatologa, powiem to wprost.`
+9. **DWA DZIAŁANIA:** przycisk główny `Umów diagnozę — 200 zł, odliczane od programu` → `/kontakt?cel=diagnoza&profil=[kod]&program=[slug]` · przycisk drugi `Wyślij mi tę Kartę na maila`
+10. **NABÓR (uczciwa rzadkość):** `Zabiegi wykonuję wyłącznie osobiście, dlatego przyjmuję maksymalnie 12 nowych klientek kwartalnie. Wolne miejsca w tym kwartale: 3.` — liczba w `src/data/intake.ts` (jedna zmienna do podmiany; **nie licznik odliczający, nie sztuczna presja** — to prawda o gabinecie jednoosobowym)
+11. **Drobne:** `Karta ma charakter informacyjny i nie stanowi porady medycznej.`
+
+---
+
+## 15.5 PRZECHWYCENIE LEADA
+
+- Przycisk `Wyślij mi tę Kartę na maila` → rozwija mini-formularz: `Imię` · `E-mail` · zgoda RODO (checkbox z treścią o celu i możliwości wycofania) · `Wyślij`
+- Web3Forms (`TODO_WEB3FORMS_KEY`), ukryte pola przekazują: profil skóry, wybrane odpowiedzi, rekomendowany program, priorytety.
+- **Gabinet dostaje zgłoszenie z pełnym kontekstem** — nie „ktoś zapytał", tylko: `Anna, skóra mieszana odwodniona z tendencją do przebarwień, priorytet: nawodnienie, rekomendacja: Odbudowa, SPF: rzadko`.
+- Komunikat sukcesu: `Wysłane. Karta powinna dotrzeć w ciągu minuty — sprawdź też folder ofert.`
+- Jeśli klientka nie zostawia maila — **nic nie traci**, Karta zostaje na ekranie, można ją wydrukować (`@media print` — czysty layout bez nawigacji).
+
+---
+
+## 15.6 SEKCJA NA STRONIE GŁÓWNEJ (nowa, wchodzi jako 03; pozostałe numery +1)
+
+- Overline `03 · ZACZNIJ TUTAJ` · H2 `Nie wiesz, czego potrzebuje Twoja skóra?`
+- Lead: `Odpowiedz na 7 pytań — w minutę dostaniesz Kartę Twojej Skóry: profil, trzy priorytety w kolejności i to, co możesz zrobić w domu od jutra. Bezpłatnie, bez zapisów.`
+- Po prawej: podgląd Karty (statyczna makieta fragmentu — buduje ciekawość)
+- Przycisk `Wypełnij Kartę Skóry →`
+
+---
+
+## 15.7 WYMOGI TECHNICZNE
+
+- Cała logika lokalnie w przeglądarce (bez backendu). Stan w pamięci; **bez localStorage** (nie jest potrzebny, a upraszcza zgodność).
+- Nawigacja klawiaturą, `aria-live` przy zmianie pytania, focus na nowym pytaniu, pasek postępu z `aria-valuenow`.
+- `prefers-reduced-motion`: przejścia między pytaniami bez animacji.
+- Mobile-first: kafelki min. 44px wysokości dotykowej, jedno pytanie na ekran, przyciski `Wstecz`/`Dalej` w zasięgu kciuka.
+- Karta w pełni czytelna i drukowalna; zero poziomego przewijania.
+- Lighthouse: Performance ≥90 mobile, Accessibility 100.
+
+---
+
+## 15.8 WPIĘCIE W STRONĘ SYSTEMU `/jak-pozyskujemy-klientki`
+
+Nowa warstwa (jako pierwsza, DZIAŁA): `Karta Twojej Skóry — bezpłatna analiza, która zamienia anonimowy ruch w konkretne zgłoszenie`. Tekst dla właścicielki: `Klientka wychodzi z realną wartością, nawet jeśli jeszcze się nie umówi — i zapamiętuje gabinet. A Ty dostajesz zgłoszenie z gotowym profilem skóry: wiesz, z czym dzwonisz, zanim odbierzesz telefon.` Dowód: przycisk `Zobacz, jak działa →` do `/karta-skory`.
+
+---
+
+## 15.9 ETAP
+
+**ETAP 11 — Karta Twojej Skóry:** zbuduj `skinQuiz.ts` (7 pytań wg 15.2, logika dopasowania wg 15.3, teksty priorytetów i zaleceń domowych dla każdego profilu), stronę `/karta-skory` (kreator jeden-ekran-jedno-pytanie z paskiem pierścieni, cofanie, generowanie Karty wg 15.4), formularz wysyłki Karty wg 15.5, `intake.ts` z liczbą wolnych miejsc, sekcję na stronie głównej wg 15.6, pozycję `Karta skóry` w menu, wpięcie w stronę systemu wg 15.8, styl druku. Wymogi z 15.7. Build, Lighthouse mobile, podsumuj. STOP.
+
+---
+
+*Sekcja 15 — Karta Twojej Skóry. Daje wartość, zanim weźmie pieniądze; zbiera lead z kontekstem; prowadzi do płatnej diagnozy. System HALICKIEJ.*
