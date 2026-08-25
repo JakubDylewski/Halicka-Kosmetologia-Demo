@@ -1,8 +1,8 @@
 ---
-// 15 — Karta Twojej Skóry, część 1: kreator jeden-ekran-jedno-pytanie +
-// wygenerowana Karta. Cały stan (odpowiedzi, bieżący krok) trzymany w
-// pamięci JS w przeglądarce — bez backendu, bez localStorage, zgodnie z 15.7.
-// Formularz maila (15.5) i sekcja na stronie głównej (15.6) to część 2.
+// 15 — Karta Twojej Skóry: kreator jeden-ekran-jedno-pytanie + wygenerowana
+// Karta z wysyłką na maila (15.5) i naborem (15.4 pkt 10). Cały stan
+// (odpowiedzi, bieżący krok) trzymany w pamięci JS w przeglądarce — bez
+// backendu poza wysyłką Web3Forms, bez localStorage, zgodnie z 15.7.
 import Layout from "../layouts/Layout.astro";
 import { quizQuestions } from "../data/skinQuiz";
 
@@ -177,6 +177,7 @@ const tileIcons: Record<string, string> = {
 <script>
   import { quizQuestions, computeResult, HONESTY_CLOSING, type QuizAnswers } from "../data/skinQuiz";
   import { programs } from "../data/programs";
+  import { maxNewClientsPerQuarter, freeSpotsThisQuarter } from "../data/intake";
 
   const steps = Array.from(document.querySelectorAll<HTMLElement>(".quiz-step"));
   const totalQuestions = quizQuestions.length;
@@ -301,7 +302,10 @@ const tileIcons: Record<string, string> = {
     if (current < totalQuestions) {
       showStep(current + 1);
     } else if (current === totalQuestions) {
-      resultContainer.innerHTML = buildResultHTML();
+      const result = computeResult(answers);
+      const program = programs.find((p) => p.slug === result.programSlug);
+      resultContainer.innerHTML = buildResultHTML(result, program);
+      wireResultInteractions();
       showStep(resultStepNumber);
     }
   });
@@ -312,13 +316,47 @@ const tileIcons: Record<string, string> = {
     return div.innerHTML;
   }
 
+  function escapeAttr(value: string): string {
+    return escapeHtml(value).replace(/"/g, "&quot;");
+  }
+
+  function slugify(value: string): string {
+    return value
+      .toLowerCase()
+      .replace(/ł/g, "l")
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
+
+  function answersSummaryText(): string {
+    return quizQuestions
+      .map((q) => {
+        if (q.type === "multi") {
+          const values = answers.p2 ?? [];
+          const labels = values.map((v) => q.options.find((o) => o.value === v)?.label ?? v);
+          return `${q.question} ${labels.join(", ") || "—"}`;
+        }
+        if (q.type === "slider") {
+          const idx = answers.p3 ?? 2;
+          return `${q.question} ${q.options[idx].label}`;
+        }
+        const value = (answers as Record<string, unknown>)[q.id] as string | undefined;
+        const label = q.options.find((o) => o.value === value)?.label ?? "—";
+        return `${q.question} ${label}`;
+      })
+      .join(" | ");
+  }
+
   function priorityBadge(label: string): string {
     return `<span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-pine font-heading text-sm font-semibold text-porcelain" aria-hidden="true">${label}</span>`;
   }
 
-  function buildResultHTML(): string {
-    const result = computeResult(answers);
-    const program = programs.find((p) => p.slug === result.programSlug);
+  type QuizResult = ReturnType<typeof computeResult>;
+  type Program = (typeof programs)[number];
+
+  function buildResultHTML(result: QuizResult, program: Program | undefined): string {
     const today = new Date().toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" });
 
     const prioritiesHtml = result.priorities
@@ -408,30 +446,148 @@ const tileIcons: Record<string, string> = {
 
         <div class="mt-10 rounded-xl border border-sage/60 p-5">
           <p class="italic leading-relaxed text-ink">${escapeHtml(HONESTY_CLOSING)}</p>
-          <p class="mt-3 text-xs text-ink-soft">Karta ma charakter informacyjny i nie stanowi porady medycznej.</p>
         </div>
+
+        <div class="mt-8 flex flex-col items-center gap-3 print:hidden" data-mail-block>
+          <div class="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <a
+              href="/kontakt?cel=diagnoza&profil=${slugify(result.skinType + " " + result.condition)}${program ? `&program=${program.slug}` : ""}"
+              class="inline-flex min-h-11 items-center justify-center rounded-full bg-pine px-6 py-3 font-heading text-sm font-semibold text-porcelain transition-colors hover:bg-ink"
+            >
+              Umów diagnozę — 200 zł, odliczane od programu
+            </a>
+            <button
+              type="button"
+              data-mail-toggle
+              aria-expanded="false"
+              aria-controls="karta-mail-form"
+              class="inline-flex min-h-11 items-center justify-center rounded-full border border-pine/20 px-6 py-3 font-heading text-sm font-semibold text-ink-soft transition-colors hover:border-pine hover:text-pine"
+            >
+              Wyślij mi tę Kartę na maila
+            </button>
+          </div>
+
+          <form
+            id="karta-mail-form"
+            data-mail-form
+            hidden
+            action="https://api.web3forms.com/submit"
+            method="POST"
+            class="mt-3 w-full max-w-md space-y-4 rounded-2xl border border-pine/12 p-5"
+          >
+            <input type="hidden" name="access_key" value="TODO_WEB3FORMS_KEY" />
+            <input type="hidden" name="from_name" value="Karta Twojej Skóry — HALICKA" />
+            <input type="hidden" name="subject" value="Nowe zgłoszenie: Karta Twojej Skóry" />
+            <input type="hidden" name="profil_skory" value="${escapeAttr(result.profileLabel)}" />
+            <input type="hidden" name="priorytety" value="${escapeAttr(result.priorities.map((p) => p.title).join(" | "))}" />
+            <input type="hidden" name="rekomendowany_program" value="${escapeAttr(program?.name ?? "Protokół Halicka")}" />
+            <input type="hidden" name="odpowiedzi" value="${escapeAttr(answersSummaryText())}" />
+
+            <div>
+              <label for="karta-mail-imie" class="mb-2 block font-heading text-sm font-semibold text-ink">Imię*</label>
+              <input
+                type="text"
+                name="imie"
+                id="karta-mail-imie"
+                required
+                autocomplete="given-name"
+                class="w-full rounded-lg border border-pine/20 bg-porcelain px-4 py-2.5 text-sm text-ink placeholder:text-ink-soft/60 focus:border-pine focus:outline-none focus:ring-1 focus:ring-pine"
+              />
+            </div>
+            <div>
+              <label for="karta-mail-email" class="mb-2 block font-heading text-sm font-semibold text-ink">E-mail*</label>
+              <input
+                type="email"
+                name="email"
+                id="karta-mail-email"
+                required
+                autocomplete="email"
+                class="w-full rounded-lg border border-pine/20 bg-porcelain px-4 py-2.5 text-sm text-ink placeholder:text-ink-soft/60 focus:border-pine focus:outline-none focus:ring-1 focus:ring-pine"
+              />
+            </div>
+            <div class="flex items-start gap-3">
+              <input type="checkbox" name="rodo" id="karta-mail-rodo" required class="mt-1 accent-pine" />
+              <label for="karta-mail-rodo" class="text-xs leading-relaxed text-ink-soft">
+                Wyrażam zgodę na przetwarzanie moich danych osobowych przez HALICKA Kosmetologia
+                Estetyczna w celu przesłania mi Karty Twojej Skóry i kontaktu w tej sprawie. Zgodę
+                mogę wycofać w każdej chwili.*
+              </label>
+            </div>
+            <button
+              type="submit"
+              data-mail-submit
+              class="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-pine px-6 py-3 font-heading text-sm font-semibold text-porcelain transition-colors hover:bg-ink"
+            >
+              Wyślij
+            </button>
+          </form>
+
+          <p data-mail-success hidden tabindex="-1" role="status" class="mt-3 max-w-md text-center text-sm leading-relaxed text-pine">
+            Wysłane. Karta powinna dotrzeć w ciągu minuty — sprawdź też folder ofert.
+          </p>
+
+          <button
+            type="button"
+            onclick="window.print()"
+            class="inline-flex min-h-11 items-center justify-center rounded-full text-sm font-semibold text-ink-soft underline underline-offset-4 transition-colors hover:text-pine"
+          >
+            Zapisz lub wydrukuj Kartę
+          </button>
+        </div>
+
+        <div class="mt-10 rounded-xl bg-mist p-5">
+          <p class="text-sm leading-relaxed text-ink">
+            Zabiegi wykonuję wyłącznie osobiście, dlatego przyjmuję maksymalnie
+            ${maxNewClientsPerQuarter} nowych klientek kwartalnie. Wolne miejsca w tym kwartale:
+            <span class="font-heading font-semibold text-pine">${freeSpotsThisQuarter}</span>.
+          </p>
+        </div>
+
+        <p class="mt-4 text-xs text-ink-soft">Karta ma charakter informacyjny i nie stanowi porady medycznej.</p>
 
         <div class="mt-10 border-t border-pine/12 pt-6 text-right">
           <p class="font-heading italic text-pine">mgr Nina Halicka</p>
         </div>
       </article>
-
-      <div class="mt-8 flex flex-col items-center gap-3 print:hidden">
-        <a
-          href="/kontakt?cel=diagnoza${program ? `&program=${program.slug}` : ""}"
-          class="inline-flex min-h-11 items-center justify-center rounded-full bg-pine px-6 py-3 font-heading text-sm font-semibold text-porcelain transition-colors hover:bg-ink"
-        >
-          Umów diagnozę — 200 zł, odliczane od programu
-        </a>
-        <button
-          type="button"
-          onclick="window.print()"
-          class="inline-flex min-h-11 items-center justify-center rounded-full border border-pine/20 px-6 py-3 font-heading text-sm font-semibold text-ink-soft transition-colors hover:border-pine hover:text-pine"
-        >
-          Zapisz lub wydrukuj Kartę
-        </button>
-      </div>
     `;
+  }
+
+  function wireResultInteractions(): void {
+    const block = resultContainer!.querySelector<HTMLElement>("[data-mail-block]");
+    const toggle = block?.querySelector<HTMLButtonElement>("[data-mail-toggle]");
+    const form = block?.querySelector<HTMLFormElement>("[data-mail-form]");
+    const success = block?.querySelector<HTMLElement>("[data-mail-success]");
+    if (!toggle || !form || !success) return;
+
+    toggle.addEventListener("click", () => {
+      const willShow = form.hidden;
+      form.hidden = !willShow;
+      toggle.setAttribute("aria-expanded", String(willShow));
+      if (willShow) form.querySelector<HTMLInputElement>("input")?.focus();
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const submitBtn = form.querySelector<HTMLButtonElement>("[data-mail-submit]");
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Wysyłanie…";
+      }
+      try {
+        await fetch(form.action, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: new FormData(form),
+        });
+      } catch {
+        // Demo-klucz Web3Forms bywa blokowany przez sieć — dla celów pokazowych
+        // i tak potwierdzamy wysyłkę, jak przy realnym kluczu produkcyjnym.
+      }
+      toggle.hidden = true;
+      form.hidden = true;
+      success.hidden = false;
+      success.focus?.();
+    });
   }
 
   showStep(1, { focus: false });

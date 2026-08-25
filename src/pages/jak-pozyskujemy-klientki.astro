@@ -1,42 +1,45 @@
 ---
-// Karta Twojej Skóry (sekcja 15 specyfikacji, Etap 11) dojdzie tu jako
-// dodatkowa warstwa DZIAŁA po zbudowaniu /karta-skory — pominięta teraz
-// celowo, żeby nie zostawiać niedokończonego "coming soon".
-
 import Layout from "../layouts/Layout.astro";
 import Ring from "../components/Ring.astro";
 
 const layers = [
   {
     num: "01",
+    title: "Karta Twojej Skóry — bezpłatna analiza, która zamienia anonimowy ruch w konkretne zgłoszenie",
+    text: "Klientka wychodzi z realną wartością, nawet jeśli jeszcze się nie umówi — i zapamiętuje gabinet. A Ty dostajesz zgłoszenie z gotowym profilem skóry: wiesz, z czym dzwonisz, zanim odbierzesz telefon.",
+    href: "/karta-skory",
+    linkLabel: "Zobacz, jak działa",
+  },
+  {
+    num: "02",
     title: "Diagnoza jako brama",
     text: "Każda ścieżka na stronie — hero, programy, zabiegi, CTA końcowe — prowadzi do jednego, policzalnego punktu: umówienia diagnozy. Nie ma dziesięciu równoległych celów, jest jeden lejek.",
     href: "/diagnoza-skory",
     linkLabel: "Zobacz stronę diagnozy",
   },
   {
-    num: "02",
+    num: "03",
     title: "Programy pakietowe",
     text: "Klientka nie kupuje pojedynczego zabiegu za kilkaset złotych — wchodzi w program wart średnio kilka tysięcy. Wyższa wartość klientki od pierwszej wizyty, bez dodatkowej pracy sprzedażowej.",
     href: "/programy",
     linkLabel: "Zobacz programy",
   },
   {
-    num: "03",
+    num: "04",
     title: "Oś czasu programu",
     text: "Zamiast ogólnego opisu, klientka widzi wizytę po wizycie — co się wydarzy, ile to kosztuje, czego się spodziewać. To buduje zaufanie i redukuje pytania przed zakupem.",
     href: "/programy/skora-pod-kontrola",
     linkLabel: "Zobacz przykładową oś czasu",
   },
   {
-    num: "04",
+    num: "05",
     title: "Rezerwacja z kontekstem",
     text: "Klientka klikająca „Umów” przy konkretnym programie trafia na formularz, który już wie, o co pyta. Gabinet dostaje zgłoszenie z kontekstem, nie gołe imię i telefon.",
     href: "/kontakt?program=skora-pod-kontrola",
     linkLabel: "Zobacz formularz z kontekstem",
   },
   {
-    num: "05",
+    num: "06",
     title: "Lądowiska SEO",
     text: "Osobne strony pod frazy lokalne (Gdańsk-Wrzeszcz, Oliwa, Sopot, Gdynia...) — drzwi, nie dom. Każda prowadzi z powrotem na stronę główną, budując ruch bez rozmywania oferty.",
     href: "/kosmetologia-gdansk-wrzeszcz",
@@ -47,7 +50,7 @@ const layers = [
 
 <Layout
   title="Jak pozyskujemy klientki"
-  description="System, na którym stoi strona HALICKA: diagnoza jako brama, programy pakietowe, oś czasu, rezerwacja z kontekstem i lądowiska SEO."
+  description="System, na którym stoi strona HALICKA: Karta Twojej Skóry, diagnoza jako brama, programy pakietowe, oś czasu, rezerwacja z kontekstem i lądowiska SEO."
 >
   <section class="pt-14 pb-16 md:pt-20 md:pb-20">
     <div class="container-page" data-reveal>
@@ -56,7 +59,7 @@ const layers = [
         Strona, która zamienia wizyty w programy.
       </h1>
       <p class="mt-6 max-w-xl leading-relaxed text-ink-soft">
-        To nie jest wizytówka. To system złożony z pięciu warstw, które razem prowadzą klientkę od
+        To nie jest wizytówka. To system złożony z sześciu warstw, które razem prowadzą klientkę od
         pierwszego kliknięcia do wielowizytowego programu. Każdą możesz zobaczyć na żywo poniżej.
       </p>
     </div>
@@ -65,7 +68,7 @@ const layers = [
   <section class="border-t border-pine/12 py-16 md:py-20">
     <div class="container-page">
       <p class="eyebrow mb-4">Warstwy, które działają</p>
-      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Pięć warstw systemu</h2>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Sześć warstw systemu</h2>
 
       <div class="mt-10 divide-y divide-mist border-y border-pine/12">
         {layers.map((layer, i) => (

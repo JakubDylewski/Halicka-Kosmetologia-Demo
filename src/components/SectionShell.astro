@@ -11,18 +11,21 @@ import Ring from "./Ring.astro";
 interface Props {
   number: string;
   title: string;
+  /** Krótki nagłówek nad numerem/tytułem, np. „Zacznij tutaj". */
+  eyebrow?: string;
   lead?: string;
   id?: string;
   /** Pomiń górny hairline (pierwsza sekcja pod headerem). */
   first?: boolean;
 }
 
-const { number, title, lead, id, first = false } = Astro.props;
+const { number, title, eyebrow, lead, id, first = false } = Astro.props;
 ---
 
 <section id={id} class:list={["py-24 md:py-32", !first && "border-t border-pine/12"]}>
   <div class="container-page lg:grid lg:grid-cols-12 lg:gap-10" data-reveal>
     <div class="lg:col-span-3 lg:sticky lg:top-24 lg:self-start mb-10 lg:mb-0">
+      {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
       <Ring size={56} label={number} />
       <h2 class="mt-5 font-heading text-2xl font-semibold text-ink">{title}</h2>
       {lead && <p class="mt-3 text-sm text-ink-soft leading-relaxed max-w-xs">{lead}</p>}
