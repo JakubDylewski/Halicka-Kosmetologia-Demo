@@ -143,10 +143,10 @@ const isActive = (href: string) => (href === "/" ? currentPath === "/" : current
   closeBtn?.addEventListener("click", closeMenu);
 
   if (header) {
-    const onScroll = () => {
-      header.classList.toggle("shadow-[0_1px_16px_rgba(33,38,35,0.08)]", window.scrollY > 4);
+    const onScroll = (scrollY: number) => {
+      header.classList.toggle("shadow-[0_1px_16px_rgba(33,38,35,0.08)]", scrollY > 4);
     };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll(window.scrollY);
+    window.addEventListener("app:scroll", (e) => onScroll((e as CustomEvent<{ scrollY: number }>).detail.scrollY));
   }
 </script>

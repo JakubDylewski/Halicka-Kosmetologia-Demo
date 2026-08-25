@@ -32,7 +32,7 @@ const values = [
   description="Nina Halicka — mgr kosmetologii, 11 lat praktyki. Historia, wykształcenie, certyfikaty i wartości, którymi kieruję się w pracy z klientkami."
 >
   <section class="pt-14 pb-12 md:pt-20 md:pb-16">
-    <div class="container-page">
+    <div class="container-page" data-reveal>
       <div class="flex flex-col gap-10 md:flex-row md:items-start">
         <div class="relative aspect-[3/4] w-full shrink-0 overflow-hidden rounded-sm border border-pine/10 bg-linear-to-br from-sage/25 via-mist to-porcelain md:w-72">
           <svg class="absolute inset-0 m-auto h-16 w-16 text-pine/20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
@@ -61,7 +61,7 @@ const values = [
       <p class="eyebrow mb-4">Historia</p>
       <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Dlaczego robię to inaczej</h2>
 
-      <div class="mt-8 max-w-2xl space-y-5 leading-relaxed text-ink-soft">
+      <div class="mt-8 max-w-2xl space-y-5 leading-relaxed text-ink-soft" data-reveal>
         <p>
           Studia kosmetologii ukończyłam w Gdańsku, a pierwsze lata pracy spędziłam w gabinetach,
           gdzie zabiegi robiło się „na taśmie” — klientka za klientką, bez czasu na rozmowę o tym,
@@ -86,7 +86,7 @@ const values = [
       <p class="eyebrow mb-4">Wykształcenie</p>
       <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Wykształcenie i certyfikaty</h2>
 
-      <ul class="mt-8 max-w-2xl divide-y divide-mist">
+      <ul class="mt-8 max-w-2xl divide-y divide-mist" data-reveal>
         {education.map((item) => (
           <li class="flex items-start gap-3 py-4 text-sm leading-relaxed text-ink">
             <span class="mt-0.5 shrink-0 font-heading font-semibold text-pine" aria-hidden="true">·</span>
@@ -103,15 +103,15 @@ const values = [
       <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Sprzęt gabinetu</h2>
 
       <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {equipment.map((item) => (
-          <div class="rounded-2xl bg-mist p-6">
+        {equipment.map((item, i) => (
+          <div class="rounded-2xl bg-mist p-6" data-reveal style={{ "--reveal-index": i }}>
             <p class="font-heading font-semibold text-ink">{item.name}</p>
             <p class="mt-2 text-sm leading-relaxed text-ink-soft">{item.desc}</p>
           </div>
         ))}
       </div>
 
-      <div class="mt-10 aspect-[16/9] w-full max-w-3xl overflow-hidden rounded-sm border border-pine/10 bg-linear-to-br from-mist via-porcelain to-sage/20"></div>
+      <div class="mt-10 aspect-[16/9] w-full max-w-3xl overflow-hidden rounded-sm border border-pine/10 bg-linear-to-br from-mist via-porcelain to-sage/20" data-reveal></div>
     </div>
   </section>
 
@@ -121,8 +121,8 @@ const values = [
       <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Czym się kieruję</h2>
 
       <div class="mt-10 grid gap-6 sm:grid-cols-3">
-        {values.map((value) => (
-          <div>
+        {values.map((value, i) => (
+          <div data-reveal style={{ "--reveal-index": i }}>
             <p class="font-heading font-semibold text-ink">{value.title}</p>
             <p class="mt-2 text-sm leading-relaxed text-ink-soft">{value.text}</p>
           </div>
@@ -132,7 +132,7 @@ const values = [
   </section>
 
   <section class="bg-pine text-porcelain">
-    <div class="container-page py-16 text-center md:py-20">
+    <div class="container-page py-16 text-center md:py-20" data-reveal>
       <h2 class="font-heading text-2xl font-semibold md:text-4xl">Poznajmy się na diagnozie.</h2>
       <p class="mt-4 text-porcelain/85">40 minut, żeby porozmawiać o Twojej skórze.</p>
       <a

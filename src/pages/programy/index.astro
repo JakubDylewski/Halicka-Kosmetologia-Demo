@@ -29,7 +29,7 @@ const faq = [
 
 <Layout title="Programy pielęgnacyjne" description="Programy pielęgnacyjne HALICKA — seria zabiegów z jasnym planem wizyt, zamiast pojedynczych zabiegów bez kontynuacji.">
   <section class="pt-14 pb-16 md:pt-20 md:pb-20">
-    <div class="container-page">
+    <div class="container-page" data-reveal>
       <p class="eyebrow mb-4">Programy</p>
       <h1 class="max-w-2xl font-heading text-4xl font-semibold text-ink md:text-5xl">Programy pielęgnacyjne</h1>
       <p class="mt-6 max-w-xl leading-relaxed text-ink-soft">
@@ -42,8 +42,10 @@ const faq = [
   <section class="border-t border-pine/12 py-16 md:py-20">
     <div class="container-page">
       <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-        {programs.map((program) => (
-          <ProgramCard program={program} />
+        {programs.map((program, i) => (
+          <div data-reveal style={{ "--reveal-index": i }}>
+            <ProgramCard program={program} />
+          </div>
         ))}
       </div>
     </div>
@@ -56,7 +58,7 @@ const faq = [
 
       <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {howItWorks.map((step, i) => (
-          <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-4" data-reveal style={{ "--reveal-index": i }}>
             <Ring size={48} label={String(i + 1)} />
             <div>
               <p class="font-heading font-semibold text-ink">{step.title}</p>
@@ -73,7 +75,7 @@ const faq = [
       <p class="eyebrow mb-4">Pytania</p>
       <h2 class="font-heading text-2xl font-semibold text-ink md:text-3xl">Najczęstsze pytania</h2>
 
-      <div class="mt-10 max-w-2xl divide-y divide-mist">
+      <div class="mt-10 max-w-2xl divide-y divide-mist" data-reveal>
         {faq.map((item) => (
           <div class="py-6">
             <p class="font-heading font-semibold text-ink">{item.question}</p>
@@ -85,7 +87,7 @@ const faq = [
   </section>
 
   <section class="bg-pine text-porcelain">
-    <div class="container-page py-16 text-center md:py-20">
+    <div class="container-page py-16 text-center md:py-20" data-reveal>
       <h2 class="font-heading text-2xl font-semibold md:text-4xl">Nie wiesz, który program wybrać?</h2>
       <p class="mt-4 text-porcelain/85">Od tego jest diagnoza — wspólnie dobierzemy plan dla Twojej skóry.</p>
       <a

@@ -62,7 +62,7 @@ const reviews = [
   <SideNav />
 
   <section id="hero" class="lg:flex lg:min-h-[80vh] lg:items-center pt-10 pb-16 md:pt-14 md:pb-20">
-    <div class="container-page w-full">
+    <div class="container-page w-full" data-reveal>
       <div class="mb-8 flex items-center gap-3 md:mb-12">
         <Ring size={34} label="01" />
         <p class="eyebrow">Kosmetologia estetyczna · Gdańsk Wrzeszcz</p>
@@ -134,8 +134,10 @@ const reviews = [
     lead="Pojedynczy zabieg daje efekt na tydzień. Program — na lata. Każdy zaczyna się diagnozą i ma jasny plan wizyt."
   >
     <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-      {programs.map((program) => (
-        <ProgramCard program={program} />
+      {programs.map((program, i) => (
+        <div data-reveal style={{ "--reveal-index": i }}>
+          <ProgramCard program={program} />
+        </div>
       ))}
     </div>
 
@@ -151,8 +153,8 @@ const reviews = [
     lead="Każda współpraca zaczyna się rozmową i analizą skóry — nie od razu od zabiegu."
   >
     <div class="grid gap-8 sm:grid-cols-3">
-      {diagnosisSteps.map((step) => (
-        <div class="flex items-start gap-4 sm:flex-col sm:items-start sm:gap-4">
+      {diagnosisSteps.map((step, i) => (
+        <div class="flex items-start gap-4 sm:flex-col sm:items-start sm:gap-4" data-reveal style={{ "--reveal-index": i }}>
           <Ring size={44} label={step.num} />
           <p class="pt-1 text-sm font-medium leading-relaxed text-ink sm:pt-0">{step.text}</p>
         </div>
@@ -180,8 +182,8 @@ const reviews = [
     lead="Trzy pary przed/po — bez retuszu, w tym samym świetle i kadrze."
   >
     <div class="grid gap-8 md:grid-cols-3">
-      {effectPairs.map((pair) => (
-        <div>
+      {effectPairs.map((pair, i) => (
+        <div data-reveal style={{ "--reveal-index": i }}>
           <BeforeAfterSlider />
           <p class="mt-3 text-sm font-medium text-ink">{pair.problem}</p>
           <p class="mt-1 text-xs text-ink-soft">Program {pair.program} · {pair.visits}</p>
@@ -216,8 +218,8 @@ const reviews = [
     </div>
 
     <div class="mt-12 grid gap-6 sm:grid-cols-2">
-      {reviews.map((review) => (
-        <div class="rounded-2xl bg-mist p-6">
+      {reviews.map((review, i) => (
+        <div class="rounded-2xl bg-mist p-6" data-reveal style={{ "--reveal-index": i }}>
           <p class="text-sm tracking-wide text-pine" aria-label="Ocena: 5 na 5">★★★★★</p>
           <p class="mt-3 text-sm leading-relaxed text-ink">{review.text}</p>
           <p class="mt-4 font-heading text-sm font-semibold text-ink">{review.name}</p>
@@ -227,7 +229,7 @@ const reviews = [
   </SectionShell>
 
   <section class="bg-pine text-porcelain">
-    <div class="container-page py-20 text-center md:py-28">
+    <div class="container-page py-20 text-center md:py-28" data-reveal>
       <h2 class="font-heading text-3xl font-semibold md:text-5xl">Zacznijmy od diagnozy.</h2>
       <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
         <a

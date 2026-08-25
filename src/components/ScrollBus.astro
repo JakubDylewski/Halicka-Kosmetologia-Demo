@@ -1,0 +1,25 @@
+---
+// 12.6 — "jeden wspólny nasłuch scrolla". Jedyny natywny listener 'scroll'
+// w całej witrynie. Przez rAF-throttling emituje zdarzenie 'app:scroll' na
+// window, z którego korzystają Header, DiagnosisBar i ProgramTimeline —
+// zamiast każdy dodawał własny listener 'scroll'.
+---
+
+<script>
+  let ticking = false;
+
+  const emit = () => {
+    window.dispatchEvent(new CustomEvent("app:scroll", { detail: { scrollY: window.scrollY } }));
+    ticking = false;
+  };
+
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(emit);
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
+  emit();
+</script>

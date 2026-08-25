@@ -68,6 +68,53 @@
 }
 
 @layer utilities {
+  /* 12.1 — rysujące się pierścienie. Circumference stała (rOuter=42 w Ring.astro
+     jest niezależne od propa `size`), więc wartość 264 jest wspólna dla każdej
+     instancji. */
+  .ring-circle {
+    stroke-dasharray: 264;
+    stroke-dashoffset: 264;
+    transition: stroke-dashoffset 700ms ease, fill 300ms ease;
+  }
+
+  .ring-signature.is-drawn .ring-circle {
+    stroke-dashoffset: 0;
+  }
+
+  /* 12.3 — punkt osi czasu aktywny: wypełnienie pierścienia. */
+  .ring-signature.is-active .ring-circle {
+    fill: var(--color-pine);
+  }
+
+  .ring-signature.is-active .ring-label {
+    fill: var(--color-porcelain);
+  }
+
+  /* 12.4 — wejścia sekcji i kaskada w siatkach. --reveal-index ustawiane
+     w Astro przy renderze (build-time), transition-delay liczony z niego. */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 500ms ease, transform 500ms ease;
+    transition-delay: calc(var(--reveal-index, 0) * 60ms);
+  }
+
+  [data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ring-circle {
+      stroke-dashoffset: 0 !important;
+    }
+
+    [data-reveal] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
   .eyebrow {
     font-family: var(--font-heading);
     font-size: 0.75rem;

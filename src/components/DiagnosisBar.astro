@@ -33,19 +33,19 @@ const isContact = currentPath === "/kontakt";
   if (bar) {
     const isDesktop = () => window.matchMedia("(min-width: 768px)").matches;
 
-    const reveal = () => {
-      bar.classList.toggle("translate-y-full", window.scrollY < window.innerHeight * 0.8);
+    const reveal = (scrollY: number) => {
+      bar.classList.toggle("translate-y-full", scrollY < window.innerHeight * 0.8);
     };
 
     const applyBodySpace = () => {
       document.body.style.paddingBottom = isDesktop() ? "56px" : "60px";
     };
 
-    reveal();
+    reveal(window.scrollY);
     applyBodySpace();
-    window.addEventListener("scroll", reveal, { passive: true });
+    window.addEventListener("app:scroll", (e) => reveal((e as CustomEvent<{ scrollY: number }>).detail.scrollY));
     window.addEventListener("resize", () => {
-      reveal();
+      reveal(window.scrollY);
       applyBodySpace();
     });
   }

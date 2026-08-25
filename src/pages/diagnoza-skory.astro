@@ -30,7 +30,7 @@ const faq = [
   description="Diagnoza skóry HALICKA — 40 minut, 200 zł w całości odliczane od pierwszego programu lub zabiegu. Początek każdej współpracy."
 >
   <section class="pt-14 pb-12 md:pt-20 md:pb-16">
-    <div class="container-page">
+    <div class="container-page" data-reveal>
       <p class="eyebrow mb-4">Diagnoza skóry</p>
       <h1 class="max-w-2xl font-heading text-4xl font-semibold text-ink md:text-5xl">
         Diagnoza skóry — początek każdej współpracy
@@ -71,7 +71,7 @@ const faq = [
 
       <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((step, i) => (
-          <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-4" data-reveal style={{ "--reveal-index": i }}>
             <Ring size={48} label={String(i + 1)} />
             <div>
               <p class="font-heading font-semibold text-ink">{step.title}</p>
@@ -90,7 +90,7 @@ const faq = [
         Czasem najlepszą radą jest inny gabinet
       </h2>
 
-      <div class="mt-8 max-w-2xl rounded-2xl border border-sage/60 p-6 md:p-7">
+      <div class="mt-8 max-w-2xl rounded-2xl border border-sage/60 p-6 md:p-7" data-reveal>
         <p class="italic leading-relaxed text-ink">
           „Jeśli Twoja skóra potrzebuje dermatologa, nie kosmetologa — powiem to wprost i wskażę,
           do kogo iść. Wolę stracić jedną wizytę, niż prowadzić Cię w złym kierunku.”
@@ -104,7 +104,7 @@ const faq = [
       <p class="eyebrow mb-4">Pytania</p>
       <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Najczęstsze pytania</h2>
 
-      <div class="mt-10 max-w-2xl divide-y divide-mist">
+      <div class="mt-10 max-w-2xl divide-y divide-mist" data-reveal>
         {faq.map((item) => (
           <div class="py-6">
             <p class="font-heading font-semibold text-ink">{item.question}</p>
@@ -116,7 +116,7 @@ const faq = [
   </section>
 
   <section class="bg-pine text-porcelain">
-    <div class="container-page py-16 text-center md:py-20">
+    <div class="container-page py-16 text-center md:py-20" data-reveal>
       <h2 class="font-heading text-2xl font-semibold md:text-4xl">Zacznijmy od diagnozy.</h2>
       <p class="mt-4 max-w-lg mx-auto text-porcelain/85">
         200 zł, 40 minut i plan, który wiesz skąd się wziął.

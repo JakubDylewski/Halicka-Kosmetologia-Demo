@@ -1,0 +1,31 @@
+---
+// 12.1 — pierścienie rysują się raz, przy wejściu w ekran.
+// 12.4 — sekcje/elementy siatek wchodzą fade+translateY(12px), raz.
+// Oba przez IntersectionObserver (nie scroll), zgodnie z 12.6.
+---
+
+<script>
+  const once = (selector: string, className: string, threshold: number) => {
+    const els = document.querySelectorAll<HTMLElement>(selector);
+    if (!els.length || !("IntersectionObserver" in window)) {
+      els.forEach((el) => el.classList.add(className));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add(className);
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold }
+    );
+
+    els.forEach((el) => observer.observe(el));
+  };
+
+  once(".ring-signature", "is-drawn", 0.3);
+  once("[data-reveal]", "is-revealed", 0.15);
+</script>

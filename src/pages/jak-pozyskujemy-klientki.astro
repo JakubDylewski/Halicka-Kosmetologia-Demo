@@ -50,7 +50,7 @@ const layers = [
   description="System, na którym stoi strona HALICKA: diagnoza jako brama, programy pakietowe, oś czasu, rezerwacja z kontekstem i lądowiska SEO."
 >
   <section class="pt-14 pb-16 md:pt-20 md:pb-20">
-    <div class="container-page">
+    <div class="container-page" data-reveal>
       <p class="eyebrow mb-4">Jak pozyskujemy klientki</p>
       <h1 class="max-w-2xl font-heading text-4xl font-semibold text-ink md:text-5xl">
         Strona, która zamienia wizyty w programy.
@@ -68,8 +68,8 @@ const layers = [
       <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Pięć warstw systemu</h2>
 
       <div class="mt-10 divide-y divide-mist border-y border-pine/12">
-        {layers.map((layer) => (
-          <a href={layer.href} class="group flex flex-col gap-4 py-7 sm:flex-row sm:items-start sm:gap-8">
+        {layers.map((layer, i) => (
+          <a href={layer.href} class="group flex flex-col gap-4 py-7 sm:flex-row sm:items-start sm:gap-8" data-reveal style={{ "--reveal-index": i }}>
             <Ring size={48} label={layer.num} class="shrink-0" />
             <div class="flex-1">
               <p class="font-heading text-lg font-semibold text-ink">{layer.title}</p>
@@ -96,7 +96,7 @@ const layers = [
       </p>
 
       <div class="mt-10 grid gap-8 lg:grid-cols-2">
-        <div class="relative rounded-2xl border border-pine/15 bg-porcelain p-6 md:p-7">
+        <div class="relative rounded-2xl border border-pine/15 bg-porcelain p-6 md:p-7" data-reveal>
           <span class="absolute -top-3 left-6 rounded-full bg-ink px-3 py-1 font-heading text-[10px] font-semibold uppercase tracking-wider text-porcelain">
             Przykład
           </span>
@@ -114,7 +114,7 @@ const layers = [
           </div>
         </div>
 
-        <div class="relative rounded-2xl border border-pine/15 bg-porcelain p-6 md:p-7">
+        <div class="relative rounded-2xl border border-pine/15 bg-porcelain p-6 md:p-7" data-reveal style="--reveal-index: 1">
           <span class="absolute -top-3 left-6 rounded-full bg-ink px-3 py-1 font-heading text-[10px] font-semibold uppercase tracking-wider text-porcelain">
             Przykład
           </span>
@@ -148,19 +148,19 @@ const layers = [
       <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Prosta matematyka</h2>
 
       <div class="mt-10 grid gap-5 sm:grid-cols-2 max-w-2xl">
-        <div class="rounded-2xl bg-mist p-6 md:p-7">
+        <div class="rounded-2xl bg-mist p-6 md:p-7" data-reveal>
           <p class="font-heading text-sm font-semibold uppercase tracking-wider text-ink-soft">Klientka jednorazowa</p>
           <p class="mt-3 text-sm text-ink-soft">1 zabieg × ~300 zł</p>
           <p class="mt-1 font-heading text-3xl font-semibold text-ink">300 zł</p>
         </div>
-        <div class="rounded-2xl bg-mist p-6 md:p-7">
+        <div class="rounded-2xl bg-mist p-6 md:p-7" data-reveal style="--reveal-index: 1">
           <p class="font-heading text-sm font-semibold uppercase tracking-wider text-pine">Klientka programowa</p>
           <p class="mt-3 text-sm text-ink-soft">1 program (śr. 5 wizyt) × ~360 zł</p>
           <p class="mt-1 font-heading text-3xl font-semibold text-pine">~1 800 zł</p>
         </div>
       </div>
 
-      <p class="mt-8 max-w-xl leading-relaxed text-ink-soft">
+      <p class="mt-8 max-w-xl leading-relaxed text-ink-soft" data-reveal style="--reveal-index: 2">
         <span class="font-heading font-semibold text-ink">6× wyższa wartość klientki</span> — bez
         pozyskiwania nowego ruchu. Sama zmiana ścieżki sprzedaży ze „zabieg" na „program". Liczby
         przykładowe, oparte na realnych cenach z tego demo.
@@ -169,7 +169,7 @@ const layers = [
   </section>
 
   <section class="bg-pine text-porcelain">
-    <div class="container-page py-16 text-center md:py-20">
+    <div class="container-page py-16 text-center md:py-20" data-reveal>
       <h2 class="font-heading text-2xl font-semibold md:text-4xl">Prowadzisz gabinet kosmetologii?</h2>
       <p class="mt-4 text-porcelain/85">Taką stronę zbudujemy dla Ciebie.</p>
       <a

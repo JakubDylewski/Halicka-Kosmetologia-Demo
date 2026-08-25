@@ -47,7 +47,7 @@ const pairs = [
   description="Efekty programów HALICKA — pary przed/po bez retuszu, w tym samym świetle i kadrze, publikowane wyłącznie za pisemną zgodą klientek."
 >
   <section class="pt-14 pb-10 md:pt-20 md:pb-14">
-    <div class="container-page">
+    <div class="container-page" data-reveal>
       <p class="eyebrow mb-4">Efekty</p>
       <h1 class="max-w-2xl font-heading text-4xl font-semibold text-ink md:text-5xl">Efekty</h1>
       <p class="mt-6 max-w-xl leading-relaxed text-ink-soft">
@@ -66,8 +66,8 @@ const pairs = [
   <section class="border-t border-pine/12 py-12 md:py-16">
     <div class="container-page">
       <div class="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-        {pairs.map((pair) => (
-          <div>
+        {pairs.map((pair, i) => (
+          <div data-reveal style={{ "--reveal-index": i }}>
             <BeforeAfterSlider />
             <p class="mt-4 text-sm font-medium text-ink">{pair.problem}</p>
             <p class="mt-1 text-xs text-ink-soft">Program {pair.program} · {pair.visits}</p>
@@ -78,7 +78,7 @@ const pairs = [
   </section>
 
   <section class="bg-pine text-porcelain">
-    <div class="container-page py-16 text-center md:py-20">
+    <div class="container-page py-16 text-center md:py-20" data-reveal>
       <h2 class="font-heading text-2xl font-semibold md:text-4xl">Chcesz podobny efekt?</h2>
       <p class="mt-4 text-porcelain/85">Zacznij od diagnozy — dobierzemy program dla Twojej skóry.</p>
       <a

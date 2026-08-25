@@ -8,7 +8,7 @@ import { treatmentCategories, formatTreatmentPrice } from "../data/treatments";
   description="Katalog zabiegów kosmetologii estetycznej HALICKA — każdy dostępny też pojedynczo, ale najlepsze efekty daje program."
 >
   <section class="pt-14 pb-10 md:pt-20 md:pb-14">
-    <div class="container-page">
+    <div class="container-page" data-reveal>
       <p class="eyebrow mb-4">Zabiegi</p>
       <h1 class="max-w-2xl font-heading text-4xl font-semibold text-ink md:text-5xl">Zabiegi</h1>
       <p class="mt-6 max-w-xl leading-relaxed text-ink-soft">
@@ -21,8 +21,8 @@ import { treatmentCategories, formatTreatmentPrice } from "../data/treatments";
   <section class="border-t border-pine/12 py-10 md:py-14">
     <div class="container-page">
       <div class="divide-y divide-pine/12 border-y border-pine/12">
-        {treatmentCategories.map((category) => (
-          <details class="group py-2">
+        {treatmentCategories.map((category, i) => (
+          <details class="group py-2" data-reveal style={{ "--reveal-index": i }}>
             <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4">
               <span class="font-heading text-lg font-semibold text-ink md:text-xl">{category.name}</span>
               <span class="flex items-center gap-3 shrink-0">
@@ -74,7 +74,7 @@ import { treatmentCategories, formatTreatmentPrice } from "../data/treatments";
   </section>
 
   <section class="bg-pine text-porcelain">
-    <div class="container-page py-16 text-center md:py-20">
+    <div class="container-page py-16 text-center md:py-20" data-reveal>
       <h2 class="font-heading text-2xl font-semibold md:text-4xl">Nie wiesz, który zabieg wybrać?</h2>
       <p class="mt-4 text-porcelain/85">Od tego jest diagnoza — dobierzemy plan dla Twojej skóry razem.</p>
       <a

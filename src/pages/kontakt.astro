@@ -14,12 +14,14 @@ const labelClass = "mb-2 block font-heading text-sm font-semibold text-ink";
 >
   <section class="pt-14 pb-20 md:pt-20 md:pb-28">
     <div class="container-page">
+      <div data-reveal>
       <p class="eyebrow mb-4">Kontakt</p>
       <h1 class="max-w-2xl font-heading text-4xl font-semibold text-ink md:text-5xl">Umów wizytę</h1>
       <p class="mt-6 max-w-xl leading-relaxed text-ink-soft">
         Wszystko zaczyna się od diagnozy. Jeśli nie wiesz, czego dotyczy Twoje zgłoszenie, zostaw
         domyślny wybór — sama zaproponuję dalszy krok.
       </p>
+      </div>
 
       <div class="mt-12 grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
         <form
@@ -27,6 +29,7 @@ const labelClass = "mb-2 block font-heading text-sm font-semibold text-ink";
           method="POST"
           id="kontakt-form"
           class="space-y-6"
+          data-reveal
         >
           <input type="hidden" name="access_key" value="TODO_WEB3FORMS_KEY" />
           <input type="hidden" name="from_name" value="Formularz kontaktowy HALICKA" />
@@ -97,7 +100,7 @@ const labelClass = "mb-2 block font-heading text-sm font-semibold text-ink";
           </button>
         </form>
 
-        <aside>
+        <aside data-reveal style="--reveal-index: 1">
           <div class="rounded-2xl bg-mist p-6 md:p-7">
             <p class="font-heading text-xs font-semibold uppercase tracking-wider text-ink-soft">Telefon</p>
             <a href="tel:+48512340220" class="mt-1 block font-heading text-lg font-semibold text-ink hover:text-pine">
