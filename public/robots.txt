@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://halicka-kosmetologia-demo.pages.dev/sitemap-index.xml

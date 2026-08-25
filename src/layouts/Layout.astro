@@ -5,6 +5,7 @@ import Footer from "../components/Footer.astro";
 import DiagnosisBar from "../components/DiagnosisBar.astro";
 import ScrollBus from "../components/ScrollBus.astro";
 import MotionObserver from "../components/MotionObserver.astro";
+import DemoNoticeModal from "../components/DemoNoticeModal.astro";
 
 interface Props {
   title: string;
@@ -17,6 +18,9 @@ const {
   description = "HALICKA — Kosmetologia Estetyczna. Gdańsk-Wrzeszcz. Twoja skóra ma plan.",
   robots = "index, follow",
 } = Astro.props;
+
+const fullTitle = `${title} · HALICKA Kosmetologia Estetyczna`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -28,7 +32,19 @@ const {
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
-    <title>{title} · HALICKA Kosmetologia Estetyczna</title>
+    <link rel="canonical" href={canonicalURL} />
+    <title>{fullTitle}</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="HALICKA Kosmetologia Estetyczna" />
+    <meta property="og:locale" content="pl_PL" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+
     <slot name="head" />
   </head>
   <body class="font-sans antialiased">
@@ -40,5 +56,6 @@ const {
     <DiagnosisBar />
     <ScrollBus />
     <MotionObserver />
+    <DemoNoticeModal />
   </body>
 </html>

@@ -1,0 +1,103 @@
+---
+// Popup demo — natywny <dialog>, raz na sesję (sessionStorage), focus trap
+// (natywny w showModal()), zamykanie X/Escape/klik w tło. Top layer -
+// zawsze nad Header/DiagnosisBar niezależnie od z-index.
+---
+
+<dialog id="demo-notice" class="demo-notice">
+  <div class="relative max-w-md p-6 md:p-8">
+    <button
+      type="button"
+      id="demo-notice-close"
+      aria-label="Zamknij"
+      class="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full text-ink-soft transition-colors hover:bg-mist hover:text-ink"
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+        <path d="M6 6l12 12M18 6 6 18" />
+      </svg>
+    </button>
+
+    <h2 class="pr-8 font-heading text-2xl font-semibold text-ink">To jest strona demonstracyjna</h2>
+
+    <p class="mt-4 text-sm leading-relaxed text-ink-soft">
+      Gabinet HALICKA nie istnieje — to fikcyjna marka demonstracyjna Connectivy, stworzona, żeby
+      pokazać, jak może wyglądać strona gabinetu kosmetologii estetycznej. Adres, telefon, opinie
+      i certyfikaty są wymyślone.
+    </p>
+
+    <div class="mt-5 rounded-xl border border-sage/60 p-4">
+      <p class="text-sm font-medium leading-relaxed text-ink">
+        Prowadzisz gabinet kosmetologii? Taką stronę zbudujemy dla Ciebie.
+      </p>
+    </div>
+
+    <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+      <a
+        href="https://connectiva-website.pages.dev"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center justify-center rounded-full bg-pine px-5 py-2.5 font-heading text-sm font-semibold text-porcelain transition-colors hover:bg-ink"
+      >
+        Chcę taką stronę
+      </a>
+      <button
+        type="button"
+        id="demo-notice-dismiss"
+        class="inline-flex items-center justify-center rounded-full px-5 py-2.5 font-heading text-sm font-semibold text-ink-soft transition-colors hover:text-ink"
+      >
+        Rozumiem, chcę zobaczyć demo
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .demo-notice {
+    margin: auto;
+    max-width: calc(100vw - 2rem);
+    border: none;
+    border-radius: 1rem;
+    background-color: var(--color-porcelain);
+    padding: 0;
+    box-shadow: 0 24px 64px rgba(33, 38, 35, 0.25);
+  }
+
+  .demo-notice::backdrop {
+    background-color: rgba(33, 38, 35, 0.55);
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = "halicka-demo-notice-seen";
+  const dialog = document.getElementById("demo-notice") as HTMLDialogElement | null;
+
+  if (dialog) {
+    if (!sessionStorage.getItem(STORAGE_KEY)) {
+      dialog.showModal();
+    }
+
+    // Zapis do sessionStorage dzieje się synchronicznie w każdym handlerze
+    // zamknięcia (klik, Escape), zamiast polegać wyłącznie na zdarzeniu
+    // 'close' — jest ono kolejkowane przez przeglądarkę jako osobne zadanie
+    // i w niektórych środowiskach potrafi odpalić się z zauważalnym
+    // opóźnieniem względem samego zamknięcia dialogu.
+    const markSeen = () => sessionStorage.setItem(STORAGE_KEY, "1");
+    const closeDialog = () => {
+      markSeen();
+      dialog.close();
+    };
+
+    dialog.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") markSeen();
+    });
+
+    dialog.addEventListener("close", markSeen);
+
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) closeDialog();
+    });
+
+    document.getElementById("demo-notice-close")?.addEventListener("click", closeDialog);
+    document.getElementById("demo-notice-dismiss")?.addEventListener("click", closeDialog);
+  }
+</script>

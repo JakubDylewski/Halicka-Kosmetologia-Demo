@@ -1,0 +1,25 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Ring from "../components/Ring.astro";
+---
+
+<Layout title="Strona nie znaleziona" description="Ta strona nie istnieje albo została przeniesiona." robots="noindex, follow">
+  <section class="pt-24 pb-24 text-center md:pt-32 md:pb-32">
+    <div class="container-page" data-reveal>
+      <div class="mx-auto w-fit">
+        <Ring size={88} label="404" />
+      </div>
+      <h1 class="mt-8 font-heading text-3xl font-semibold text-ink md:text-5xl">Nie znaleziono strony</h1>
+      <p class="mx-auto mt-4 max-w-md leading-relaxed text-ink-soft">
+        Strona, której szukasz, nie istnieje albo została przeniesiona. Sprawdź adres albo wróć na
+        stronę główną.
+      </p>
+      <a
+        href="/"
+        class="mt-8 inline-flex items-center rounded-full bg-pine px-6 py-3 font-heading text-sm font-semibold text-porcelain transition-colors hover:bg-ink"
+      >
+        Wróć na stronę główną
+      </a>
+    </div>
+  </section>
+</Layout>
