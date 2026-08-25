@@ -1,0 +1,146 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const education = [
+  "Kosmetologia, studia magisterskie — Gdańsk, 2015",
+  "Szkolenie: zaawansowane techniki mezoterapii mikroigłowej",
+  "Szkolenie: terapie HIFU i RF w praktyce gabinetowej",
+  "Szkolenie: peelingi chemiczne — dobór i bezpieczeństwo stosowania",
+  "Szkolenie: diagnostyka skóry aparaturowa",
+  "Szkolenie: protokoły łączone w pielęgnacji skóry problematycznej",
+  "Coroczna uczestniczka kongresów kosmetologii estetycznej",
+];
+
+const equipment = [
+  { name: "Urządzenie do HIFU", desc: "Ultradźwięki skupione, modelowanie owalu twarzy." },
+  { name: "Aparat RF mikroigłowy", desc: "Stymulacja produkcji kolagenu falami radiowymi." },
+  { name: "Laser frakcyjny", desc: "Odnowa naskórka i redukcja blizn potrądzikowych." },
+  { name: "Stacja do oczyszczania wodorowego", desc: "Głębokie, nieinwazyjne oczyszczanie porów." },
+  { name: "Aparat do diagnostyki skóry", desc: "Analiza obrazowa nawilżenia, przebarwień i porów." },
+  { name: "Urządzenie do biostymulacji LED", desc: "Wsparcie regeneracji skóry światłem." },
+];
+
+const values = [
+  { title: "Zabiegi wykonuję wyłącznie osobiście", text: "Żadna klientka nie trafia do asystentki ani innego kosmetologa." },
+  { title: "Nie obiecuję cudów — pokazuję plan", text: "Wolę pokazać realny harmonogram niż złożyć obietnicę, której nie mogę dotrzymać." },
+  { title: "Mniej, ale regularnie", text: "Rzadsze, ale systematyczne wizyty dają trwalszy efekt niż seria zabiegów naraz." },
+];
+---
+
+<Layout
+  title="O mnie"
+  description="Nina Halicka — mgr kosmetologii, 11 lat praktyki. Historia, wykształcenie, certyfikaty i wartości, którymi kieruję się w pracy z klientkami."
+>
+  <section class="pt-14 pb-12 md:pt-20 md:pb-16">
+    <div class="container-page">
+      <div class="flex flex-col gap-10 md:flex-row md:items-start">
+        <div class="relative aspect-[3/4] w-full shrink-0 overflow-hidden rounded-sm border border-pine/10 bg-linear-to-br from-sage/25 via-mist to-porcelain md:w-72">
+          <svg class="absolute inset-0 m-auto h-16 w-16 text-pine/20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 20c0-4 3.5-6 8-6s8 2 8 6" />
+          </svg>
+        </div>
+
+        <div>
+          <p class="eyebrow mb-4">O mnie</p>
+          <h1 class="max-w-xl font-heading text-4xl font-semibold text-ink md:text-5xl">Nina Halicka</h1>
+          <p class="mt-3 font-heading text-sm font-semibold uppercase tracking-wider text-ink-soft">
+            mgr kosmetologii · 11 lat praktyki
+          </p>
+          <p class="mt-6 max-w-xl leading-relaxed text-ink-soft">
+            Kosmetologię wybrałam świadomie — nie jako „coś z pielęgnacją”, ale jako zawód, w którym
+            mogę łączyć wiedzę o skórze z pracą z konkretnym człowiekiem, nie procedurą.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Historia</p>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Dlaczego robię to inaczej</h2>
+
+      <div class="mt-8 max-w-2xl space-y-5 leading-relaxed text-ink-soft">
+        <p>
+          Studia kosmetologii ukończyłam w Gdańsku, a pierwsze lata pracy spędziłam w gabinetach,
+          gdzie zabiegi robiło się „na taśmie” — klientka za klientką, bez czasu na rozmowę o tym,
+          co naprawdę dzieje się z jej skórą.
+        </p>
+        <p>
+          Postanowiłam robić to inaczej. Od 11 lat prowadzę własny gabinet, w którym każdą klientkę
+          widzę od diagnozy po ostatnią wizytę programu — sama, bez przekazywania między różnymi
+          osobami. To wolniejszy model, ale jedyny, w którym mogę ręczyć za efekt.
+        </p>
+        <p>
+          Przez ten czas zebrałam 23 certyfikaty i szkolenia, regularnie jeżdżę na kongresy
+          branżowe, żeby aktualizować wiedzę — kosmetologia zmienia się szybciej, niż większość
+          klientek się spodziewa.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Wykształcenie</p>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Wykształcenie i certyfikaty</h2>
+
+      <ul class="mt-8 max-w-2xl divide-y divide-mist">
+        {education.map((item) => (
+          <li class="flex items-start gap-3 py-4 text-sm leading-relaxed text-ink">
+            <span class="mt-0.5 shrink-0 font-heading font-semibold text-pine" aria-hidden="true">·</span>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Gabinet</p>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Sprzęt gabinetu</h2>
+
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {equipment.map((item) => (
+          <div class="rounded-2xl bg-mist p-6">
+            <p class="font-heading font-semibold text-ink">{item.name}</p>
+            <p class="mt-2 text-sm leading-relaxed text-ink-soft">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-10 aspect-[16/9] w-full max-w-3xl overflow-hidden rounded-sm border border-pine/10 bg-linear-to-br from-mist via-porcelain to-sage/20"></div>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Wartości</p>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Czym się kieruję</h2>
+
+      <div class="mt-10 grid gap-6 sm:grid-cols-3">
+        {values.map((value) => (
+          <div>
+            <p class="font-heading font-semibold text-ink">{value.title}</p>
+            <p class="mt-2 text-sm leading-relaxed text-ink-soft">{value.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-pine text-porcelain">
+    <div class="container-page py-16 text-center md:py-20">
+      <h2 class="font-heading text-2xl font-semibold md:text-4xl">Poznajmy się na diagnozie.</h2>
+      <p class="mt-4 text-porcelain/85">40 minut, żeby porozmawiać o Twojej skórze.</p>
+      <a
+        href="/kontakt"
+        class="mt-8 inline-flex items-center rounded-full bg-porcelain px-6 py-3 font-heading text-sm font-semibold text-pine transition-colors hover:bg-mist"
+      >
+        Umów diagnozę
+      </a>
+    </div>
+  </section>
+</Layout>

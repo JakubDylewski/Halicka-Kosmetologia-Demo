@@ -4,6 +4,7 @@ import SectionShell from "../components/SectionShell.astro";
 import SideNav from "../components/SideNav.astro";
 import Ring from "../components/Ring.astro";
 import ProgramCard from "../components/ProgramCard.astro";
+import BeforeAfterSlider from "../components/BeforeAfterSlider.astro";
 import { programs } from "../data/programs";
 
 const trustItems = [
@@ -181,18 +182,7 @@ const reviews = [
     <div class="grid gap-8 md:grid-cols-3">
       {effectPairs.map((pair) => (
         <div>
-          <div class="grid grid-cols-2 gap-0.5 overflow-hidden rounded-sm">
-            <div class="relative aspect-[3/4] bg-mist">
-              <span class="absolute bottom-2 left-2 font-heading text-[10px] font-semibold uppercase tracking-wider text-ink-soft">
-                Przed
-              </span>
-            </div>
-            <div class="relative aspect-[3/4] bg-sage/30">
-              <span class="absolute bottom-2 left-2 font-heading text-[10px] font-semibold uppercase tracking-wider text-pine">
-                Po
-              </span>
-            </div>
-          </div>
+          <BeforeAfterSlider />
           <p class="mt-3 text-sm font-medium text-ink">{pair.problem}</p>
           <p class="mt-1 text-xs text-ink-soft">Program {pair.program} · {pair.visits}</p>
         </div>

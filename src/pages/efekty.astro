@@ -1,0 +1,92 @@
+---
+// RODO / wizerunek — notatka wdrożeniowa (sekcja 9 specyfikacji):
+// Publikacja każdej pary przed/po wymaga pisemnej zgody klientki na
+// wykorzystanie wizerunku w tym celu. Zgoda jest odwoływalna w każdej chwili.
+// Dokumentację zgód (skan/formularz) należy przechowywać osobno od zdjęć,
+// z możliwością powiązania z konkretną parą na wypadek wycofania zgody.
+
+import Layout from "../layouts/Layout.astro";
+import BeforeAfterSlider from "../components/BeforeAfterSlider.astro";
+
+const pairs = [
+  {
+    problem: "Niedoskonałości i przebarwienia potrądzikowe",
+    program: "Skóra pod kontrolą",
+    visits: "po 6 wizytach",
+  },
+  {
+    problem: "Poszarzenie i nierówny koloryt",
+    program: "Równy koloryt",
+    visits: "po 5 wizytach",
+  },
+  {
+    problem: "Utrata jędrności i owalu twarzy",
+    program: "Napięcie i kontur",
+    visits: "po 6 wizytach",
+  },
+  {
+    problem: "Odwodnienie i zmęczenie skóry",
+    program: "Odbudowa",
+    visits: "po 4 wizytach",
+  },
+  {
+    problem: "Rozszerzone pory i nierówna tekstura",
+    program: "Skóra pod kontrolą",
+    visits: "po 4 wizytach",
+  },
+  {
+    problem: "Przebarwienia posłoneczne",
+    program: "Równy koloryt",
+    visits: "po 3 wizytach",
+  },
+];
+---
+
+<Layout
+  title="Efekty"
+  description="Efekty programów HALICKA — pary przed/po bez retuszu, w tym samym świetle i kadrze, publikowane wyłącznie za pisemną zgodą klientek."
+>
+  <section class="pt-14 pb-10 md:pt-20 md:pb-14">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Efekty</p>
+      <h1 class="max-w-2xl font-heading text-4xl font-semibold text-ink md:text-5xl">Efekty</h1>
+      <p class="mt-6 max-w-xl leading-relaxed text-ink-soft">
+        Przeciągnij suwak, żeby zobaczyć różnicę. Efekty indywidualne — pokazujemy je, żeby dać
+        realny obraz tego, co dają programy, nie żeby coś obiecać.
+      </p>
+
+      <div class="mt-8 max-w-2xl rounded-2xl border border-sage/60 p-6 md:p-7">
+        <p class="leading-relaxed text-ink">
+          Wszystkie zdjęcia za pisemną zgodą klientek. Bez retuszu skóry. To samo światło i kadr.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-12 md:py-16">
+    <div class="container-page">
+      <div class="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        {pairs.map((pair) => (
+          <div>
+            <BeforeAfterSlider />
+            <p class="mt-4 text-sm font-medium text-ink">{pair.problem}</p>
+            <p class="mt-1 text-xs text-ink-soft">Program {pair.program} · {pair.visits}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-pine text-porcelain">
+    <div class="container-page py-16 text-center md:py-20">
+      <h2 class="font-heading text-2xl font-semibold md:text-4xl">Chcesz podobny efekt?</h2>
+      <p class="mt-4 text-porcelain/85">Zacznij od diagnozy — dobierzemy program dla Twojej skóry.</p>
+      <a
+        href="/diagnoza-skory"
+        class="mt-8 inline-flex items-center rounded-full bg-porcelain px-6 py-3 font-heading text-sm font-semibold text-pine transition-colors hover:bg-mist"
+      >
+        Umów diagnozę
+      </a>
+    </div>
+  </section>
+</Layout>
