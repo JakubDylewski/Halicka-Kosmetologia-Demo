@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import MapPlaceholder from "../components/MapPlaceholder.astro";
+import CustomSelect from "../components/CustomSelect.astro";
 import { programs } from "../data/programs";
 import { treatmentCategories } from "../data/treatments";
 
@@ -49,21 +50,23 @@ const labelClass = "mb-2 block font-heading text-sm font-semibold text-ink";
 
           <div>
             <label for="temat" class={labelClass}>Czego dotyczy</label>
-            <select name="temat" id="temat" class={inputClass}>
-              <option value="diagnoza" selected>Diagnoza skóry</option>
-              <optgroup label="Programy">
-                {programs.map((program) => (
-                  <option value={`program:${program.slug}`}>{program.name}</option>
-                ))}
-              </optgroup>
-              {treatmentCategories.map((category) => (
-                <optgroup label={category.name}>
-                  {category.treatments.map((treatment) => (
-                    <option value={`zabieg:${treatment.name}`}>{treatment.name}</option>
+            <CustomSelect id="temat">
+              <select name="temat" id="temat" class={inputClass}>
+                <option value="diagnoza" selected>Diagnoza skóry</option>
+                <optgroup label="Programy">
+                  {programs.map((program) => (
+                    <option value={`program:${program.slug}`}>{program.name}</option>
                   ))}
                 </optgroup>
-              ))}
-            </select>
+                {treatmentCategories.map((category) => (
+                  <optgroup label={category.name}>
+                    {category.treatments.map((treatment) => (
+                      <option value={`zabieg:${treatment.name}`}>{treatment.name}</option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+            </CustomSelect>
           </div>
 
           <div>
@@ -152,4 +155,8 @@ const labelClass = "mb-2 block font-heading text-sm font-semibold text-ink";
 
   updateContext();
   select.addEventListener("change", updateContext);
+  // CustomSelect.astro nasłuchuje 'change' na tym select, żeby zsynchronizować
+  // własny widok z ewentualnym prewypełnieniem z URL — niezależnie od kolejności
+  // wykonania skryptów obu komponentów.
+  select.dispatchEvent(new Event("change", { bubbles: true }));
 </script>

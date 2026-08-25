@@ -17,9 +17,13 @@ const isActive = (href: string) => (href === "/" ? currentPath === "/" : current
 
 <header id="site-header" class="sticky top-0 z-40 bg-porcelain border-b border-pine/12 transition-shadow duration-200">
   <div class="container-page flex items-center justify-between h-[72px]">
-    <a href="/" class="flex items-center gap-3 font-heading font-semibold text-lg text-pine shrink-0">
-      <Ring size={32} ticks={12} />
-      HALICKA
+    <a href="/" class="flex items-center gap-2 shrink-0 font-heading text-pine sm:gap-3">
+      <Ring size={28} ticks={12} class="sm:hidden" />
+      <Ring size={32} ticks={12} class="hidden sm:block" />
+      <span class="whitespace-nowrap">
+        <span class="text-sm font-semibold sm:text-lg">HALICKA</span>
+        <span class="text-[10px] font-medium text-ink-soft sm:text-xs"> Kosmetologia</span>
+      </span>
     </a>
 
     <nav class="hidden lg:flex items-center gap-7 font-heading text-sm">
@@ -75,72 +79,113 @@ const isActive = (href: string) => (href === "/" ? currentPath === "/" : current
   </div>
 </header>
 
-<div id="mobile-menu" class="hidden lg:hidden fixed inset-0 z-50 bg-porcelain flex flex-col">
-  <div class="container-page flex items-center justify-between h-[72px] shrink-0">
-    <a href="/" class="flex items-center gap-3 font-heading font-semibold text-lg text-pine">
-      <Ring size={32} ticks={12} />
-      HALICKA
-    </a>
-    <button
-      id="menu-close"
-      type="button"
-      aria-label="Zamknij menu"
-      class="inline-flex items-center justify-center w-10 h-10 text-pine"
-    >
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
-        <path d="M6 6l12 12M18 6 6 18" />
-      </svg>
-    </button>
-  </div>
-
-  <nav class="container-page flex-1 flex flex-col justify-center gap-1 font-heading">
-    {navItems.map((item) => (
-      <a
-        href={item.href}
-        class:list={[
-          "py-3 text-3xl border-b border-mist last:border-none",
-          isActive(item.href) ? "text-pine font-semibold" : "text-ink",
-        ]}
-        aria-current={isActive(item.href) ? "page" : undefined}
-      >
-        {item.label}
+<dialog id="mobile-menu" class="mobile-menu-dialog lg:hidden">
+  <div class="flex h-full flex-col">
+    <div class="container-page flex items-center justify-between h-[72px] shrink-0">
+      <a href="/" class="flex items-center gap-2 font-heading text-pine">
+        <Ring size={28} ticks={12} />
+        <span class="whitespace-nowrap">
+          <span class="text-sm font-semibold">HALICKA</span>
+          <span class="text-[10px] font-medium text-ink-soft"> Kosmetologia</span>
+        </span>
       </a>
-    ))}
-  </nav>
+      <button
+        id="menu-close"
+        type="button"
+        aria-label="Zamknij menu"
+        class="inline-flex items-center justify-center w-10 h-10 text-pine"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18" />
+        </svg>
+      </button>
+    </div>
 
-  <div class="container-page pb-10 pt-4 flex flex-col gap-4 shrink-0">
-    <a href="tel:+48512340220" class="font-sans text-base text-ink-soft">
-      512 340 220
-    </a>
-    <a
-      href="/kontakt"
-      class="inline-flex items-center justify-center rounded-full bg-pine text-porcelain px-5 py-3 font-heading text-sm font-semibold"
-    >
-      Umów diagnozę
-    </a>
+    <nav class="container-page flex-1 overflow-y-auto flex flex-col justify-center font-heading">
+      {navItems.map((item, i) => (
+        <a
+          href={item.href}
+          class:list={[
+            "flex items-center gap-4 py-4 border-b border-pine/12 last:border-none transition-colors active:bg-mist",
+            isActive(item.href) ? "text-pine" : "text-ink",
+          ]}
+          aria-current={isActive(item.href) ? "page" : undefined}
+        >
+          <Ring size={32} label={String(i + 1).padStart(2, "0")} class="shrink-0" />
+          <span class:list={["text-2xl", isActive(item.href) && "font-semibold"]}>{item.label}</span>
+        </a>
+      ))}
+    </nav>
+
+    <div class="container-page pb-10 pt-4 flex flex-col gap-4 shrink-0">
+      <a href="tel:+48512340220" class="font-sans text-base text-ink-soft">
+        512 340 220
+      </a>
+      <a
+        href="/kontakt"
+        class="inline-flex items-center justify-center rounded-full bg-pine text-porcelain px-5 py-3 font-heading text-sm font-semibold"
+      >
+        Umów diagnozę
+      </a>
+    </div>
   </div>
-</div>
+</dialog>
+
+<style>
+  .mobile-menu-dialog {
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    background-color: var(--color-porcelain);
+  }
+
+  .mobile-menu-dialog::backdrop {
+    background-color: transparent;
+  }
+</style>
 
 <script>
   const header = document.getElementById("site-header");
   const toggle = document.getElementById("menu-toggle");
   const closeBtn = document.getElementById("menu-close");
-  const menu = document.getElementById("mobile-menu");
+  const menu = document.getElementById("mobile-menu") as HTMLDialogElement | null;
 
-  const openMenu = () => {
-    menu?.classList.remove("hidden");
-    toggle?.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden";
-  };
+  if (menu) {
+    // 16.2 — natywny <dialog> daje focus trap i zamykanie Escape za darmo.
+    // Reset paddingu ciała strony wywołujemy też synchronicznie w keydown
+    // (lekcja z DemoNoticeModal: zdarzenie 'close' bywa opóźnione w niektórych
+    // środowiskach), nie tylko przez listener 'close'.
+    const resetBody = () => {
+      document.body.style.overflow = "";
+    };
 
-  const closeMenu = () => {
-    menu?.classList.add("hidden");
-    toggle?.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
-  };
+    const openMenu = () => {
+      menu.showModal();
+      document.body.style.overflow = "hidden";
+      toggle?.setAttribute("aria-expanded", "true");
+    };
 
-  toggle?.addEventListener("click", openMenu);
-  closeBtn?.addEventListener("click", closeMenu);
+    const closeMenu = () => {
+      resetBody();
+      menu.close();
+    };
+
+    menu.addEventListener("close", () => {
+      resetBody();
+      toggle?.setAttribute("aria-expanded", "false");
+    });
+
+    menu.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") resetBody();
+    });
+
+    toggle?.addEventListener("click", openMenu);
+    closeBtn?.addEventListener("click", closeMenu);
+  }
 
   if (header) {
     const onScroll = (scrollY: number) => {

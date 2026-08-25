@@ -426,3 +426,76 @@ Nowa warstwa (jako pierwsza, DZIAŁA): `Karta Twojej Skóry — bezpłatna anali
 ---
 
 *Sekcja 15 — Karta Twojej Skóry. Daje wartość, zanim weźmie pieniądze; zbiera lead z kontekstem; prowadzi do płatnej diagnozy. System HALICKIEJ.*
+
+
+
+
+
+
+# 16. POPRAWKI WYKOŃCZENIOWE (reguły trwałe)
+
+> Zapisane jako **reguły systemu**, nie jednorazowe naprawy — obowiązują w każdym nowym elemencie strony i przy każdej przyszłej zmianie. Wynikają z testów na prawdziwym telefonie po Etapie 10.
+
+---
+
+## 16.1 ZASADA: żadnych natywnych pól wyboru w formularzach
+
+**Reguła:** pola wyboru (`<select>`) nie są używane w widocznej warstwie formularzy. Na telefonie otwierają systemowy bębenek, który wygląda obco względem strony i psuje wrażenie premium.
+
+**Zamiast tego:** własna lista rozwijana w palecie i typografii strony.
+
+**Wymagania dla własnej listy (obowiązkowe, bez wyjątków):**
+- Przycisk pokazujący aktualnie wybraną opcję + rozwijany panel z listą
+- Wygląd: tło `--porcelain`, obramowanie hairline (pine/12%), aktywna opcja `--pine`, Sora dla grup / Inter dla pozycji
+- Grupowanie zachowane (np. Diagnoza · Programy · Zabiegi wg kategorii)
+- **Dostępność (twardy wymóg, Accessibility musi zostać 100):** `role="listbox"` / `role="option"`, `aria-expanded`, `aria-selected`, obsługa klawiatury (strzałki góra/dół, Enter, Escape, Home/End), widoczny focus, zamykanie klikiem poza panelem
+- **Fallback:** bez JavaScriptu ma zostać działający natywny `<select>` — funkcja formularza nie może zależeć od skryptu
+- Wybrana wartość trafia do ukrytego pola formularza (Web3Forms) i nie psuje prewypełniania z parametrów URL (`?program=`, `?zabieg=`)
+
+**Zastosowanie natychmiastowe:** pole „Czego dotyczy" na `/kontakt`.
+
+---
+
+## 16.2 MENU MOBILNE — wzorzec panelu
+
+Ikona (trzy kreski) pozostaje bez zmian. Zmienia się **rozwinięty panel**:
+
+- Pełny ekran, tło `--porcelain` (jasne, nie ciemne)
+- Pozycje jedna pod drugą, **duża czcionka Sora**, wyraźny oddech pionowy
+- Każda pozycja oddzielona **hairline'em** (pine/12%)
+- Przed każdą pozycją **mały pierścień z numerem** (01, 02, 03…) — sygnatura marki podchwycona w nawigacji
+- Stan aktywny / dotknięty: podświetlenie `--pine`
+- Na dole panelu: **telefon klikalny** + przycisk `Umów diagnozę`
+- Zamknięcie: krzyżyk w prawym górnym rogu + Escape
+- Blokada przewijania tła gdy panel otwarty, focus trap wewnątrz panelu
+
+---
+
+## 16.3 NAZWA W NAGŁÓWKU
+
+- Zamiast samego `HALICKA` → **`HALICKA Kosmetologia`**
+- Musi mieścić się na 360px bez łamania — w razie potrzeby drugi człon mniejszym stopniem lub z separatorem (`HALICKA · Kosmetologia`)
+- W stopce i pełnej nazwie marki pozostaje `HALICKA Kosmetologia Estetyczna`
+
+---
+
+## 16.4 ZASADA: pierścień na ciemnym tle jest jasny
+
+**Reguła systemu wizualnego:** sygnaturowy pierścień (`Ring.astro`) dostosowuje kolor do tła.
+
+- Na tłach jasnych (`--porcelain`, `--mist`) → pierścień w `--pine` (bez zmian)
+- Na tłach ciemnych (`--pine`) → **pierścień jasny/biały**, żeby był czytelny
+
+**Obowiązuje wszędzie, gdzie pierścień występuje na ciemnym tle** — obecnie: stopka (na każdej podstronie), końcowe CTA `Zacznijmy od diagnozy`. Przy dodawaniu nowych ciemnych sekcji w przyszłości reguła obowiązuje automatycznie.
+
+Realizacja: wariant komponentu (np. `tone="light"`) albo dziedziczenie `currentColor` — byle nie ręczne nadpisywanie w każdym miejscu osobno.
+
+---
+
+## 16.5 ETAP
+
+**ETAP 10B — Poprawki wykończeniowe:** wykonaj 16.1 (własna lista rozwijana na `/kontakt` z pełną dostępnością i fallbackiem), 16.2 (przeprojektowany panel menu mobilnego — ikona bez zmian), 16.3 (nazwa `HALICKA Kosmetologia` w nagłówku), 16.4 (jasny pierścień na wszystkich ciemnych tłach). Nie ruszaj struktury stron ani logiki. Build, sprawdź kontrast jasnego pierścienia na `--pine`, Lighthouse mobile (Accessibility musi pozostać 100 — własna lista i menu to elementy ryzykowne dla dostępności). Podsumuj. STOP.
+
+---
+
+*Sekcja 16 — reguły wykończeniowe. Zapisane w specyfikacji, nie w prompcie, bo obowiązują trwale i przy każdej przyszłej zmianie.*

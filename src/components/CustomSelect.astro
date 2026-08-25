@@ -1,0 +1,246 @@
+---
+// 16.1 — własna lista rozwijana zastępująca natywny <select> w widocznej
+// warstwie (na telefonie natywny select otwiera systemowy bębenek, obcy
+// stylistyce strony). Fallback bez JS: obejmij realny <select> tym
+// komponentem (przez <slot />) — bez JS zostaje on widoczny i w pełni
+// funkcjonalny, bo .custom-select-ui ma atrybut `hidden` w czystym HTML.
+// Z JS: komponent czyta opcje/optgroupy WPROST z owiniętego selecta (bez
+// duplikowania danych), buduje listbox, a wybór w UI ustawia .value na
+// natywnym select + wysyła 'change' — cała reszta formularza (prefill z
+// URL, aktualizacja ukrytych pól) działa bez zmian.
+
+interface Props {
+  /** id owiniętego natywnego <select>. */
+  id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<div class="relative" data-custom-select data-select-id={id}>
+  <slot />
+
+  <div hidden data-custom-select-ui>
+    <button
+      type="button"
+      id={`${id}-trigger`}
+      class="flex w-full items-center justify-between gap-2 rounded-lg border border-pine/20 bg-porcelain px-4 py-2.5 text-left text-sm text-ink transition-colors focus:border-pine focus:outline-none focus:ring-1 focus:ring-pine"
+      aria-haspopup="listbox"
+      aria-expanded="false"
+      data-custom-select-trigger
+    >
+      <span data-custom-select-value>—</span>
+      <svg
+        class="h-4 w-4 shrink-0 text-pine transition-transform"
+        data-custom-select-chevron
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="m6 9 6 6 6-6" />
+      </svg>
+    </button>
+
+    <div
+      class="absolute z-30 mt-2 max-h-80 w-full overflow-y-auto rounded-xl border border-pine/12 bg-porcelain p-2 shadow-lg shadow-ink/10 focus:outline-none"
+      role="listbox"
+      tabindex="-1"
+      hidden
+      data-custom-select-panel
+    >
+    </div>
+  </div>
+</div>
+
+<script>
+  interface OptionEntry {
+    el: HTMLElement;
+    source: HTMLOptionElement;
+  }
+
+  function enhance(root: HTMLElement) {
+    const selectId = root.dataset.selectId;
+    if (!selectId) return;
+
+    const select = root.querySelector<HTMLSelectElement>(`#${CSS.escape(selectId)}`);
+    const ui = root.querySelector<HTMLElement>("[data-custom-select-ui]");
+    const trigger = root.querySelector<HTMLButtonElement>("[data-custom-select-trigger]");
+    const valueEl = root.querySelector<HTMLElement>("[data-custom-select-value]");
+    const chevron = root.querySelector<HTMLElement>("[data-custom-select-chevron]");
+    const panel = root.querySelector<HTMLElement>("[data-custom-select-panel]");
+
+    if (!select || !ui || !trigger || !valueEl || !chevron || !panel) return;
+
+    const options: OptionEntry[] = [];
+    let activeIndex = 0;
+
+    const buildOptionEl = (source: HTMLOptionElement): HTMLElement => {
+      const el = document.createElement("div");
+      el.setAttribute("role", "option");
+      el.id = `${selectId}-opt-${options.length}`;
+      el.dataset.value = source.value;
+      el.className =
+        "custom-select-option cursor-pointer rounded-lg px-3 py-2 text-sm text-ink aria-selected:bg-pine aria-selected:text-porcelain data-[active=true]:bg-mist";
+      el.textContent = source.textContent?.trim() ?? "";
+      el.setAttribute("aria-selected", source.selected ? "true" : "false");
+      return el;
+    };
+
+    Array.from(select.children).forEach((child) => {
+      if (child instanceof HTMLOptGroupElement) {
+        const groupWrap = document.createElement("div");
+        groupWrap.setAttribute("role", "group");
+        groupWrap.setAttribute("aria-label", child.label);
+
+        const groupLabel = document.createElement("div");
+        groupLabel.className =
+          "px-3 pb-1 pt-3 font-heading text-[11px] font-semibold uppercase tracking-wider text-ink-soft first:pt-1";
+        groupLabel.setAttribute("aria-hidden", "true");
+        groupLabel.textContent = child.label;
+        groupWrap.appendChild(groupLabel);
+
+        Array.from(child.children).forEach((opt) => {
+          if (!(opt instanceof HTMLOptionElement)) return;
+          const el = buildOptionEl(opt);
+          groupWrap.appendChild(el);
+          options.push({ el, source: opt });
+        });
+
+        panel.appendChild(groupWrap);
+      } else if (child instanceof HTMLOptionElement) {
+        const el = buildOptionEl(child);
+        panel.appendChild(el);
+        options.push({ el, source: child });
+      }
+    });
+
+    if (options.length === 0) return;
+
+    const labelEl = document.querySelector<HTMLLabelElement>(`label[for="${CSS.escape(selectId)}"]`);
+    if (labelEl) {
+      if (!labelEl.id) labelEl.id = `${selectId}-label`;
+      trigger.setAttribute("aria-labelledby", `${labelEl.id} ${trigger.id}`);
+      panel.setAttribute("aria-labelledby", labelEl.id);
+    }
+
+    const syncFromSelect = () => {
+      const selected = select.options[select.selectedIndex];
+      valueEl.textContent = selected?.textContent?.trim() ?? "";
+      options.forEach((o, i) => {
+        const isSelected = o.source.value === select.value;
+        o.el.setAttribute("aria-selected", isSelected ? "true" : "false");
+        if (isSelected) activeIndex = i;
+      });
+    };
+
+    const setActive = (index: number) => {
+      activeIndex = Math.max(0, Math.min(options.length - 1, index));
+      options.forEach((o, i) => {
+        if (i === activeIndex) o.el.setAttribute("data-active", "true");
+        else o.el.removeAttribute("data-active");
+      });
+      panel.setAttribute("aria-activedescendant", options[activeIndex].el.id);
+      options[activeIndex].el.scrollIntoView({ block: "nearest" });
+    };
+
+    let onDocClick: (e: MouseEvent) => void;
+
+    const closePanel = (focusTrigger = true) => {
+      panel.hidden = true;
+      trigger.setAttribute("aria-expanded", "false");
+      chevron.classList.remove("rotate-180");
+      document.removeEventListener("click", onDocClick);
+      if (focusTrigger) trigger.focus();
+    };
+
+    onDocClick = (e: MouseEvent) => {
+      if (!root.contains(e.target as Node)) closePanel(false);
+    };
+
+    const openPanel = () => {
+      panel.hidden = false;
+      trigger.setAttribute("aria-expanded", "true");
+      chevron.classList.add("rotate-180");
+      setActive(activeIndex);
+      panel.focus({ preventScroll: true });
+      // Listener dopinamy po zakończeniu bieżącego dispatchu kliknięcia,
+      // żeby ten sam klik, który otworzył panel, nie zamknął go od razu
+      // przez bąbelkowanie do document.
+      setTimeout(() => document.addEventListener("click", onDocClick), 0);
+    };
+
+    const selectByIndex = (index: number) => {
+      const target = options[index];
+      if (!target) return;
+      select.value = target.source.value;
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+      syncFromSelect();
+    };
+
+    trigger.addEventListener("click", () => {
+      if (panel.hidden) openPanel();
+      else closePanel();
+    });
+
+    trigger.addEventListener("keydown", (e) => {
+      if (["ArrowDown", "ArrowUp", "Enter", " "].includes(e.key) && panel.hidden) {
+        e.preventDefault();
+        openPanel();
+      }
+    });
+
+    panel.addEventListener("keydown", (e) => {
+      switch (e.key) {
+        case "ArrowDown":
+          e.preventDefault();
+          setActive(activeIndex + 1);
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          setActive(activeIndex - 1);
+          break;
+        case "Home":
+          e.preventDefault();
+          setActive(0);
+          break;
+        case "End":
+          e.preventDefault();
+          setActive(options.length - 1);
+          break;
+        case "Enter":
+        case " ":
+          e.preventDefault();
+          selectByIndex(activeIndex);
+          closePanel();
+          break;
+        case "Escape":
+          e.preventDefault();
+          closePanel();
+          break;
+        case "Tab":
+          closePanel(false);
+          break;
+      }
+    });
+
+    options.forEach((o, i) => {
+      o.el.addEventListener("click", () => {
+        selectByIndex(i);
+        closePanel();
+      });
+      o.el.addEventListener("mouseenter", () => setActive(i));
+    });
+
+    select.addEventListener("change", syncFromSelect);
+
+    syncFromSelect();
+    ui.hidden = false;
+    select.setAttribute("hidden", "");
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-custom-select]").forEach(enhance);
+</script>

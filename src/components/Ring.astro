@@ -14,10 +14,13 @@ interface Props {
   progress?: number;
   /** Liczba znaczników podziałki. */
   ticks?: number;
+  /** 16.4 — "pine" (domyślnie, tła jasne) albo "light" (tła ciemne, np. stopka na --pine). */
+  tone?: "pine" | "light";
   class?: string;
 };
 
-const { size = 56, label, progress, ticks = 12, class: className } = Astro.props;
+const { size = 56, label, progress, ticks = 12, tone = "pine", class: className } = Astro.props;
+const ringColor = tone === "light" ? "var(--color-porcelain)" : "var(--color-pine)";
 
 const cx = 50;
 const cy = 50;
@@ -41,7 +44,7 @@ const tickPoints = Array.from({ length: ticks }, (_, i) => {
 
 <span class:list={["ring-signature inline-block shrink-0", className]} style={{ width: `${size}px`, height: `${size}px` }}>
   <svg viewBox="0 0 100 100" width={size} height={size} aria-hidden="true" focusable="false">
-    <circle class="ring-circle" cx={cx} cy={cy} r={rOuter} fill="none" stroke="var(--color-pine)" stroke-width="1.25" opacity="0.85" />
+    <circle class="ring-circle" cx={cx} cy={cy} r={rOuter} fill="none" stroke={ringColor} stroke-width="1.25" opacity="0.85" />
 
     {tickPoints.map((t) => (
       <line
@@ -49,7 +52,7 @@ const tickPoints = Array.from({ length: ticks }, (_, i) => {
         y1={t.y1}
         x2={t.x2}
         y2={t.y2}
-        stroke={t.accent ? "var(--color-sage)" : "var(--color-pine)"}
+        stroke={t.accent ? "var(--color-sage)" : ringColor}
         stroke-width={t.accent ? 2.5 : 1.25}
         stroke-linecap="round"
         opacity={t.accent ? 1 : 0.6}
@@ -63,7 +66,7 @@ const tickPoints = Array.from({ length: ticks }, (_, i) => {
         cy={cy}
         r={rProgress}
         fill="none"
-        stroke="var(--color-pine)"
+        stroke={ringColor}
         stroke-width="3"
         stroke-linecap="round"
         stroke-dasharray={circumference}
@@ -79,7 +82,7 @@ const tickPoints = Array.from({ length: ticks }, (_, i) => {
         y={cy}
         text-anchor="middle"
         dominant-baseline="central"
-        fill="var(--color-pine)"
+        fill={ringColor}
         font-family="Sora, sans-serif"
         font-weight="600"
         font-size="22"
