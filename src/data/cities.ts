@@ -94,4 +94,58 @@ export const cities: City[] = [
     intro:
       "Z Pruszcza Gdańskiego do Wrzeszcza dojedziesz pociągiem lub samochodem — drogą S7 albo dalej al. Grunwaldzką — w około dwadzieścia minut. Gabinet znajduje się blisko głównej arterii, więc dojazd autem jest wygodny.",
   },
+  {
+    slug: "rumia",
+    name: "Rumia",
+    genitive: "Rumi",
+    locative: "Rumi",
+    minutes: 35,
+    intro:
+      "Z Rumi do Wrzeszcza jedzie się SKM-ką w kierunku Gdańska — podróż zajmuje około 35 minut, bez przesiadek. To jedna z dalszych lokalizacji na trasie SKM, ale bezpośrednie połączenie ułatwia planowanie wizyty.",
+  },
+  {
+    slug: "reda",
+    name: "Reda",
+    genitive: "Redy",
+    locative: "Redzie",
+    minutes: 38,
+    intro:
+      "Z Redy do gabinetu przy al. Grunwaldzkiej najwygodniej dojechać SKM-ką — jazda w stronę Wrzeszcza zajmuje około 38 minut. To kawałek drogi, ale bezpośrednie połączenie bez przesiadek pozwala spokojnie zaplanować wizytę.",
+  },
+  {
+    slug: "wejherowo",
+    name: "Wejherowo",
+    genitive: "Wejherowa",
+    locative: "Wejherowie",
+    minutes: 40,
+    intro:
+      "Z Wejherowa do Wrzeszcza jedzie się SKM-ką najdłużej spośród wszystkich obsługiwanych lokalizacji — licz się z około 40 minutami jazdy, bez przesiadek. Mimo odległości część klientek z Wejherowa umawia wizyty co kilka tygodni, traktując dojazd jako stały rytuał.",
+  },
+  {
+    slug: "zukowo",
+    name: "Żukowo",
+    genitive: "Żukowa",
+    locative: "Żukowie",
+    minutes: 28,
+    intro:
+      "Żukowo leży na zachód od Trójmiasta, więc najwygodniejszy dojazd do gabinetu to samochód lub autobus — trasa zajmuje około 25–30 minut, w zależności od pory dnia. Bezpośredniego połączenia SKM z Żukowa nie ma, warto więc zaplanować czas na dojazd z zapasem.",
+  },
+  {
+    slug: "gdansk-osowa",
+    name: "Gdańsk-Osowa",
+    genitive: "Gdańska-Osowej",
+    locative: "Gdańsku-Osowej",
+    minutes: 20,
+    intro:
+      "Z Osowy do Wrzeszcza dojedziesz Pomorską Koleją Metropolitalną lub samochodem — trasa zajmuje około 20 minut. To jedna z dalszych dzielnic Gdańska, ale dobre połączenie kolejowe skraca dojazd.",
+  },
+  {
+    slug: "gdansk-glowne-miasto",
+    name: "Gdańsk-Główne Miasto",
+    genitive: "Gdańska-Głównego Miasta",
+    locative: "Gdańsku-Głównym Mieście",
+    minutes: 15,
+    intro:
+      "Z Głównego Miasta do Wrzeszcza jedzie się SKM-ką z dworca Gdańsk Główny — to zaledwie kilka przystanków, około kwadransa razem z dojściem. Gabinet przy al. Grunwaldzkiej znajdziesz kilka minut od stacji Gdańsk Wrzeszcz.",
+  },
 ];
