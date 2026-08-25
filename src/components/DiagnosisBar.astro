@@ -1,9 +1,11 @@
 ---
 const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
-const isContact = currentPath === "/kontakt";
+// Karta skóry ma własny dolny pasek nawigacji kreatora (Wstecz/Dalej) —
+// pasek diagnozy nakładałby się na niego.
+const hideBar = currentPath === "/kontakt" || currentPath === "/karta-skory";
 ---
 
-{!isContact && (
+{!hideBar && (
   <a
     href="/kontakt"
     id="diagnosis-bar"
