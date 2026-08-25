@@ -1,0 +1,212 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ProgramTimeline from "../../components/ProgramTimeline.astro";
+import { programs, formatPrice, type Program } from "../../data/programs";
+
+export async function getStaticPaths() {
+  return programs.map((program) => ({
+    params: { slug: program.slug },
+    props: { program },
+  }));
+}
+
+interface Props {
+  program: Program;
+}
+
+const { program } = Astro.props;
+
+const isIndividual = program.packagePrice === null;
+const savingsPercent =
+  !isIndividual && program.packagePrice !== null && program.singlePrice !== null
+    ? Math.round((1 - program.packagePrice / program.singlePrice) * 100)
+    : null;
+---
+
+<Layout title={program.name} description={program.intro}>
+  <section class="pt-8 pb-12 md:pt-10 md:pb-16">
+    <div class="container-page">
+      <nav aria-label="Okruszki" class="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
+        <a href="/" class="hover:text-pine">Strona główna</a>
+        <span aria-hidden="true">/</span>
+        <a href="/programy" class="hover:text-pine">Programy</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-ink">{program.name}</span>
+      </nav>
+
+      <h1 class="mt-6 max-w-2xl font-heading text-4xl font-semibold text-ink md:text-5xl">{program.name}</h1>
+      <p class="mt-5 max-w-xl leading-relaxed text-ink-soft">{program.intro}</p>
+
+      <div class="mt-8 flex flex-wrap gap-x-10 gap-y-4 border-y border-pine/12 py-6">
+        <div>
+          <p class="font-heading text-xs font-semibold uppercase tracking-wider text-ink-soft">Liczba wizyt</p>
+          <p class="mt-1 font-heading text-lg font-semibold text-ink">
+            {program.visits ? `${program.visits} wizyt` : "Indywidualnie"}
+          </p>
+        </div>
+        <div>
+          <p class="font-heading text-xs font-semibold uppercase tracking-wider text-ink-soft">Czas trwania</p>
+          <p class="mt-1 font-heading text-lg font-semibold text-ink">
+            {program.durationMonths ? `${program.durationMonths} mies.` : "Zależny od planu"}
+          </p>
+        </div>
+        <div>
+          <p class="font-heading text-xs font-semibold uppercase tracking-wider text-ink-soft">Cena pakietu</p>
+          <p class="mt-1 font-heading text-lg font-semibold text-ink">
+            {isIndividual ? "Po diagnozie" : formatPrice(program.packagePrice!)}
+          </p>
+        </div>
+        {savingsPercent !== null && (
+          <div>
+            <p class="font-heading text-xs font-semibold uppercase tracking-wider text-ink-soft">Oszczędzasz</p>
+            <p class="mt-1 font-heading text-lg font-semibold text-pine">{savingsPercent}%</p>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  {program.visitPlan.length > 0 && (
+    <section class="border-t border-pine/12 py-16 md:py-20">
+      <div class="container-page">
+        <p class="eyebrow mb-4">Oś czasu programu</p>
+        <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Wizyta po wizycie</h2>
+        <div class="mt-10">
+          <ProgramTimeline visits={program.visitPlan} />
+        </div>
+      </div>
+    </section>
+  )}
+
+  {program.visitPlan.length === 0 && (
+    <section class="border-t border-pine/12 py-16 md:py-20">
+      <div class="container-page">
+        <p class="eyebrow mb-4">Plan wizyt</p>
+        <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">
+          Ustalamy go razem, po diagnozie
+        </h2>
+        <p class="mt-4 max-w-xl leading-relaxed text-ink-soft">
+          Protokół Halicka łączy zabiegi z różnych programów — liczbę wizyt i ich kolejność dobieram
+          do Twojej skóry dopiero po diagnozie.
+        </p>
+      </div>
+    </section>
+  )}
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Dla kogo</p>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Czy to program dla Ciebie?</h2>
+
+      <div class="mt-10 grid gap-8 md:grid-cols-2">
+        <div>
+          <p class="font-heading text-sm font-semibold uppercase tracking-wider text-pine">Tak, jeśli</p>
+          <ul class="mt-4 space-y-3">
+            {program.forWhoYes.map((item) => (
+              <li class="flex items-start gap-3 text-sm leading-relaxed text-ink">
+                <span class="mt-0.5 shrink-0 font-heading font-semibold text-pine" aria-hidden="true">✓</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p class="font-heading text-sm font-semibold uppercase tracking-wider text-ink-soft">Nie, jeśli</p>
+          <ul class="mt-4 space-y-3">
+            {program.forWhoNo.map((item) => (
+              <li class="flex items-start gap-3 text-sm leading-relaxed text-ink-soft">
+                <span class="mt-0.5 shrink-0 font-heading font-semibold text-ink-soft" aria-hidden="true">×</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Efekt</p>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">{program.effectLabel}</h2>
+
+      <div class="mt-10 max-w-xl">
+        <div class="grid grid-cols-2 gap-0.5 overflow-hidden rounded-sm">
+          <div class="relative aspect-[3/4] bg-mist">
+            <span class="absolute bottom-2 left-2 font-heading text-[10px] font-semibold uppercase tracking-wider text-ink-soft">
+              Przed
+            </span>
+          </div>
+          <div class="relative aspect-[3/4] bg-sage/30">
+            <span class="absolute bottom-2 left-2 font-heading text-[10px] font-semibold uppercase tracking-wider text-pine">
+              Po
+            </span>
+          </div>
+        </div>
+        <p class="mt-4 text-xs leading-relaxed text-ink-soft">
+          Efekty indywidualne. Zdjęcia publikujemy wyłącznie za pisemną zgodą klientek.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Cena</p>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">
+        {isIndividual ? "Wycena po diagnozie" : "Dwa sposoby płatności"}
+      </h2>
+
+      {isIndividual ? (
+        <p class="mt-6 max-w-xl leading-relaxed text-ink-soft">
+          Protokół Halicka wyceniam indywidualnie po diagnozie, w zależności od dobranych zabiegów.
+          200 zł za diagnozę odliczam w całości od ceny programu.
+        </p>
+      ) : (
+        <div class="mt-10 grid gap-5 sm:grid-cols-2 max-w-2xl">
+          <div class="rounded-2xl bg-mist p-6 md:p-7">
+            <p class="font-heading text-sm font-semibold uppercase tracking-wider text-pine">Pakiet z góry</p>
+            <p class="mt-3 font-heading text-3xl font-semibold text-ink">{formatPrice(program.packagePrice!)}</p>
+            <p class="mt-2 text-sm text-ink-soft">Cały program opłacony przed pierwszą wizytą. Oszczędzasz {savingsPercent}%.</p>
+          </div>
+          <div class="rounded-2xl border border-pine/15 p-6 md:p-7">
+            <p class="font-heading text-sm font-semibold uppercase tracking-wider text-ink-soft">Płatność za wizytę</p>
+            <p class="mt-3 font-heading text-3xl font-semibold text-ink">{formatPrice(program.singlePrice!)}</p>
+            <p class="mt-2 text-sm text-ink-soft">Płacisz osobno za każdą wizytę, bez zobowiązania z góry.</p>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Pytania</p>
+      <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">FAQ programu</h2>
+
+      <div class="mt-10 max-w-2xl divide-y divide-mist">
+        {program.faq.map((item) => (
+          <div class="py-6">
+            <p class="font-heading font-semibold text-ink">{item.question}</p>
+            <p class="mt-2 text-sm leading-relaxed text-ink-soft">{item.answer}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-pine text-porcelain">
+    <div class="container-page py-16 text-center md:py-20">
+      <h2 class="font-heading text-2xl font-semibold md:text-4xl">Zacznijmy od diagnozy.</h2>
+      <p class="mt-4 max-w-lg mx-auto text-porcelain/85">
+        Program nie zaczyna się od zakupu — zaczyna się od rozmowy o Twojej skórze.
+      </p>
+      <a
+        href={`/kontakt?program=${program.slug}`}
+        class="mt-8 inline-flex items-center rounded-full bg-porcelain px-6 py-3 font-heading text-sm font-semibold text-pine transition-colors hover:bg-mist"
+      >
+        Umów diagnozę — dobierzemy program
+      </a>
+    </div>
+  </section>
+</Layout>

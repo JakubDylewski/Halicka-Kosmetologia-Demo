@@ -1,0 +1,99 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Ring from "../../components/Ring.astro";
+import ProgramCard from "../../components/ProgramCard.astro";
+import { programs } from "../../data/programs";
+
+const howItWorks = [
+  { title: "Diagnoza", text: "Rozmowa i analiza skóry — ustalamy, czy i który program ma sens." },
+  { title: "Plan", text: "Dobieram wizyty i zabiegi do Twojej skóry, z jasnym harmonogramem." },
+  { title: "Wizyty co 2–3 tyg.", text: "Regularny rytm, żeby skóra zdążyła zareagować między zabiegami." },
+  { title: "Kontrola efektów", text: "Ostatnia wizyta podsumowuje program i ustala pielęgnację podtrzymującą." },
+];
+
+const faq = [
+  {
+    question: "Czy mogę kupić pojedynczy zabieg?",
+    answer: "Tak, każdy zabieg dostępny jest też pojedynczo w cenniku zabiegów. Program daje jednak najlepsze i najtrwalsze efekty.",
+  },
+  {
+    question: "Co jeśli program nie jest dla mnie?",
+    answer: "Na diagnozie ocenię, czy Twoja skóra rzeczywiście tego potrzebuje. Czasem lepszym rozwiązaniem są pojedyncze zabiegi albo konsultacja u dermatologa.",
+  },
+  {
+    question: "Czy mogę płacić ratalnie za wizyty?",
+    answer: "Tak — możesz zapłacić za cały pakiet z góry (taniej) albo płacić za każdą wizytę osobno.",
+  },
+];
+---
+
+<Layout title="Programy pielęgnacyjne" description="Programy pielęgnacyjne HALICKA — seria zabiegów z jasnym planem wizyt, zamiast pojedynczych zabiegów bez kontynuacji.">
+  <section class="pt-14 pb-16 md:pt-20 md:pb-20">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Programy</p>
+      <h1 class="max-w-2xl font-heading text-4xl font-semibold text-ink md:text-5xl">Programy pielęgnacyjne</h1>
+      <p class="mt-6 max-w-xl leading-relaxed text-ink-soft">
+        Pojedynczy zabieg daje efekt na tydzień. Program — na lata. Każdy z nich zaczyna się diagnozą
+        i ma jasny plan wizyt, żeby skóra miała czas zareagować między zabiegami.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-20">
+    <div class="container-page">
+      <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        {programs.map((program) => (
+          <ProgramCard program={program} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-24">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Jak to działa</p>
+      <h2 class="font-heading text-2xl font-semibold text-ink md:text-3xl">Od diagnozy do kontroli efektów</h2>
+
+      <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        {howItWorks.map((step, i) => (
+          <div class="flex flex-col gap-4">
+            <Ring size={48} label={String(i + 1)} />
+            <div>
+              <p class="font-heading font-semibold text-ink">{step.title}</p>
+              <p class="mt-2 text-sm leading-relaxed text-ink-soft">{step.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-pine/12 py-16 md:py-24">
+    <div class="container-page">
+      <p class="eyebrow mb-4">Pytania</p>
+      <h2 class="font-heading text-2xl font-semibold text-ink md:text-3xl">Najczęstsze pytania</h2>
+
+      <div class="mt-10 max-w-2xl divide-y divide-mist">
+        {faq.map((item) => (
+          <div class="py-6">
+            <p class="font-heading font-semibold text-ink">{item.question}</p>
+            <p class="mt-2 text-sm leading-relaxed text-ink-soft">{item.answer}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-pine text-porcelain">
+    <div class="container-page py-16 text-center md:py-20">
+      <h2 class="font-heading text-2xl font-semibold md:text-4xl">Nie wiesz, który program wybrać?</h2>
+      <p class="mt-4 text-porcelain/85">Od tego jest diagnoza — wspólnie dobierzemy plan dla Twojej skóry.</p>
+      <a
+        href="/diagnoza-skory"
+        class="mt-8 inline-flex items-center rounded-full bg-porcelain px-6 py-3 font-heading text-sm font-semibold text-pine transition-colors hover:bg-mist"
+      >
+        Umów diagnozę
+      </a>
+    </div>
+  </section>
+</Layout>

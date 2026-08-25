@@ -1,0 +1,42 @@
+---
+// Oś czasu programu — wersja statyczna (Etap 3).
+// Desktop: pozioma, przewijana przy wielu wizytach. Mobile: pionowa.
+// Scroll-linked aktywacja punktów i rosnąca linia postępu — Etap 8.
+
+import Ring from "./Ring.astro";
+import type { ProgramVisit } from "../data/programs";
+
+interface Props {
+  visits: ProgramVisit[];
+}
+
+const { visits } = Astro.props;
+---
+
+<div class="hidden md:block overflow-x-auto pb-2 -mx-1 px-1">
+  <div class="relative flex gap-10 min-w-max">
+    <div class="absolute left-0 right-0 top-[27px] h-px bg-pine/15" aria-hidden="true"></div>
+    {visits.map((visit) => (
+      <div class="relative flex w-64 shrink-0 flex-col gap-4">
+        <Ring size={56} label={String(visit.number)} class="rounded-full bg-porcelain" />
+        <div>
+          <p class="font-heading font-semibold leading-snug text-ink">{visit.title}</p>
+          <p class="mt-2 text-sm leading-relaxed text-ink-soft">{visit.note}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<div class="relative flex flex-col gap-8 pl-1 md:hidden">
+  <div class="absolute left-[27px] top-2 bottom-2 w-px bg-pine/15" aria-hidden="true"></div>
+  {visits.map((visit) => (
+    <div class="relative flex gap-4">
+      <Ring size={56} label={String(visit.number)} class="relative z-10 shrink-0 rounded-full bg-porcelain" />
+      <div class="pt-2.5">
+        <p class="font-heading font-semibold leading-snug text-ink">{visit.title}</p>
+        <p class="mt-2 text-sm leading-relaxed text-ink-soft">{visit.note}</p>
+      </div>
+    </div>
+  ))}
+</div>
