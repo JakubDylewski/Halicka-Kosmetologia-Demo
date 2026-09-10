@@ -1,6 +1,27 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
+const imgSrcset = (src: string) =>
+  `${src.replace(".webp", "-480.webp")} 480w, ${src.replace(".webp", "-960.webp")} 960w, ${src} 1600w`;
+
+// Galeria wnętrz gabinetu (sekcja "Gabinet"). Po wgraniu kolejnego zdjęcia
+// (public/images/wnetrze-gabinet-2.webp + warianty -480/-960) wystarczy
+// odkomentować wpis poniżej — siatka sama przełączy się na 3 kolumny.
+const interiors = [
+  {
+    src: "/images/wnetrze-gabinet.webp",
+    alt: "Wnętrze gabinetu zabiegowego — fotel kosmetyczny, lampa i sprzęt do diagnostyki",
+  },
+  // {
+  //   src: "/images/wnetrze-gabinet-2.webp",
+  //   alt: "Wnętrze gabinetu zabiegowego — drugie ujęcie",
+  // },
+  {
+    src: "/images/wnetrze-poczekalnia.webp",
+    alt: "Poczekalnia gabinetu — fotele i regał z kosmetykami w świetle dziennym",
+  },
+];
+
 const education = [
   "Kosmetologia, studia magisterskie — Gdańsk, 2015",
   "Szkolenie: zaawansowane techniki mezoterapii mikroigłowej",
@@ -148,33 +169,22 @@ const values = [
         ))}
       </div>
 
-      <div class="mt-10 grid max-w-3xl gap-5 sm:grid-cols-2">
-        <div class="overflow-hidden rounded-sm border border-pine/10 bg-mist" data-reveal>
-          <img
-            src="/images/wnetrze-gabinet.webp"
-            srcset="/images/wnetrze-gabinet-480.webp 480w, /images/wnetrze-gabinet-960.webp 960w, /images/wnetrze-gabinet.webp 1600w"
-            sizes="(min-width: 640px) 22rem, 92vw"
-            alt="Wnętrze gabinetu zabiegowego — fotel kosmetyczny, lampa i sprzęt do diagnostyki"
-            width="1600"
-            height="1200"
-            loading="lazy"
-            decoding="async"
-            class="aspect-[4/3] h-full w-full object-cover"
-          />
-        </div>
-        <div class="overflow-hidden rounded-sm border border-pine/10 bg-mist" data-reveal style="--reveal-index: 1">
-          <img
-            src="/images/wnetrze-poczekalnia.webp"
-            srcset="/images/wnetrze-poczekalnia-480.webp 480w, /images/wnetrze-poczekalnia-960.webp 960w, /images/wnetrze-poczekalnia.webp 1600w"
-            sizes="(min-width: 640px) 22rem, 92vw"
-            alt="Poczekalnia gabinetu — fotele i regał z kosmetykami w świetle dziennym"
-            width="1600"
-            height="1200"
-            loading="lazy"
-            decoding="async"
-            class="aspect-[4/3] h-full w-full object-cover"
-          />
-        </div>
+      <div class:list={["mt-10 grid gap-5 sm:grid-cols-2", interiors.length >= 3 ? "lg:grid-cols-3" : "max-w-3xl"]}>
+        {interiors.map((photo, i) => (
+          <div class="overflow-hidden rounded-sm border border-pine/10 bg-mist" data-reveal style={{ "--reveal-index": i }}>
+            <img
+              src={photo.src}
+              srcset={imgSrcset(photo.src)}
+              sizes="(min-width: 640px) 22rem, 92vw"
+              alt={photo.alt}
+              width="1600"
+              height="1200"
+              loading="lazy"
+              decoding="async"
+              class="aspect-[4/3] h-full w-full object-cover"
+            />
+          </div>
+        ))}
       </div>
     </div>
   </section>

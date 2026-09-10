@@ -9,14 +9,32 @@ import { quizQuestions } from "../data/skinQuiz";
 const totalQuestions = quizQuestions.length;
 const resultStep = totalQuestions + 1;
 
-// Proste ikony-placeholdery dla kafelków P1 (docelowo zdjęcia makro skóry).
+// Ikony kafelków P1 — prosta linia w kolorze pine, osadzona w pierścieniu
+// z podziałką (sygnatura HALICKI). Rysowane w viewBox 0 0 100 100.
 const tileIcons: Record<string, string> = {
-  "t-strefa": `<path d="M50 20v60" /><path d="M28 30h44" />`,
-  "cala-twarz": `<circle cx="36" cy="34" r="2.5" fill="currentColor" stroke="none" /><circle cx="58" cy="30" r="2.5" fill="currentColor" stroke="none" /><circle cx="46" cy="48" r="2.5" fill="currentColor" stroke="none" /><circle cx="64" cy="52" r="2.5" fill="currentColor" stroke="none" /><circle cx="32" cy="58" r="2.5" fill="currentColor" stroke="none" />`,
-  sciaga: `<path d="M26 34h20" /><path d="M30 46h26" /><path d="M26 58h20" /><path d="M54 34h20" /><path d="M60 58h14" />`,
-  reaguje: `<circle cx="50" cy="44" r="6" /><path d="M50 26v10" /><path d="M50 52v10" /><path d="M30 44h10" /><path d="M60 44h10" />`,
-  "trudno-powiedziec": `<path d="M42 38a8 8 0 1 1 12 7c-4 2-4 5-4 8" /><circle cx="50" cy="64" r="1.5" fill="currentColor" stroke="none" />`,
+  // Litera T — świecenie w strefie T
+  "t-strefa": `<path d="M50 35v32" /><path d="M35 35h30" />`,
+  // Słońce — błyszczenie całej twarzy
+  "cala-twarz": `<circle cx="50" cy="50" r="9" /><path d="M50 29v6" /><path d="M50 65v6" /><path d="M29 50h6" /><path d="M65 50h6" /><path d="M35.2 35.2l4.2 4.2" /><path d="M60.6 60.6l4.2 4.2" /><path d="M64.8 35.2l-4.2 4.2" /><path d="M39.4 60.6l-4.2 4.2" />`,
+  // Kropla — ściąganie, potrzeba nawilżenia
+  sciaga: `<path d="M50 30c8 10 14 17 14 25a14 14 0 0 1-28 0c0-8 6-15 14-25z" />`,
+  // Płatek — skóra delikatna, reaktywna
+  reaguje: `<path d="M36 64c0-18 10-28 28-30-2 18-12 28-28 30z" /><path d="M40 60c6-9 12-15 19-21" />`,
+  // Znak zapytania
+  "trudno-powiedziec": `<path d="M42 40a8 8 0 1 1 12 7c-4 2-4 5-4 8" /><circle cx="50" cy="64" r="2" fill="var(--color-pine)" stroke="none" />`,
 };
+
+// Podziałka pierścienia wokół ikony (jak w Ring.astro: 12 tików, akcent sage).
+const tileTicks = Array.from({ length: 12 }, (_, i) => {
+  const angle = (i / 12) * 2 * Math.PI - Math.PI / 2;
+  return {
+    x1: 50 + 42 * Math.cos(angle),
+    y1: 50 + 42 * Math.sin(angle),
+    x2: 50 + 47 * Math.cos(angle),
+    y2: 50 + 47 * Math.sin(angle),
+    accent: i === 0,
+  };
+});
 ---
 
 <Layout
@@ -90,19 +108,36 @@ const tileIcons: Record<string, string> = {
               {q.options.map((opt) => (
                 <button
                   type="button"
-                  class="quiz-tile flex min-h-11 flex-col overflow-hidden rounded-xl border-2 border-pine/15 bg-porcelain text-left transition-colors hover:border-pine/50 aria-pressed:border-pine aria-pressed:bg-mist"
+                  class="quiz-tile flex min-h-11 items-center gap-4 rounded-xl border-2 border-pine/15 bg-porcelain px-4 py-3 text-left transition-colors hover:border-pine/50 aria-pressed:border-pine aria-pressed:bg-mist"
                   data-question={q.id}
                   data-value={opt.value}
                   data-type={q.type}
                   aria-pressed="false"
                 >
-                  <span
-                    class="flex aspect-[4/3] w-full items-center justify-center bg-linear-to-br from-sage/25 via-mist to-porcelain"
+                  <svg
+                    width="48"
+                    height="48"
+                    viewBox="0 0 100 100"
+                    class="shrink-0"
                     aria-hidden="true"
+                    focusable="false"
                   >
-                    <svg width="40" height="40" viewBox="0 0 100 100" fill="none" stroke="var(--color-pine)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.55" set:html={tileIcons[opt.value]} />
-                  </span>
-                  <span class="px-4 py-3 text-sm font-medium text-ink">{opt.label}</span>
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="var(--color-pine)" stroke-width="1.25" opacity="0.85" />
+                    {tileTicks.map((t) => (
+                      <line
+                        x1={t.x1}
+                        y1={t.y1}
+                        x2={t.x2}
+                        y2={t.y2}
+                        stroke={t.accent ? "var(--color-sage)" : "var(--color-pine)"}
+                        stroke-width={t.accent ? 2.5 : 1.25}
+                        stroke-linecap="round"
+                        opacity={t.accent ? 1 : 0.6}
+                      />
+                    ))}
+                    <g fill="none" stroke="var(--color-pine)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" set:html={tileIcons[opt.value]} />
+                  </svg>
+                  <span class="text-sm font-medium text-ink">{opt.label}</span>
                 </button>
               ))}
             </div>
