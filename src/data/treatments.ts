@@ -5,6 +5,9 @@ export interface Treatment {
   /** Podaj, gdy cena zależy od strefy/intensywności zabiegu. */
   priceTo?: number;
   description: string;
+  /** Zdjęcie zabiegu z public/images (opcjonalne). */
+  image?: string;
+  imageAlt?: string;
 }
 
 export interface TreatmentCategory {
@@ -23,6 +26,8 @@ export const treatmentCategories: TreatmentCategory[] = [
         duration: "60 min",
         priceFrom: 260,
         description: "Głębokie oczyszczenie porów strumieniem wodorowym, bez podrażniania skóry.",
+        image: "/images/zabieg-oczyszczanie-wodorowe.webp",
+        imageAlt: "Oczyszczanie wodorowe — końcówka urządzenia prowadzona po policzku klientki",
       },
       {
         name: "Peeling chemiczny (kwas migdałowy)",
@@ -110,6 +115,8 @@ export const treatmentCategories: TreatmentCategory[] = [
         duration: "45 min",
         priceFrom: 350,
         description: "Głębokie nawilżenie skóry drobnymi mikronakłuciami, poprawia jej napięcie.",
+        image: "/images/zabieg-mezoterapia-mikroiglowa.webp",
+        imageAlt: "Mezoterapia mikroigłowa — kosmetolożka prowadzi urządzenie mikroigłowe po skórze twarzy",
       },
       {
         name: "Mezoterapia mikroigłowa — witaminowa",
@@ -141,6 +148,8 @@ export const treatmentCategories: TreatmentCategory[] = [
         duration: "30 min",
         priceFrom: 180,
         description: "Światło LED wspierające regenerację skóry, bez okresu rekonwalescencji.",
+        image: "/images/zabieg-led.webp",
+        imageAlt: "Biostymulacja LED — klientka z osłonkami na oczach pod panelem światła LED",
       },
     ],
   },

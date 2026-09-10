@@ -2,6 +2,9 @@ export interface ProgramVisit {
   number: number;
   title: string;
   note: string;
+  /** Zdjęcie zabiegu pasujące do wizyty (public/images, opcjonalne). */
+  image?: string;
+  imageAlt?: string;
 }
 
 export interface ProgramFaq {
@@ -45,11 +48,11 @@ export const programs: Program[] = [
     singlePrice: 2340,
     effectLabel: "Redukcja niedoskonałości i zaskórników",
     visitPlan: [
-      { number: 1, title: "Diagnoza kontrolna + oczyszczanie wodorowe", note: "Dokładna analiza skóry aparatem i pierwsze głębokie oczyszczenie porów. Skóra może być lekko zaróżowiona przez kilka godzin." },
+      { number: 1, title: "Diagnoza kontrolna + oczyszczanie wodorowe", image: "/images/zabieg-oczyszczanie-wodorowe.webp", imageAlt: "Oczyszczanie wodorowe — końcówka urządzenia prowadzona po policzku klientki", note: "Dokładna analiza skóry aparatem i pierwsze głębokie oczyszczenie porów. Skóra może być lekko zaróżowiona przez kilka godzin." },
       { number: 2, title: "Peeling kawitacyjny + ekstrakcje", note: "Usuwamy zaskórniki i złogi z porów. Możliwe drobne zaczerwienienie do 24h, bez łuszczenia." },
-      { number: 3, title: "Mezoterapia mikroigłowa (kwas migdałowy)", note: "Pierwsze widoczne wygładzenie tekstury. Skóra może być wrażliwa 1–2 dni, zalecany SPF." },
+      { number: 3, title: "Mezoterapia mikroigłowa (kwas migdałowy)", image: "/images/zabieg-mezoterapia-mikroiglowa.webp", imageAlt: "Mezoterapia mikroigłowa — kosmetolożka prowadzi urządzenie mikroigłowe po skórze twarzy", note: "Pierwsze widoczne wygładzenie tekstury. Skóra może być wrażliwa 1–2 dni, zalecany SPF." },
       { number: 4, title: "Peeling chemiczny (kwas azelainowy)", note: "Redukcja stanu zapalnego i przebarwień potrądzikowych. Możliwe delikatne złuszczanie przez 2–3 dni." },
-      { number: 5, title: "Oczyszczanie wodorowe + LED", note: "Utrwalenie efektu, uspokojenie skóry. Zabieg bez okresu rekonwalescencji." },
+      { number: 5, title: "Oczyszczanie wodorowe + LED", image: "/images/zabieg-led.webp", imageAlt: "Biostymulacja LED — klientka z osłonkami na oczach pod panelem światła LED", note: "Utrwalenie efektu, uspokojenie skóry. Zabieg bez okresu rekonwalescencji." },
       { number: 6, title: "Kontrola efektów + plan pielęgnacji domowej", note: "Podsumowujemy program i ustalamy pielęgnację podtrzymującą na kolejne miesiące." },
     ],
     forWhoYes: [
@@ -89,10 +92,10 @@ export const programs: Program[] = [
     singlePrice: 1760,
     effectLabel: "Głębokie nawilżenie i regeneracja",
     visitPlan: [
-      { number: 1, title: "Diagnoza + oczyszczanie wodorowe", note: "Analiza nawilżenia skóry i delikatne oczyszczenie bez naruszania bariery hydrolipidowej." },
-      { number: 2, title: "Mezoterapia mikroigłowa (kwas hialuronowy)", note: "Głębokie nawodnienie skóry. Możliwe drobne zaczerwienienie utrzymujące się kilka godzin." },
+      { number: 1, title: "Diagnoza + oczyszczanie wodorowe", image: "/images/zabieg-oczyszczanie-wodorowe.webp", imageAlt: "Oczyszczanie wodorowe — końcówka urządzenia prowadzona po policzku klientki", note: "Analiza nawilżenia skóry i delikatne oczyszczenie bez naruszania bariery hydrolipidowej." },
+      { number: 2, title: "Mezoterapia mikroigłowa (kwas hialuronowy)", image: "/images/zabieg-mezoterapia-mikroiglowa.webp", imageAlt: "Mezoterapia mikroigłowa — kosmetolożka prowadzi urządzenie mikroigłowe po skórze twarzy", note: "Głębokie nawodnienie skóry. Możliwe drobne zaczerwienienie utrzymujące się kilka godzin." },
       { number: 3, title: "Zabieg bankietowy + maska biocelulozowa", note: "Natychmiastowy efekt „glow”. Bez okresu rekonwalescencji — idealny przed ważnym wydarzeniem." },
-      { number: 4, title: "Kontrola + biostymulacja LED", note: "Sprawdzamy poziom nawilżenia i utrwalamy efekt światłem LED." },
+      { number: 4, title: "Kontrola + biostymulacja LED", image: "/images/zabieg-led.webp", imageAlt: "Biostymulacja LED — klientka z osłonkami na oczach pod panelem światła LED", note: "Sprawdzamy poziom nawilżenia i utrwalamy efekt światłem LED." },
     ],
     forWhoYes: [
       "Twoja skóra jest odwodniona, matowa i pozbawiona blasku.",
@@ -133,7 +136,7 @@ export const programs: Program[] = [
       { number: 1, title: "Diagnoza + analiza przebarwień lampą Wooda", note: "Mapujemy przebarwienia i dobieramy stężenia kwasów do typu skóry." },
       { number: 2, title: "Peeling migdałowy", note: "Pierwsze rozjaśnienie skóry. Możliwe delikatne złuszczanie przez 2–3 dni." },
       { number: 3, title: "Peeling azelainowo-witaminowy", note: "Wyrównanie kolorytu. Możliwe zaczerwienienie utrzymujące się do 24h." },
-      { number: 4, title: "Mezoterapia mikroigłowa z kwasem traneksamowym", note: "Celowana redukcja przebarwień. Skóra wrażliwa 1–2 dni, obowiązkowy SPF 50." },
+      { number: 4, title: "Mezoterapia mikroigłowa z kwasem traneksamowym", image: "/images/zabieg-mezoterapia-mikroiglowa.webp", imageAlt: "Mezoterapia mikroigłowa — kosmetolożka prowadzi urządzenie mikroigłowe po skórze twarzy", note: "Celowana redukcja przebarwień. Skóra wrażliwa 1–2 dni, obowiązkowy SPF 50." },
       { number: 5, title: "Kontrola efektów + zabieg rozświetlający", note: "Oceniamy postęp i utrwalamy efekt zabiegiem rozświetlającym." },
     ],
     forWhoYes: [
@@ -176,7 +179,7 @@ export const programs: Program[] = [
       { number: 2, title: "RF mikroigłowa — seria 1", note: "Stymulacja produkcji kolagenu. Możliwe zaczerwienienie i lekki obrzęk do 48h." },
       { number: 3, title: "HIFU — dolna strefa twarzy", note: "Modelowanie owalu. Skóra może być wrażliwa na dotyk przez 2–3 dni." },
       { number: 4, title: "RF mikroigłowa — seria 2", note: "Kontynuacja stymulacji kolagenowej, efekt narasta stopniowo." },
-      { number: 5, title: "Mezoterapia mikroigłowa z peptydami", note: "Wzmocnienie napięcia skóry, minimalny okres rekonwalescencji." },
+      { number: 5, title: "Mezoterapia mikroigłowa z peptydami", image: "/images/zabieg-mezoterapia-mikroiglowa.webp", imageAlt: "Mezoterapia mikroigłowa — kosmetolożka prowadzi urządzenie mikroigłowe po skórze twarzy", note: "Wzmocnienie napięcia skóry, minimalny okres rekonwalescencji." },
       { number: 6, title: "Kontrola efektów + HIFU — strefa środkowa", note: "Domykamy program i oceniamy poprawę owalu twarzy." },
     ],
     forWhoYes: [

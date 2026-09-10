@@ -1,6 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { treatmentCategories, formatTreatmentPrice } from "../data/treatments";
+
+const imgSrcset = (src: string) =>
+  `${src.replace(".webp", "-480.webp")} 480w, ${src.replace(".webp", "-960.webp")} 960w, ${src} 1600w`;
 ---
 
 <Layout
@@ -46,12 +49,27 @@ import { treatmentCategories, formatTreatmentPrice } from "../data/treatments";
               <ul class="divide-y divide-mist">
                 {category.treatments.map((treatment) => (
                   <li class="flex flex-col gap-3 py-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
-                    <div class="sm:max-w-lg">
-                      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <div class="flex items-start gap-4 sm:max-w-lg">
+                      {treatment.image && (
+                        <img
+                          src={treatment.image}
+                          srcset={imgSrcset(treatment.image)}
+                          sizes="(min-width: 640px) 7rem, 5rem"
+                          alt={treatment.imageAlt ?? treatment.name}
+                          width="1600"
+                          height="1200"
+                          loading="lazy"
+                          decoding="async"
+                          class="mt-1 h-16 w-20 shrink-0 rounded-lg object-cover sm:h-20 sm:w-28"
+                        />
+                      )}
+                      <div>
+                        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                         <p class="font-heading font-semibold text-ink">{treatment.name}</p>
                         <p class="text-xs uppercase tracking-wide text-ink-soft">{treatment.duration}</p>
                       </div>
-                      <p class="mt-1.5 text-sm leading-relaxed text-ink-soft">{treatment.description}</p>
+                        <p class="mt-1.5 text-sm leading-relaxed text-ink-soft">{treatment.description}</p>
+                      </div>
                     </div>
 
                     <div class="flex shrink-0 items-center gap-5">

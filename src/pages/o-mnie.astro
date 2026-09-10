@@ -34,11 +34,18 @@ const values = [
   <section class="pt-14 pb-12 md:pt-20 md:pb-16">
     <div class="container-page" data-reveal>
       <div class="flex flex-col gap-10 md:flex-row md:items-start">
-        <div class="relative aspect-[3/4] w-full shrink-0 overflow-hidden rounded-sm border border-pine/10 bg-linear-to-br from-sage/25 via-mist to-porcelain md:w-72">
-          <svg class="absolute inset-0 m-auto h-16 w-16 text-pine/20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
-            <circle cx="12" cy="8" r="4" />
-            <path d="M4 20c0-4 3.5-6 8-6s8 2 8 6" />
-          </svg>
+        <div class="relative aspect-[3/4] w-full shrink-0 overflow-hidden rounded-sm border border-pine/10 bg-mist md:w-72">
+          <img
+            src="/images/halicka-hero-portret.webp"
+            srcset="/images/halicka-hero-portret-480.webp 480w, /images/halicka-hero-portret-960.webp 960w, /images/halicka-hero-portret.webp 1522w"
+            sizes="(min-width: 768px) 18rem, 92vw"
+            alt="Nina Halicka — mgr kosmetologii, portret w gabinecie"
+            width="1522"
+            height="2048"
+            fetchpriority="high"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
         </div>
 
         <div>
@@ -61,7 +68,8 @@ const values = [
       <p class="eyebrow mb-4">Historia</p>
       <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Dlaczego robię to inaczej</h2>
 
-      <div class="mt-8 max-w-2xl space-y-5 leading-relaxed text-ink-soft" data-reveal>
+      <div class="mt-8 flex flex-col gap-10 lg:flex-row lg:items-start">
+        <div class="max-w-2xl space-y-5 leading-relaxed text-ink-soft" data-reveal>
         <p>
           Studia kosmetologii ukończyłam w Gdańsku, a pierwsze lata pracy spędziłam w gabinetach,
           gdzie zabiegi robiło się „na taśmie” — klientka za klientką, bez czasu na rozmowę o tym,
@@ -77,6 +85,20 @@ const values = [
           branżowe, żeby aktualizować wiedzę — kosmetologia zmienia się szybciej, niż większość
           klientek się spodziewa.
         </p>
+        </div>
+        <div class="w-full max-w-xs shrink-0 overflow-hidden rounded-sm border border-pine/10 bg-mist lg:max-w-sm" data-reveal style="--reveal-index: 1">
+          <img
+            src="/images/halicka-przy-pracy.webp"
+            srcset="/images/halicka-przy-pracy-480.webp 480w, /images/halicka-przy-pracy-960.webp 960w, /images/halicka-przy-pracy.webp 1600w"
+            sizes="(min-width: 1024px) 24rem, 20rem"
+            alt="Nina Halicka podczas zabiegu — praca przy twarzy klientki"
+            width="1600"
+            height="1986"
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+        </div>
       </div>
     </div>
   </section>
@@ -86,14 +108,29 @@ const values = [
       <p class="eyebrow mb-4">Wykształcenie</p>
       <h2 class="max-w-xl font-heading text-2xl font-semibold text-ink md:text-3xl">Wykształcenie i certyfikaty</h2>
 
-      <ul class="mt-8 max-w-2xl divide-y divide-mist" data-reveal>
-        {education.map((item) => (
-          <li class="flex items-start gap-3 py-4 text-sm leading-relaxed text-ink">
-            <span class="mt-0.5 shrink-0 font-heading font-semibold text-pine" aria-hidden="true">·</span>
-            {item}
-          </li>
-        ))}
-      </ul>
+      <div class="mt-8 flex flex-col gap-10 lg:flex-row lg:items-start">
+        <ul class="max-w-2xl flex-1 divide-y divide-mist" data-reveal>
+          {education.map((item) => (
+            <li class="flex items-start gap-3 py-4 text-sm leading-relaxed text-ink">
+              <span class="mt-0.5 shrink-0 font-heading font-semibold text-pine" aria-hidden="true">·</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+        <div class="w-full max-w-[16rem] shrink-0 overflow-hidden rounded-sm border border-pine/10 bg-mist" data-reveal style="--reveal-index: 1">
+          <img
+            src="/images/halicka-portret-fartuch.webp"
+            srcset="/images/halicka-portret-fartuch-480.webp 480w, /images/halicka-portret-fartuch-960.webp 960w, /images/halicka-portret-fartuch.webp 1600w"
+            sizes="16rem"
+            alt="Nina Halicka w fartuchu zabiegowym w swoim gabinecie"
+            width="1600"
+            height="2143"
+            loading="lazy"
+            decoding="async"
+            class="aspect-[3/4] h-full w-full object-cover"
+          />
+        </div>
+      </div>
     </div>
   </section>
 
@@ -111,7 +148,34 @@ const values = [
         ))}
       </div>
 
-      <div class="mt-10 aspect-[16/9] w-full max-w-3xl overflow-hidden rounded-sm border border-pine/10 bg-linear-to-br from-mist via-porcelain to-sage/20" data-reveal></div>
+      <div class="mt-10 grid max-w-3xl gap-5 sm:grid-cols-2">
+        <div class="overflow-hidden rounded-sm border border-pine/10 bg-mist" data-reveal>
+          <img
+            src="/images/wnetrze-gabinet.webp"
+            srcset="/images/wnetrze-gabinet-480.webp 480w, /images/wnetrze-gabinet-960.webp 960w, /images/wnetrze-gabinet.webp 1600w"
+            sizes="(min-width: 640px) 22rem, 92vw"
+            alt="Wnętrze gabinetu zabiegowego — fotel kosmetyczny, lampa i sprzęt do diagnostyki"
+            width="1600"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+            class="aspect-[4/3] h-full w-full object-cover"
+          />
+        </div>
+        <div class="overflow-hidden rounded-sm border border-pine/10 bg-mist" data-reveal style="--reveal-index: 1">
+          <img
+            src="/images/wnetrze-poczekalnia.webp"
+            srcset="/images/wnetrze-poczekalnia-480.webp 480w, /images/wnetrze-poczekalnia-960.webp 960w, /images/wnetrze-poczekalnia.webp 1600w"
+            sizes="(min-width: 640px) 22rem, 92vw"
+            alt="Poczekalnia gabinetu — fotele i regał z kosmetykami w świetle dziennym"
+            width="1600"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+            class="aspect-[4/3] h-full w-full object-cover"
+          />
+        </div>
+      </div>
     </div>
   </section>
 

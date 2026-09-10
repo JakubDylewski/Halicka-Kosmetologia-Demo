@@ -14,6 +14,9 @@ interface Props {
 }
 
 const { visits } = Astro.props;
+
+const imgSrcset = (src: string) =>
+  `${src.replace(".webp", "-480.webp")} 480w, ${src.replace(".webp", "-960.webp")} 960w, ${src} 1600w`;
 ---
 
 <div class="tl-root" data-timeline data-count={visits.length}>
@@ -24,6 +27,19 @@ const { visits } = Astro.props;
       {visits.map((visit, i) => (
         <div class="relative flex w-64 shrink-0 flex-col gap-4" data-timeline-point data-index={i}>
           <Ring size={56} label={String(visit.number)} class="rounded-full bg-porcelain" />
+          {visit.image && (
+            <img
+              src={visit.image}
+              srcset={imgSrcset(visit.image)}
+              sizes="(min-width: 768px) 16rem, 20rem"
+              alt={visit.imageAlt ?? ""}
+              width="1600"
+              height="1200"
+              loading="lazy"
+              decoding="async"
+              class="aspect-[4/3] w-full rounded-xl object-cover"
+            />
+          )}
           <div>
             <p class="font-heading font-semibold leading-snug text-ink">{visit.title}</p>
             <p class="mt-2 text-sm leading-relaxed text-ink-soft">{visit.note}</p>
@@ -42,6 +58,19 @@ const { visits } = Astro.props;
         <div class="pt-2.5">
           <p class="font-heading font-semibold leading-snug text-ink">{visit.title}</p>
           <p class="mt-2 text-sm leading-relaxed text-ink-soft">{visit.note}</p>
+          {visit.image && (
+            <img
+              src={visit.image}
+              srcset={imgSrcset(visit.image)}
+              sizes="(min-width: 768px) 16rem, 20rem"
+              alt={visit.imageAlt ?? ""}
+              width="1600"
+              height="1200"
+              loading="lazy"
+              decoding="async"
+              class="mt-3 aspect-[4/3] w-full max-w-xs rounded-xl object-cover"
+            />
+          )}
         </div>
       </div>
     ))}

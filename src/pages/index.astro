@@ -74,18 +74,18 @@ const reviews = [
             <Ring size={220} ticks={16} class="md:hidden" />
             <Ring size={300} ticks={16} class="hidden md:block" />
           </div>
-          <div class="relative mx-auto aspect-[3/4] max-h-[36vh] w-auto overflow-hidden rounded-sm border border-pine/10 bg-linear-to-br from-sage/25 via-mist to-porcelain lg:mx-0 lg:max-h-none lg:w-full">
-            <svg
-              class="absolute inset-0 m-auto h-16 w-16 text-pine/20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="8" r="4" />
-              <path d="M4 20c0-4 3.5-6 8-6s8 2 8 6" />
-            </svg>
+          <div class="relative mx-auto aspect-[3/4] max-h-[36vh] w-auto overflow-hidden rounded-sm border border-pine/10 bg-mist lg:mx-0 lg:max-h-none lg:w-full">
+            <img
+              src="/images/halicka-hero-portret.webp"
+              srcset="/images/halicka-hero-portret-480.webp 480w, /images/halicka-hero-portret-960.webp 960w, /images/halicka-hero-portret.webp 1522w"
+              sizes="(min-width: 1024px) 40vw, 200px"
+              alt="Nina Halicka — mgr kosmetologii, portret w gabinecie"
+              width="1522"
+              height="2048"
+              fetchpriority="high"
+              decoding="async"
+              class="h-full w-full object-cover"
+            />
           </div>
         </div>
 
@@ -254,7 +254,18 @@ const reviews = [
 
   <SectionShell id="o-mnie" number="07" title="O mnie" lead="Krótko o drodze zawodowej — więcej na osobnej stronie.">
     <div class="flex flex-col gap-10 md:flex-row md:items-start">
-      <div class="aspect-[4/5] w-full shrink-0 overflow-hidden rounded-sm border border-pine/10 bg-linear-to-br from-mist via-porcelain to-sage/20 md:w-56">
+      <div class="aspect-[4/5] w-full shrink-0 overflow-hidden rounded-sm border border-pine/10 bg-mist md:w-56">
+        <img
+          src="/images/halicka-portret-fartuch.webp"
+          srcset="/images/halicka-portret-fartuch-480.webp 480w, /images/halicka-portret-fartuch-960.webp 960w, /images/halicka-portret-fartuch.webp 1600w"
+          sizes="(min-width: 768px) 14rem, 92vw"
+          alt="Nina Halicka w fartuchu zabiegowym w swoim gabinecie"
+          width="1600"
+          height="2143"
+          loading="lazy"
+          decoding="async"
+          class="h-full w-full object-cover"
+        />
       </div>
 
       <div>
